@@ -11,17 +11,21 @@
   "type": "header",
   "name": "Header Group",
   "sections": {
-    "luxury_announcement_bar": {
-      "type": "luxury-announcement-bar",
+    "announcement_bar_W9JPrr": {
+      "type": "announcement-bar",
+      "name": "Luxury Announcement Bar",
       "settings": {
-        "enable_announcement": true,
-        "text": "Free worldwide shipping on orders over $150",
-        "icon_svg": "",
-        "link": "shopify://collections",
-        "bg_color": "#000000",
-        "text_color": "#ffffff",
-        "padding_top": 10,
-        "padding_bottom": 10
+        "currency": "QAR",
+        "show_currency_arrow": true,
+        "language": "English",
+        "show_language_arrow": true,
+        "left_emoji": "🔥",
+        "announcement_text": "Only 11 days left until OFFER",
+        "right_emoji": "🔥",
+        "help_text": "Help & Information",
+        "help_link": "",
+        "connect_text": "Connect with us",
+        "connect_link": ""
       }
     },
     "luxury_header": {
@@ -39,7 +43,7 @@
     }
   },
   "order": [
-    "luxury_announcement_bar",
+    "announcement_bar_W9JPrr",
     "luxury_header"
   ]
 }

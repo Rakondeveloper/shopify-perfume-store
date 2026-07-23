@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
+            "text": "<p>Where Elegance Meets Every Drop</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -42,7 +42,7 @@
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Shop all",
+            "label": "Make it yours",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
             "style_class": "button-custom",
@@ -286,8 +286,8 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
+        "section_width": "full-width",
+        "horizontal_alignment": "center",
         "gap": 28,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 48,
