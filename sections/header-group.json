@@ -17,7 +17,7 @@
         "enable_announcement": true,
         "text": "Free worldwide shipping on orders over $150",
         "icon_svg": "",
-        "link": "",
+        "link": "shopify://collections",
         "bg_color": "#000000",
         "text_color": "#ffffff",
         "padding_top": 10,
