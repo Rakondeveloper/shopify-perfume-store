@@ -5,53 +5,145 @@
       color: {{ section.settings.text_color }};
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
-      font-family: var(--font-luxury-body);
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 500;
-      text-align: center;
+      padding-left: 40px;
+      padding-right: 40px;
+      font-size: {{ section.settings.font_size }}px;
+      font-weight: {{ section.settings.font_weight }};
+      letter-spacing: 0.05em;
       position: relative;
       z-index: 10;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
     }
-    .lux-announcement__link {
-      color: inherit;
-      text-decoration: none;
-      display: inline-flex;
+    
+    /* Set custom font family if selected */
+    {%- if section.settings.custom_font != blank -%}
+      {{ section.settings.custom_font | font_face }}
+      .lux-announcement {
+        font-family: {{ section.settings.custom_font.family }}, {{ section.settings.custom_font.fallback_families }};
+      }
+    {%- else -%}
+      .lux-announcement {
+        font-family: var(--font-luxury-body), sans-serif;
+      }
+    {%- endif -%}
+
+    .lux-announcement__left {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .lux-announcement__center {
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: var(--transition-smooth);
+      text-align: center;
     }
+
+    .lux-announcement__right {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .lux-announcement__link {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .lux-announcement__link:hover {
       opacity: 0.8;
     }
-    .lux-announcement__icon svg {
-      width: 14px;
-      height: 14px;
+
+    .lux-announcement__arrow {
+      font-size: 8px;
+      margin-left: 2px;
+      display: inline-block;
       vertical-align: middle;
+    }
+
+    @media (max-width: 991px) {
+      .lux-announcement {
+        grid-template-columns: 1fr;
+        grid-gap: 12px;
+        text-align: center;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .lux-announcement__left,
+      .lux-announcement__right {
+        justify-content: center;
+      }
     }
   {% endstyle %}
 
   <div class="lux-announcement">
-    {%- if section.settings.link != blank -%}
-      <a href="{{ section.settings.link }}" class="lux-announcement__link">
-    {%- else -%}
-      <div class="lux-announcement__link">
-    {%- endif -%}
-
-      {%- if section.settings.icon_svg != blank -%}
-        <span class="lux-announcement__icon">{{ section.settings.icon_svg }}</span>
+    
+    <!-- Left: Selectors -->
+    <div class="lux-announcement__left">
+      {%- if section.settings.currency != blank -%}
+        <span class="lux-announcement__link" style="cursor: pointer;">
+          {{ section.settings.currency }}
+          {%- if section.settings.show_currency_arrow -%}
+            <span class="lux-announcement__arrow">▼</span>
+          {%- endif -%}
+        </span>
       {%- endif -%}
 
-      <span>{{ section.settings.text }}</span>
+      {%- if section.settings.language != blank -%}
+        <span class="lux-announcement__link" style="cursor: pointer;">
+          {{ section.settings.language }}
+          {%- if section.settings.show_language_arrow -%}
+            <span class="lux-announcement__arrow">▼</span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    </div>
 
-    {%- if section.settings.link != blank -%}
-      </a>
-    {%- else -%}
-      </div>
-    {%- endif -%}
+    <!-- Center: Emojis + Main Text -->
+    <div class="lux-announcement__center">
+      {%- if section.settings.left_emoji != blank -%}
+        <span>{{ section.settings.left_emoji }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.link != blank -%}
+        <a href="{{ section.settings.link }}" class="lux-announcement__link">
+          {{ section.settings.text }}
+        </a>
+      {%- else -%}
+        <span>{{ section.settings.text }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.right_emoji != blank -%}
+        <span>{{ section.settings.right_emoji }}</span>
+      {%- endif -%}
+    </div>
+
+    <!-- Right: Utility Links -->
+    <div class="lux-announcement__right">
+      {%- if section.settings.help_text != blank -%}
+        <a href="{{ section.settings.help_link | default: '#' }}" class="lux-announcement__link">
+          {{ section.settings.help_text }}
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.connect_text != blank -%}
+        <a href="{{ section.settings.connect_link | default: '#' }}" class="lux-announcement__link">
+          {{ section.settings.connect_text }}
+        </a>
+      {%- endif -%}
+    </div>
+
   </div>
 {%- endif -%}
 
@@ -66,16 +158,54 @@
       "default": true
     },
     {
+      "type": "header",
+      "content": "Left: Selectors"
+    },
+    {
+      "type": "text",
+      "id": "currency",
+      "label": "Currency Label",
+      "default": "USD"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_arrow",
+      "label": "Show Currency Arrow",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "language",
+      "label": "Language Label",
+      "default": "English"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_arrow",
+      "label": "Show Language Arrow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Center: Announcement"
+    },
+    {
+      "type": "text",
+      "id": "left_emoji",
+      "label": "Left Emoji/Icon",
+      "default": "🔥"
+    },
+    {
       "type": "text",
       "id": "text",
       "label": "Announcement Text",
-      "default": "Free worldwide shipping on orders over $150"
+      "default": "Only 11 days left until NEW YEAR"
     },
     {
-      "type": "html",
-      "id": "icon_svg",
-      "label": "Icon (SVG Code)",
-      "info": "Paste custom SVG icon code here"
+      "type": "text",
+      "id": "right_emoji",
+      "label": "Right Emoji/Icon",
+      "default": "🔥"
     },
     {
       "type": "url",
@@ -83,10 +213,80 @@
       "label": "Announcement Link"
     },
     {
+      "type": "header",
+      "content": "Right: Utility Links"
+    },
+    {
+      "type": "text",
+      "id": "help_text",
+      "label": "Help & Info Text",
+      "default": "Help & Information"
+    },
+    {
+      "type": "url",
+      "id": "help_link",
+      "label": "Help & Info Link"
+    },
+    {
+      "type": "text",
+      "id": "connect_text",
+      "label": "Connect Text",
+      "default": "Connect with us"
+    },
+    {
+      "type": "url",
+      "id": "connect_link",
+      "label": "Connect Link"
+    },
+    {
+      "type": "header",
+      "content": "Styles & Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "custom_font",
+      "label": "Custom Font Override",
+      "info": "Leave unselected to inherit the theme default sans-serif font"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 11
+    },
+    {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
-      "default": "#000000"
+      "default": "#121212"
     },
     {
       "type": "color",
@@ -102,7 +302,7 @@
       "step": 2,
       "unit": "px",
       "label": "Padding Top",
-      "default": 10
+      "default": 12
     },
     {
       "type": "range",
@@ -112,7 +312,7 @@
       "step": 2,
       "unit": "px",
       "label": "Padding Bottom",
-      "default": 10
+      "default": 12
     }
   ],
   "presets": [
