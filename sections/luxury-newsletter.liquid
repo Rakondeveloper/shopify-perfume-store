@@ -1,0 +1,273 @@
+{% style %}
+  .lux-newsletter-section {
+    padding-top: {{ section.settings.margin_top }}px;
+    padding-bottom: {{ section.settings.margin_bottom }}px;
+  }
+  
+  .lux-newsletter {
+    position: relative;
+    border-radius: var(--border-radius-section);
+    overflow: hidden;
+    background-color: var(--color-bg-cream);
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    min-height: 380px;
+    box-shadow: var(--shadow-subtle);
+    border: 1px solid var(--color-border);
+  }
+  
+  .lux-newsletter__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: {{ section.settings.bg_opacity | divided_by: 100.0 }};
+  }
+  
+  .lux-newsletter__content-container {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+    box-sizing: border-box;
+  }
+  
+  .lux-newsletter__heading {
+    font-family: var(--font-luxury-heading);
+    font-size: calc(1.8rem + 1.2vw);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    color: var(--color-primary);
+  }
+  
+  .lux-newsletter__desc {
+    font-family: var(--font-luxury-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    color: var(--color-secondary);
+    max-width: 500px;
+  }
+  
+  /* Right floating bottle graphic decoration */
+  .lux-newsletter__decor {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .lux-newsletter__decor-img {
+    max-height: 320px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.06));
+    animation: luxFloat 6s ease-in-out infinite;
+  }
+  
+  @keyframes luxFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  
+  /* Form messages */
+  .lux-newsletter__message {
+    font-family: var(--font-luxury-body);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 15px;
+    color: var(--color-accent);
+  }
+  
+  @media (max-width: 991px) {
+    .lux-newsletter {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    
+    .lux-newsletter__content-container {
+      padding: 40px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .lux-newsletter__decor {
+      display: none; /* Hide floating bottle on tablet/mobile for spacing */
+    }
+  }
+{% endstyle %}
+
+<section class="lux-newsletter-section luxury-section">
+  <div class="luxury-container">
+    <div class="lux-newsletter">
+      
+      <!-- Optional Background Image -->
+      {%- if section.settings.bg_image != blank -%}
+        <img 
+          src="{{ section.settings.bg_image | image_url: width: 1200 }}" 
+          alt=""
+          class="lux-newsletter__bg"
+          loading="lazy"
+          width="800"
+          height="380"
+        >
+      {%- endif -%}
+
+      <!-- Content Column -->
+      <div class="lux-newsletter__content-container">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="lux-newsletter__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="lux-newsletter__desc">{{ section.settings.description }}</p>
+        {%- endif -%}
+
+        <!-- Shopify Customer Form -->
+        {%- form 'customer', class: 'lux-newsletter__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          
+          {%- if form.posted_successfully? -%}
+            <p class="lux-newsletter__message">Thank you! You have subscribed to our fragrance community.</p>
+          {%- else -%}
+            <div class="luxury-input-group">
+              <input 
+                type="email" 
+                name="contact[email]" 
+                class="luxury-input" 
+                placeholder="{{ section.settings.placeholder }}" 
+                value="{{ fill_email }}"
+                required
+                aria-required="true"
+                autocorrect="off"
+                autocapitalize="off"
+              >
+              <button type="submit" class="luxury-input-submit">
+                {{ section.settings.btn_text }}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="lux-newsletter__message" style="color: red;">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      <!-- Floating Bottle Column (Desktop only) -->
+      <div class="lux-newsletter__decor">
+        {%- if section.settings.decor_image != blank -%}
+          <img 
+            src="{{ section.settings.decor_image | image_url: width: 500 }}" 
+            alt="Perfume bottle decoration"
+            class="lux-newsletter__decor-img"
+            loading="lazy"
+            width="250"
+            height="320"
+          >
+        {%- else -%}
+          <!-- Placeholder or empty -->
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join Our Fragrance Community"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Subscribe to receive updates, access to exclusive deals, and notes on new fragrance releases."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input Placeholder",
+      "default": "Enter your email address..."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background Image Opacity",
+      "default": 10
+    },
+    {
+      "type": "image_picker",
+      "id": "decor_image",
+      "label": "Decorative Floating Bottle",
+      "info": "Appears on the right side of the newsletter box on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Newsletter"
+    }
+  ]
+}
+{% endschema %}

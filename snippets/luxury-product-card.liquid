@@ -1,0 +1,109 @@
+{% comment %}
+  Renders a luxury product card.
+  Usage:
+  {% render 'luxury-product-card', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign compare_at_price = product.compare_at_price
+  assign price = product.price
+  assign available = product.available
+  assign on_sale = false
+  if compare_at_price > price
+    assign on_sale = true
+  endif
+-%}
+
+<div class="lux-card {% unless available %}lux-card--sold-out{% endunless %}" data-product-id="{{ product.id }}">
+  <div class="lux-card__media-wrapper">
+    <!-- Badges -->
+    <div class="lux-card__badges">
+      {%- if on_sale and available -%}
+        <span class="lux-badge lux-badge--sale">Sale</span>
+      {%- endif -%}
+      {%- unless available -%}
+        <span class="lux-badge lux-badge--sold-out">Sold Out</span>
+      {%- endunless -%}
+    </div>
+
+    <!-- Wishlist Placeholder -->
+    <button class="lux-card__wishlist" aria-label="Add to wishlist">
+      <svg class="icon icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </button>
+
+    <!-- Images -->
+    <a href="{{ product.url }}" class="lux-card__link">
+      <div class="lux-card__image-container image-zoom-container">
+        {%- if product.featured_media != blank -%}
+          <img 
+            src="{{ product.featured_media | image_url: width: 600 }}" 
+            alt="{{ product.featured_media.alt | escape }}"
+            loading="lazy"
+            class="lux-card__image lux-card__image--primary"
+            width="300"
+            height="360"
+          >
+          {%- if product.media[1] != blank -%}
+            <img 
+              src="{{ product.media[1] | image_url: width: 600 }}" 
+              alt="{{ product.media[1].alt | escape }}"
+              loading="lazy"
+              class="lux-card__image lux-card__image--secondary"
+              width="300"
+              height="360"
+            >
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg lux-card__image' }}
+        {%- endif -%}
+      </div>
+    </a>
+
+    <!-- Quick Add Hover Reveal -->
+    {%- if available -%}
+      <div class="lux-card__quick-add">
+        <form method="post" action="{{ routes.cart_add_url }}" class="lux-quick-add-form">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit" class="luxury-btn luxury-btn-primary lux-card__quick-add-btn">
+            Quick Add
+          </button>
+        </form>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Information -->
+  <div class="lux-card__info">
+    {%- if product.vendor != blank -%}
+      <span class="lux-card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+    
+    <h3 class="lux-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <!-- Ratings Placeholder -->
+    <div class="lux-card__rating">
+      <div class="lux-stars">
+        {%- for i in (1..5) -%}
+          <svg class="icon icon-star" viewBox="0 0 24 24" fill="#c49a6c" stroke="#c49a6c" stroke-width="1" width="12" height="12">
+            <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" />
+          </svg>
+        {%- endfor -%}
+        <span class="lux-rating-text">(4.9)</span>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="lux-card__price">
+      {%- if on_sale -%}
+        <span class="lux-price lux-price--sale">{{ price | money }}</span>
+        <span class="lux-price lux-price--compare">{{ compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="lux-price">{{ price | money }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

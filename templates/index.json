@@ -1,285 +1,250 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */{
+{
   "sections": {
-    "hero_jVaWmY": {
-      "type": "hero",
+    "luxury_hero": {
+      "type": "luxury-hero",
+      "settings": {
+        "media_type": "image",
+        "subheading": "Where Elegance Meets Every Drop",
+        "heading": "Discover Our Signature Collection of Exquisite Fragrances",
+        "description": "Indulge in our carefully curated luxury perfumes, designed to make every moment memorable.",
+        "btn_label": "Shop the Collection",
+        "btn_url": "/collections/all",
+        "overlay_opacity": 40,
+        "content_alignment": "left"
+      }
+    },
+    "luxury_collection_showcase": {
+      "type": "luxury-collection-showcase",
+      "settings": {
+        "subheading": "Natural Fragrances",
+        "heading": "A Curated Collection of Timeless Fragrances"
+      },
       "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
+        "showcase_1": {
+          "type": "collection_card",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "text_color": "{{ settings.color_palette.background }}",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "title": "For Him",
+            "description": "Woody and aromatic notes for the modern gentleman.",
+            "btn_label": "Discover"
+          }
         },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
+        "showcase_2": {
+          "type": "collection_card",
           "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-custom",
-            "custom_button_background": "rgba(0,0,0,0)",
-            "custom_button_text": "{{ settings.color_palette.background }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
+            "title": "For Her",
+            "description": "Floral and sweet bouquets that highlight grace.",
+            "btn_label": "Discover"
+          }
+        },
+        "showcase_3": {
+          "type": "collection_card",
+          "settings": {
+            "title": "Unisex Scent",
+            "description": "Balanced, clean fragrances designed for anyone.",
+            "btn_label": "Discover"
+          }
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
-      ],
-      "name": "t:names.hero",
+        "showcase_1",
+        "showcase_2",
+        "showcase_3"
+      ]
+    },
+    "luxury_featured_products": {
+      "type": "luxury-featured-products",
       "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "background_color": "rgba(0,0,0,0)",
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
+        "subheading": "Our Selection",
+        "heading": "Discover Our Signature Collection",
+        "description": "A collection of premium fragrances crafted with natural essences, offering a unique and long-lasting scent journey.",
+        "products_limit": 8,
+        "columns_desktop": 4,
+        "show_view_all": true,
+        "tab_title_1": "Latest Items",
+        "collection_1": "all",
+        "tab_title_2": "Best Sellers",
+        "collection_2": "all",
+        "tab_title_3": "Popular",
+        "collection_3": "all",
+        "tab_title_4": "New Arrival",
+        "collection_4": "all"
       }
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "luxury_split_banner": {
+      "type": "luxury-split-banner",
+      "settings": {
+        "subheading": "Find Yours",
+        "heading": "Your Perfect Match — A Scent Made for You",
+        "description": "Let our scent experts guide you to discover the notes that reflect your unique personality and modern lifestyle.",
+        "btn_label": "Shop Now",
+        "reverse_layout": false
+      }
+    },
+    "luxury_promo_banner": {
+      "type": "luxury-promo-banner",
+      "settings": {
+        "bg_text": "Fragranço",
+        "heading": "Up to 40% Off — Limited Time",
+        "description": "Celebrate the season of elegance. Claim our exclusive perfume discounts on select items before the timer runs out.",
+        "btn_label": "Shop the Sale",
+        "btn_link": "/collections/all",
+        "enable_countdown": true,
+        "countdown_date": "2026-12-31 23:59:59"
+      }
+    },
+    "luxury_collection_slider": {
+      "type": "luxury-collection-slider",
+      "settings": {
+        "subheading": "Featured Slider",
+        "heading": "A World of Scents, Curated for You",
+        "collection": "all",
+        "products_limit": 8
+      }
+    },
+    "luxury_testimonials": {
+      "type": "luxury-testimonials",
+      "settings": {
+        "subheading": "Reviews",
+        "heading": "Client Experiences That Speak for Themselves"
+      },
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "testimonial_1": {
+          "type": "testimonial",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+            "name": "Sarah Jenkins",
+            "position": "Verified Buyer",
+            "rating": 5,
+            "review": "The longevity of these scents is unmatched. I spray it in the morning and can still smell the subtle vanilla base note in the evening. Highly recommended!"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "testimonial_2": {
+          "type": "testimonial",
           "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+            "name": "Marcus Aurelius",
+            "position": "Fragrance Enthusiast",
+            "rating": 5,
+            "review": "This unisex collection has become my absolute favorite. The cedarwood notes are clean, masculine, and sophisticated."
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Elena Rostova",
+            "position": "Style Blogger",
+            "rating": 5,
+            "review": "The packaging is as gorgeous as the scent itself. It sits beautifully on my dressing table and makes me feel elegant every single day."
+          }
         }
       },
-      "name": "t:names.product_list",
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3"
+      ]
+    },
+    "luxury_feature_icons": {
+      "type": "luxury-feature-icons",
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "subheading": "Why Choose Us",
+        "heading": "Our Commitment to Premium Quality"
+      },
+      "blocks": {
+        "feat_1": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "shipping",
+            "title": "Free Shipping",
+            "description": "Complimentary shipping worldwide on all orders above $150."
+          }
+        },
+        "feat_2": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "payment",
+            "title": "Secure Payment",
+            "description": "Your financial transactions are protected with high-grade SSL encryption."
+          }
+        },
+        "feat_3": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "returns",
+            "title": "Easy Returns",
+            "description": "Hassle-free 30-day return policy on all unopened fragrance bottles."
+          }
+        },
+        "feat_4": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "quality",
+            "title": "Premium Quality",
+            "description": "Blended with carefully sourced, organic essential perfume oils."
+          }
+        }
+      },
+      "block_order": [
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4"
+      ]
+    },
+    "luxury_about_brand": {
+      "type": "luxury-about-brand",
+      "settings": {
+        "subheading": "About Our Brand",
+        "heading": "Where Every Fragrance Tells a Story",
+        "description": "We are dedicated to matching individuals with their perfect olfactory narratives. We believe a perfume is more than a scent; it is an invisible accessory, a portrait of memory, and a statement of presence. Our materials are ethically sourced, organically refined, and blended by master perfumers."
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "statistic",
+          "settings": {
+            "number": "30+",
+            "label": "Fine Fragrances"
+          }
+        },
+        "stat_2": {
+          "type": "statistic",
+          "settings": {
+            "number": "1M+",
+            "label": "Happy Customers"
+          }
+        },
+        "stat_3": {
+          "type": "statistic",
+          "settings": {
+            "number": "5",
+            "label": "Awards Won"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3"
+      ]
+    },
+    "luxury_newsletter": {
+      "type": "luxury-newsletter",
+      "settings": {
+        "heading": "Join Our Fragrance Community",
+        "description": "Subscribe to receive updates, access to exclusive deals, and notes on new fragrance releases.",
+        "placeholder": "Enter your email address...",
+        "btn_text": "Subscribe"
       }
     }
   },
   "order": [
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "luxury_hero",
+    "luxury_collection_showcase",
+    "luxury_featured_products",
+    "luxury_split_banner",
+    "luxury_promo_banner",
+    "luxury_collection_slider",
+    "luxury_testimonials",
+    "luxury_feature_icons",
+    "luxury_about_brand",
+    "luxury_newsletter"
   ]
 }

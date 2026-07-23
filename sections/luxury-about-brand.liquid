@@ -1,0 +1,277 @@
+{% style %}
+  .lux-about {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  
+  .lux-about__image-card {
+    position: relative;
+    border-radius: var(--border-radius-card);
+    overflow: hidden;
+    height: 520px;
+    box-shadow: var(--shadow-subtle);
+  }
+  
+  .lux-about__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Circular seal decoration overlay */
+  .lux-about__seal {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 90px;
+    height: 90px;
+    z-index: 2;
+    background-color: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    text-align: center;
+    animation: rotateSeal 20s linear infinite;
+  }
+  
+  @keyframes rotateSeal {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .lux-about__content {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+  }
+  
+  .lux-about__heading {
+    font-family: var(--font-luxury-heading);
+    font-size: calc(2rem + 1.2vw);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 24px;
+    color: var(--color-primary);
+  }
+  
+  .lux-about__desc {
+    font-family: var(--font-luxury-body);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    color: var(--color-secondary);
+  }
+  
+  /* Statistics Blocks Layout */
+  .lux-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 30px;
+  }
+  
+  .lux-stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .lux-stat-number {
+    font-family: var(--font-luxury-heading);
+    font-size: calc(2rem + 0.8vw);
+    font-weight: 500;
+    color: var(--color-accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  
+  .lux-stat-label {
+    font-family: var(--font-luxury-body);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-secondary);
+  }
+  
+  @media (max-width: 991px) {
+    .lux-about {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    
+    .lux-about__image-card {
+      height: 400px;
+    }
+    
+    .lux-about__content {
+      padding-left: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .lux-stats {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+{% endstyle %}
+
+<section class="luxury-section">
+  <div class="luxury-container">
+    <div class="lux-about">
+      
+      <!-- Left Column: Image -->
+      <div class="lux-about__image-card image-zoom-container">
+        {%- if section.settings.image != blank -%}
+          <img 
+            src="{{ section.settings.image | image_url: width: 1000 }}" 
+            alt="{{ section.settings.heading | escape }}"
+            class="lux-about__img"
+            loading="lazy"
+            width="600"
+            height="520"
+          >
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg lux-about__img' }}
+        {%- endif -%}
+        
+        <!-- Rotating circular stamp decoration -->
+        <div class="lux-about__seal">
+          <svg viewBox="0 0 100 100" width="80" height="80">
+            <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
+            <text fill="white" font-family="var(--font-luxury-body)" font-size="8.5" letter-spacing="1.5">
+              <textPath href="#circlePath">
+                • 100% Organic Perfume Oils •
+              </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right Column: Content -->
+      <div class="lux-about__content">
+        {%- if section.settings.subheading != blank -%}
+          <span class="section-subtitle" style="text-align: left;">{{ section.settings.subheading }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="lux-about__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="lux-about__desc">{{ section.settings.description }}</p>
+        {%- endif -%}
+
+        <!-- Statistics Grid -->
+        <div class="lux-stats">
+          {%- for block in section.blocks -%}
+            <div class="lux-stat-item" {{ block.shopify_attributes }}>
+              <span class="lux-stat-number">{{ block.settings.number }}</span>
+              <span class="lux-stat-label">{{ block.settings.label }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Brand Statistics",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtitle",
+      "default": "About Our Brand"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where Every Fragrance Tells a Story"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Since our inception, we have been dedicated to matching individuals with their perfect olfactory narratives. We believe a perfume is more than a scent; it is an invisible accessory, a portrait of memory, and a statement of presence. Our materials are ethically sourced, organically refined, and blended by master perfumers."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Editorial Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "statistic",
+      "name": "Statistic Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number Value",
+          "default": "30+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label Description",
+          "default": "Fine Fragrances"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Brand Statistics",
+      "blocks": [
+        {
+          "type": "statistic",
+          "settings": {
+            "number": "30+",
+            "label": "Fine Fragrances"
+          }
+        },
+        {
+          "type": "statistic",
+          "settings": {
+            "number": "1M+",
+            "label": "Happy Customers"
+          }
+        },
+        {
+          "type": "statistic",
+          "settings": {
+            "number": "5",
+            "label": "Awards Won"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

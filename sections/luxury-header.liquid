@@ -1,0 +1,527 @@
+{% style %}
+  .lux-header-wrapper {
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    background-color: var(--color-bg-light);
+    border-bottom: 1px solid var(--color-border);
+    transition: var(--transition-smooth);
+  }
+  
+  .lux-header-wrapper.lux-header--sticky {
+    position: sticky;
+    top: 0;
+  }
+  
+  .lux-header-wrapper.lux-header--transparent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  /* Scrolled sticky state */
+  .lux-header-wrapper.lux-header--scrolled {
+    background-color: var(--color-bg-light) !important;
+    box-shadow: var(--shadow-subtle);
+    border-bottom: 1px solid var(--color-border) !important;
+  }
+  
+  .lux-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 20px 0;
+    transition: var(--transition-smooth);
+  }
+  
+  .lux-header-wrapper.lux-header--scrolled .lux-header {
+    padding: 12px 0;
+  }
+  
+  /* Menu styling */
+  .lux-nav {
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .lux-nav__link {
+    font-family: var(--font-luxury-body);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    position: relative;
+    padding: 8px 0;
+  }
+  
+  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-nav__link {
+    color: var(--color-white);
+  }
+  
+  .lux-nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-accent);
+    transition: var(--transition-smooth);
+  }
+  
+  .lux-nav__link:hover::after,
+  .lux-nav__link--active::after {
+    width: 100%;
+  }
+  
+  .lux-nav__link:hover {
+    color: var(--color-accent) !important;
+  }
+  
+  /* Logo */
+  .lux-header__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .lux-header__logo-link {
+    font-family: var(--font-luxury-heading);
+    font-size: 28px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  
+  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-header__logo-link {
+    color: var(--color-white);
+  }
+  
+  .lux-header__logo-img {
+    display: block;
+    height: auto;
+    transition: var(--transition-smooth);
+  }
+  
+  /* Icons & Actions */
+  .lux-header__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+  
+  .lux-header__action {
+    color: var(--color-primary);
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-header__action {
+    color: var(--color-white);
+  }
+  
+  .lux-header__action:hover {
+    color: var(--color-accent) !important;
+  }
+  
+  .lux-header__action svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .lux-cart-count {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    font-size: 9px;
+    font-weight: 600;
+    border-radius: 50%;
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Mobile Menu Drawer */
+  .lux-header__hamburger {
+    display: none;
+    color: var(--color-primary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-header__hamburger {
+    color: var(--color-white);
+  }
+  
+  .lux-mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 320px;
+    height: 100vh;
+    background-color: var(--color-bg-light);
+    z-index: 1000;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+    padding: 40px 24px;
+    box-sizing: border-box;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .lux-mobile-drawer.open {
+    left: 0;
+  }
+  
+  .lux-mobile-drawer__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-smooth);
+  }
+  
+  .lux-mobile-drawer__overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .lux-mobile-drawer__close {
+    align-self: flex-end;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-primary);
+    margin-bottom: 40px;
+  }
+  
+  .lux-mobile-drawer__close svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .lux-mobile-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .lux-mobile-nav__link {
+    font-family: var(--font-luxury-body);
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  
+  /* Mega menu classes */
+  .lux-nav__item {
+    position: relative;
+  }
+  
+  @media (max-width: 991px) {
+    .lux-header {
+      grid-template-columns: auto 1fr auto;
+      padding: 16px 0;
+    }
+    
+    .lux-nav-container {
+      display: none;
+    }
+    
+    .lux-header__hamburger {
+      display: inline-block;
+      margin-right: 16px;
+    }
+    
+    .lux-header__hamburger svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .lux-header__logo {
+      justify-content: flex-start;
+    }
+  }
+{% endstyle %}
+
+{%- liquid
+  assign is_transparent = false
+  if section.settings.transparent_header and template.name == 'index'
+    assign is_transparent = true
+  endif
+-%}
+
+<luxury-header data-sticky="{{ section.settings.sticky_header }}" data-transparent="{{ is_transparent }}">
+  <div class="lux-header-wrapper {% if section.settings.sticky_header %}lux-header--sticky{% endif %} {% if is_transparent %}lux-header--transparent{% endif %}">
+    <div class="luxury-container">
+      <header class="lux-header">
+        
+        <!-- Hamburg Menu (Mobile) / Nav links (Desktop) -->
+        <div class="lux-nav-side">
+          <button class="lux-header__hamburger" aria-label="Open mobile menu" id="hamburger-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          
+          <nav class="lux-nav-container" aria-label="Primary navigation">
+            <ul class="lux-nav">
+              {%- for link in section.settings.menu.links -%}
+                <li class="lux-nav__item">
+                  <a href="{{ link.url }}" class="lux-nav__link {% if link.active %}lux-nav__link--active{% endif %}">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Logo -->
+        <div class="lux-header__logo">
+          <a href="/" class="lux-header__logo-link">
+            {%- if section.settings.logo != blank -%}
+              {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+              {%- assign logo_width = section.settings.logo_width -%}
+              <img 
+                src="{{ section.settings.logo | image_url: width: logo_width }}" 
+                alt="{{ logo_alt }}"
+                class="lux-header__logo-img"
+                width="{{ logo_width }}"
+                height="{{ logo_width | divided_by: section.settings.logo.aspect_ratio }}"
+                style="max-width: {{ logo_width }}px"
+              >
+            {%- else -%}
+              {{ shop.name }}
+            {%- endif -%}
+          </a>
+        </div>
+
+        <!-- Actions -->
+        <div class="lux-header__actions">
+          {%- if section.settings.enable_search -%}
+            <button class="lux-header__action" aria-label="Search" id="header-search-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          {%- endif -%}
+
+          {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
+            <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="lux-header__action" aria-label="Account">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.enable_cart -%}
+            <a href="/cart" class="lux-header__action" aria-label="Shopping Cart" id="cart-icon-bubble">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span class="lux-cart-count">{{ cart.item_count }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+
+      </header>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="lux-mobile-drawer__overlay" id="mobile-drawer-overlay"></div>
+  <div class="lux-mobile-drawer" id="mobile-drawer">
+    <button class="lux-mobile-drawer__close" id="mobile-drawer-close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <ul class="lux-mobile-nav">
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          <a href="{{ link.url }}" class="lux-mobile-nav__link">
+            {{ link.title }}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    
+    {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
+      <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--color-border);">
+        <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="lux-mobile-nav__link" style="font-size: 14px;">
+          {% if customer %}My Account{% else %}Login / Register{% endif %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</luxury-header>
+
+<script>
+  if (!customElements.get('luxury-header')) {
+    class LuxuryHeader extends HTMLElement {
+      constructor() {
+        super();
+      }
+      
+      connectedCallback() {
+        this.wrapper = this.querySelector('.lux-header-wrapper');
+        this.sticky = this.dataset.sticky === 'true';
+        this.transparent = this.dataset.transparent === 'true';
+        
+        if (this.sticky) {
+          this.scrollHandler = this.onScroll.bind(this);
+          window.addEventListener('scroll', this.scrollHandler);
+          // Initial check
+          this.onScroll();
+        }
+        
+        // Mobile Drawer functionality
+        this.hamburger = this.querySelector('#hamburger-button');
+        this.drawer = this.querySelector('#mobile-drawer');
+        this.overlay = this.querySelector('#mobile-drawer-overlay');
+        this.closeBtn = this.querySelector('#mobile-drawer-close');
+        
+        if (this.hamburger && this.drawer && this.overlay) {
+          this.hamburger.addEventListener('click', this.openDrawer.bind(this));
+          this.overlay.addEventListener('click', this.closeDrawer.bind(this));
+          if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', this.closeDrawer.bind(this));
+          }
+        }
+      }
+      
+      disconnectedCallback() {
+        if (this.scrollHandler) {
+          window.removeEventListener('scroll', this.scrollHandler);
+        }
+      }
+      
+      onScroll() {
+        if (window.scrollY > 40) {
+          this.wrapper.classList.add('lux-header--scrolled');
+        } else {
+          this.wrapper.classList.remove('lux-header--scrolled');
+        }
+      }
+      
+      openDrawer() {
+        this.drawer.classList.add('open');
+        this.overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      closeDrawer() {
+        this.drawer.classList.remove('open');
+        this.overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+    customElements.define('luxury-header', LuxuryHeader);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "label": "Custom logo width",
+      "default": 120
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Enable Sticky Header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_header",
+      "label": "Enable Transparent Header (Homepage)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Action Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Enable Search Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_account",
+      "label": "Enable Account Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cart",
+      "label": "Enable Cart Icon",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

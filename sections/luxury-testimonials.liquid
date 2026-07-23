@@ -1,0 +1,298 @@
+<!-- Load Swiper CSS non-blocking -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+<!-- Load Swiper JS deferred -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+{% style %}
+  .lux-testimonials-wrapper {
+    position: relative;
+    margin-top: 45px;
+  }
+  
+  .lux-testimonials-container {
+    overflow: hidden;
+    padding: 10px 10px 40px 10px;
+  }
+  
+  .lux-testimonial-card {
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-card);
+    padding: 40px 30px;
+    box-sizing: border-box;
+    text-align: center;
+    box-shadow: var(--shadow-subtle);
+    border: 1px solid var(--color-border);
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+  
+  .lux-testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--color-accent);
+  }
+  
+  .lux-testimonial-card__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 2px solid var(--color-bg-cream);
+  }
+  
+  .lux-testimonial-card__stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    color: var(--color-accent);
+  }
+  
+  .lux-testimonial-card__review {
+    font-family: var(--font-luxury-heading);
+    font-size: 18px;
+    line-height: 1.5;
+    font-style: italic;
+    color: var(--color-primary);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  
+  .lux-testimonial-card__name {
+    font-family: var(--font-luxury-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+  }
+  
+  .lux-testimonial-card__position {
+    font-family: var(--font-luxury-body);
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  
+  /* Slider Controls */
+  .lux-testimonial-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  
+  .lux-testimonial-arrow {
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-subtle);
+    transition: var(--transition-smooth);
+  }
+  
+  .lux-testimonial-arrow:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+  }
+  
+  .lux-testimonial-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+{% endstyle %}
+
+<section class="luxury-section">
+  <div class="luxury-container">
+    {%- if section.settings.subheading != blank -%}
+      <span class="section-subtitle">{{ section.settings.subheading }}</span>
+    {%- endif -%}
+    
+    {%- if section.settings.heading != blank -%}
+      <h2 class="luxury-h2">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="lux-testimonials-wrapper">
+      <div class="swiper lux-testimonials-container lux-testimonials-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="lux-testimonial-card">
+                
+                <!-- Avatar image -->
+                {%- if block.settings.photo != blank -%}
+                  <img 
+                    src="{{ block.settings.photo | image_url: width: 200 }}" 
+                    alt="{{ block.settings.name | escape }}"
+                    class="lux-testimonial-card__avatar"
+                    loading="lazy"
+                    width="80"
+                    height="80"
+                  >
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg lux-testimonial-card__avatar' }}
+                {%- endif -%}
+
+                <!-- Rating -->
+                <div class="lux-testimonial-card__stars">
+                  {%- assign stars = block.settings.rating -%}
+                  {%- for i in (1..5) -%}
+                    <svg class="icon icon-star" viewBox="0 0 24 24" fill="{% if i <= stars %}#c49a6c{% else %}none{% endif %}" stroke="#c49a6c" stroke-width="1.5" width="16" height="16">
+                      <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" />
+                    </svg>
+                  {%- endfor -%}
+                </div>
+
+                <!-- Review text -->
+                <blockquote class="lux-testimonial-card__review">
+                  "{{ block.settings.review | truncate: 180 }}"
+                </blockquote>
+
+                <!-- Name & Position -->
+                <span class="lux-testimonial-card__name">{{ block.settings.name }}</span>
+                <span class="lux-testimonial-card__position">{{ block.settings.position }}</span>
+
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      
+      <!-- Testimonials Navigation Arrows -->
+      <div class="lux-testimonial-controls">
+        <button class="lux-testimonial-arrow swiper-button-prev-testimonial-{{ section.id }}" aria-label="Previous testimonials">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <button class="lux-testimonial-arrow swiper-button-next-testimonial-{{ section.id }}" aria-label="Next testimonials">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function initTestimonials() {
+      if (typeof Swiper !== 'undefined') {
+        new Swiper('.lux-testimonials-{{ section.id }}', {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          loop: true,
+          navigation: {
+            nextEl: '.swiper-button-next-testimonial-{{ section.id }}',
+            prevEl: '.swiper-button-prev-testimonial-{{ section.id }}',
+          },
+          breakpoints: {
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 25
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30
+            }
+          }
+        });
+      } else {
+        setTimeout(initTestimonials, 50);
+      }
+    }
+    initTestimonials();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Testimonials",
+  "max_blocks": 9,
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtitle",
+      "default": "Reviews"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Client Experiences That Speak for Themselves"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Customer Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Victoria Grant"
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "Customer Position/Tag",
+          "default": "Perfume Enthusiast"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating Stars",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review Text",
+          "default": "This scent is absolutely captivating. I get compliments everywhere I go. The bottle design is pure art on my vanity. I will definitely be purchasing another bottle soon."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

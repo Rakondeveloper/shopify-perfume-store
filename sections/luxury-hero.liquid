@@ -1,0 +1,364 @@
+{% style %}
+  .lux-hero-section {
+    padding-top: {{ section.settings.margin_top }}px;
+    padding-bottom: {{ section.settings.margin_bottom }}px;
+  }
+  
+  .lux-hero {
+    position: relative;
+    border-radius: var(--border-radius-section);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg-dark);
+    transition: var(--transition-smooth);
+    min-height: {{ section.settings.height_desktop }}px;
+  }
+  
+  .lux-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 2;
+  }
+  
+  .lux-hero__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  
+  .lux-hero__content-container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 80px 60px;
+    box-sizing: border-box;
+  }
+  
+  .lux-hero__content {
+    max-width: {{ section.settings.content_width }}px;
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Alignment styling */
+  .lux-hero--align-left .lux-hero__content {
+    margin-right: auto;
+    text-align: left;
+    align-items: flex-start;
+  }
+  
+  .lux-hero--align-center .lux-hero__content {
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .lux-hero--align-right .lux-hero__content {
+    margin-left: auto;
+    text-align: right;
+    align-items: flex-end;
+  }
+  
+  .lux-hero__subtitle {
+    font-family: var(--font-luxury-body);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+    color: var(--color-accent);
+  }
+  
+  .lux-hero__heading {
+    font-family: var(--font-luxury-heading);
+    font-size: calc(2.4rem + 2.5vw);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    color: var(--color-white);
+    letter-spacing: 0.02em;
+  }
+  
+  .lux-hero__description {
+    font-family: var(--font-luxury-body);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 36px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  
+  .lux-hero__btn {
+    padding: 16px 44px;
+    font-size: 13px;
+  }
+  
+  @media (max-width: 768px) {
+    .lux-hero {
+      min-height: {{ section.settings.height_mobile }}px;
+    }
+    
+    .lux-hero__content-container {
+      padding: 40px 24px;
+    }
+    
+    .lux-hero__heading {
+      font-size: calc(1.8rem + 1.5vw);
+    }
+    
+    .lux-hero__description {
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    
+    .lux-hero__btn {
+      padding: 12px 32px;
+      font-size: 12px;
+    }
+  }
+{% endstyle %}
+
+<section class="lux-hero-section luxury-section">
+  <div class="luxury-container">
+    <div class="lux-hero lux-hero--align-{{ section.settings.content_alignment }}">
+      
+      <!-- Video or Image Background -->
+      {%- if section.settings.media_type == 'video' and section.settings.video_url != blank -%}
+        <video 
+          class="lux-hero__media" 
+          src="{{ section.settings.video_url }}" 
+          autoplay 
+          loop 
+          muted 
+          playsinline
+        ></video>
+      {%- else -%}
+        {%- if section.settings.image_desktop != blank -%}
+          <picture>
+            {%- if section.settings.image_mobile != blank -%}
+              <source media="(max-width: 768px)" srcset="{{ section.settings.image_mobile | image_url: width: 768 }}">
+            {%- endif -%}
+            <img 
+              class="lux-hero__media" 
+              src="{{ section.settings.image_desktop | image_url: width: 1920 }}" 
+              alt="{{ section.settings.image_desktop.alt | escape }}"
+              loading="eager"
+              width="1320"
+              height="650"
+            >
+          </picture>
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg lux-hero__media' }}
+        {%- endif -%}
+      {%- endif -%}
+
+      <!-- Dark overlay -->
+      <div class="lux-hero__overlay"></div>
+
+      <!-- Text Container -->
+      <div class="lux-hero__content-container">
+        <div class="lux-hero__content">
+          {%- if section.settings.subheading != blank -%}
+            <span class="lux-hero__subtitle">{{ section.settings.subheading }}</span>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <h1 class="lux-hero__heading">{{ section.settings.heading }}</h1>
+          {%- endif -%}
+
+          {%- if section.settings.description != blank -%}
+            <p class="lux-hero__description">{{ section.settings.description }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.btn_label != blank and section.settings.btn_url != blank -%}
+            <div>
+              <a href="{{ section.settings.btn_url }}" class="luxury-btn luxury-btn-white lux-hero__btn">
+                {{ section.settings.btn_label }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Hero Banner",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Background Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Background Image (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Direct MP4 Video URL",
+      "info": "Paste a direct .mp4 video URL here"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 35
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Natural Perfumes"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where Elegance Meets Every Drop"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover a selection of premium fragrances that capture the essence of luxury and timeless refinement."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Shop the Collection"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Max Content Width",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Desktop Height",
+      "default": 650
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 300,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile Height",
+      "default": 450
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Hero Banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,242 @@
+{% style %}
+  .lux-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 40px;
+  }
+  
+  .lux-split--reverse {
+    direction: rtl;
+  }
+  
+  .lux-split--reverse > * {
+    direction: ltr; /* Reset text direction inside children */
+  }
+  
+  .lux-split__product-card {
+    background-color: var(--color-bg-cream);
+    border-radius: var(--border-radius-card);
+    padding: 50px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    height: 100%;
+    min-height: 480px;
+    box-sizing: border-box;
+  }
+  
+  .lux-split__image-card {
+    position: relative;
+    border-radius: var(--border-radius-card);
+    overflow: hidden;
+    height: 100%;
+    min-height: 480px;
+    box-shadow: var(--shadow-subtle);
+  }
+  
+  .lux-split__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .lux-split__product-image-container {
+    width: 220px;
+    height: 220px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .lux-split__product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: var(--transition-slow);
+  }
+  
+  .lux-split__product-card:hover .lux-split__product-image {
+    transform: scale(1.06);
+  }
+  
+  .lux-split__vendor {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  .lux-split__title {
+    font-family: var(--font-luxury-heading);
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0 0 12px 0;
+    color: var(--color-primary);
+  }
+  
+  .lux-split__price {
+    font-family: var(--font-luxury-body);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--color-primary);
+  }
+  
+  .lux-split__btn {
+    padding: 12px 36px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 991px) {
+    .lux-split {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .lux-split__product-card,
+    .lux-split__image-card {
+      min-height: 400px;
+      padding: 40px;
+    }
+  }
+{% endstyle %}
+
+<section class="luxury-section">
+  <div class="luxury-container">
+    {%- if section.settings.subheading != blank -%}
+      <span class="section-subtitle">{{ section.settings.subheading }}</span>
+    {%- endif -%}
+    
+    {%- if section.settings.heading != blank -%}
+      <h2 class="luxury-h2" style="text-align: left; max-width: 600px; margin-bottom: 12px;">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="luxury-p" style="text-align: left; max-width: 700px; margin-bottom: 30px;">
+        {{ section.settings.description }}
+      </p>
+    {%- endif -%}
+
+    <div class="lux-split {% if section.settings.reverse_layout %}lux-split--reverse{% endif %}">
+      
+      <!-- Left: Product Showcase Card -->
+      <div class="lux-split__product-card">
+        {%- assign featured_product = section.settings.product -%}
+        {%- if featured_product != blank -%}
+          <div class="lux-split__product-image-container">
+            {%- if featured_product.featured_image != blank -%}
+              <img 
+                src="{{ featured_product.featured_image | image_url: width: 440 }}" 
+                alt="{{ featured_product.title | escape }}"
+                class="lux-split__product-image"
+                loading="lazy"
+                width="220"
+                height="220"
+              >
+            {%- else -%}
+              {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg lux-split__product-image' }}
+            {%- endif -%}
+          </div>
+          
+          <span class="lux-split__vendor">{{ featured_product.vendor }}</span>
+          <h3 class="lux-split__title">{{ featured_product.title }}</h3>
+          
+          <div class="lux-split__price">
+            {{ featured_product.price | money }}
+          </div>
+          
+          <a href="{{ featured_product.url }}" class="luxury-btn luxury-btn-primary lux-split__btn">
+            {{ section.settings.btn_label | default: "Shop Now" }}
+          </a>
+        {%- else -%}
+          <div class="lux-split__product-image-container">
+            {{ 'product-3' | placeholder_svg_tag: 'placeholder-svg lux-split__product-image' }}
+          </div>
+          <span class="lux-split__vendor">Brand Vendor</span>
+          <h3 class="lux-split__title">Luxury Scent Bottle</h3>
+          <div class="lux-split__price">$180.00</div>
+          <button class="luxury-btn luxury-btn-primary lux-split__btn">Shop Now</button>
+        {%- endif -%}
+      </div>
+
+      <!-- Right: Editorial Image Card -->
+      <div class="lux-split__image-card image-zoom-container">
+        {%- if section.settings.image != blank -%}
+          <img 
+            src="{{ section.settings.image | image_url: width: 1000 }}" 
+            alt="{{ section.settings.heading | escape }}"
+            class="lux-split__img"
+            loading="lazy"
+            width="600"
+            height="480"
+          >
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg lux-split__img' }}
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Split Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtitle",
+      "default": "Find Yours"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your Perfect Match — A Scent Made for You"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Let our scent experts guide you to discover the notes that reflect your unique personality and modern lifestyle."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Editorial Image"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse Column Layout",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Split Banner"
+    }
+  ]
+}
+{% endschema %}
