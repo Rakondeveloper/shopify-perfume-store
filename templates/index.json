@@ -65,9 +65,8 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/transform-this-image-into-a-premium-website-hero-banner-while-preserving-the-original-composition-subject-lighting-colors-pose-facial-expression-perfume-bottle-clothing-background-and.png",
+        "image_1": "shopify://shop_images/banner.webp",
         "media_type_2": "image",
-        "image_2": "shopify://shop_images/banner.webp",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
