@@ -1,0 +1,128 @@
+<div class="announcement-bar">
+  <div class="announcement-left">
+    <span>
+      {{ section.settings.currency }}
+      {% if section.settings.show_currency_arrow %}
+      ▼
+      {% endif %}
+    </span>
+
+    <span>
+      {{ section.settings.language }}
+      {% if section.settings.show_language_arrow %}
+      ▼
+      {% endif %}
+    </span>
+  </div>
+
+  <div class="announcement-center">
+    {% if section.settings.left_emoji != blank %}
+      <span>{{ section.settings.left_emoji }}</span>
+    {% endif %}
+
+    {{ section.settings.announcement_text }}
+
+    {% if section.settings.right_emoji != blank %}
+      <span>{{ section.settings.right_emoji }}</span>
+    {% endif %}
+  </div>
+
+  <div class="announcement-right">
+    <a href="{{ section.settings.help_link }}">
+      {{ section.settings.help_text }}
+    </a>
+
+    <a href="{{ section.settings.connect_link }}">
+      {{ section.settings.connect_text }}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Luxury Announcement Bar",
+  "settings": [
+
+    {
+      "type": "text",
+      "id": "currency",
+      "label": "Currency",
+      "default": "USD"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_currency_arrow",
+      "label": "Show Currency Arrow",
+      "default": true
+    },
+
+    {
+      "type": "text",
+      "id": "language",
+      "label": "Language",
+      "default": "English"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_language_arrow",
+      "label": "Show Language Arrow",
+      "default": true
+    },
+
+    {
+      "type": "text",
+      "id": "left_emoji",
+      "label": "Left Emoji",
+      "default": "🔥"
+    },
+
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "Only 11 days left until NEW YEAR"
+    },
+
+    {
+      "type": "text",
+      "id": "right_emoji",
+      "label": "Right Emoji",
+      "default": "🔥"
+    },
+
+    {
+      "type": "text",
+      "id": "help_text",
+      "label": "Help Text",
+      "default": "Help & Information"
+    },
+
+    {
+      "type": "url",
+      "id": "help_link",
+      "label": "Help Link"
+    },
+
+    {
+      "type": "text",
+      "id": "connect_text",
+      "label": "Connect Text",
+      "default": "Connect with us"
+    },
+
+    {
+      "type": "url",
+      "id": "connect_link",
+      "label": "Connect Link"
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Luxury Announcement Bar"
+    }
+  ]
+}
+{% endschema %}
