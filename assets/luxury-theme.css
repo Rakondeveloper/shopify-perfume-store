@@ -274,43 +274,244 @@
 /* Clean Luxury Products Grid System */
 .lux-products-grid,
 .lux-related-grid {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 30px !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-  grid-template-columns: none !important;
-  grid-template-areas: none !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .lux-prod-item {
-  flex: 0 0 calc((100% - 90px) / 4) !important;
-  max-width: calc((100% - 90px) / 4) !important;
-  width: calc((100% - 90px) / 4) !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  flex-direction: column !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  grid-column: auto !important;
-  grid-row: auto !important;
-  grid-area: auto !important;
+  flex: 0 0 calc((100% - 90px) / 4);
+  max-width: calc((100% - 90px) / 4);
+  width: calc((100% - 90px) / 4);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  position: relative;
+}
+
+.lux-prod-card {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  aspect-ratio: 0.85;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  background: #ececec;
+  box-sizing: border-box;
+}
+
+.lux-prod-img-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+  border-radius: 18px;
+  position: relative;
+  background: #ececec;
+}
+
+.lux-prod-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lux-prod-badge-hot {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 9.5px;
+  padding: 3px 8px;
+  z-index: 3;
+  border-radius: 999px;
+}
+
+.lux-prod-wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 3;
+}
+
+.lux-prod-wishlist-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Glass Overlay Commerce Panel */
+.lux-prod-overlay {
+  position: relative;
+  margin-top: -24px;
+  z-index: 5;
+  width: calc(100% - 16px);
+  margin-left: 8px;
+  margin-right: 8px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 18px;
+  padding: 12px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.lux-prod-meta {
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+.lux-prod-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px 0;
+  line-height: 1.25;
+  font-family: var(--font-heading--family), serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.lux-prod-subtitle {
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.lux-prod-price-pill {
+  width: 100%;
+  height: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.lux-prod-price-sale {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.lux-prod-price-compare {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  text-decoration: line-through;
+}
+
+.lux-prod-buy-btn {
+  width: 100%;
+  height: 40px;
+  background-color: #111111;
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 0 12px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.lux-buy-arrow-icon {
+  width: 24px;
+  height: 24px;
+  background-color: #ffffff;
+  color: #111111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lux-prod-cart-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  margin-top: 2px;
+  width: 34px;
+  height: 34px;
+  background: #ffffff;
+  color: #111111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 3;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.lux-prod-cart-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.lux-prod-actions {
+  display: none;
 }
 
 /* Responsive spacing tweaks */
 @media (max-width: 1023px) {
   .lux-products-grid,
   .lux-related-grid {
-    gap: 16px !important;
+    gap: 16px;
   }
 
   .lux-prod-item {
-    flex: 0 0 calc((100% - 16px) / 2) !important;
-    max-width: calc((100% - 16px) / 2) !important;
-    width: calc((100% - 16px) / 2) !important;
+    flex: 0 0 calc((100% - 16px) / 2);
+    max-width: calc((100% - 16px) / 2);
+    width: calc((100% - 16px) / 2);
   }
 }
 
@@ -339,257 +540,34 @@
   }
 
   .lux-card__quick-add-btn {
-    padding: 8px 12px !important;
-    font-size: 10px !important;
+    padding: 8px 12px;
+    font-size: 10px;
   }
 
   /* Shared product card responsive fixes for mobile */
   .lux-products-grid,
   .lux-related-grid {
-    gap: 12px !important;
+    gap: 12px;
   }
 
   .lux-prod-item {
-    flex: 0 0 calc((100% - 12px) / 2) !important;
-    max-width: calc((100% - 12px) / 2) !important;
-    width: calc((100% - 12px) / 2) !important;
-    margin-bottom: 0 !important;
+    flex: 0 0 calc((100% - 12px) / 2);
+    max-width: calc((100% - 12px) / 2);
+    width: calc((100% - 12px) / 2);
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 479px) {
   .lux-products-grid,
   .lux-related-grid {
-    gap: 10px !important;
+    gap: 10px;
   }
 
   .lux-prod-item {
-    flex: 0 0 calc((100% - 10px) / 2) !important;
-    max-width: calc((100% - 10px) / 2) !important;
-    width: calc((100% - 10px) / 2) !important;
-  }
-}
-
-  .lux-prod-item {
-    min-width: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    box-sizing: border-box !important;
-    position: relative !important;
-    margin-bottom: 8px !important;
-  }
-
-  .lux-prod-card {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    aspect-ratio: 0.85 !important;
-    border-radius: 18px !important;
-    position: relative !important;
-    overflow: hidden !important;
-    background: #ececec !important;
-    margin-bottom: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .lux-prod-img-container {
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-    overflow: hidden !important;
-    border-radius: 18px !important;
-    position: relative !important;
-    background: #ececec !important;
-  }
-
-  .lux-prod-img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-  }
-
-  .lux-prod-badge-hot {
-    position: absolute !important;
-    top: 10px !important;
-    left: 10px !important;
-    font-size: 9.5px !important;
-    padding: 3px 8px !important;
-    z-index: 3 !important;
-    border-radius: 999px !important;
-  }
-
-  .lux-prod-wishlist-btn {
-    position: absolute !important;
-    top: 10px !important;
-    right: 10px !important;
-    width: 34px !important;
-    height: 34px !important;
-    background: #ffffff !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
-    z-index: 3 !important;
-  }
-
-  .lux-prod-wishlist-btn svg {
-    width: 15px !important;
-    height: 15px !important;
-  }
-
-  /* Integrated Glass Commerce Info Panel (Extends Downward, Overlaps Photo Bottom by ~24px) */
-  .lux-prod-overlay {
-    position: relative !important;
-    margin-top: -24px !important;
-    z-index: 5 !important;
-    width: calc(100% - 16px) !important;
-    margin-left: 8px !important;
-    margin-right: 8px !important;
-    box-sizing: border-box !important;
-    background: rgba(255, 255, 255, 0.28) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    border-radius: 18px !important;
-    padding: 12px 10px 10px 10px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    flex-direction: column;
-    text-align: center !important;
-    gap: 8px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-  }
-
-  .lux-prod-meta {
-    padding: 0 !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-    text-align: center !important;
-  }
-
-  .lux-prod-title {
-    font-size: 12.5px !important;
-    font-weight: 600 !important;
-    color: #ffffff !important;
-    margin: 0 0 2px 0 !important;
-    line-height: 1.25 !important;
-    font-family: var(--font-heading--family), serif !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-    word-break: break-word !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-  }
-
-  .lux-prod-subtitle {
-    font-size: 9.5px !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    margin: 0 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-  }
-
-  /* Price Pill inside Panel */
-  .lux-prod-price-pill {
-    width: 100% !important;
-    height: auto !important;
-    padding: 0 !important;
-    border: none !important;
-    background: transparent !important;
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-    font-size: 13.5px !important;
-    font-weight: 700 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 6px !important;
-    white-space: nowrap !important;
-    box-sizing: border-box !important;
-  }
-
-  .lux-prod-price-sale {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-  }
-
-  .lux-prod-price-compare {
-    color: rgba(255, 255, 255, 0.7) !important;
-    font-size: 11px !important;
-    text-decoration: line-through !important;
-  }
-
-  /* Buy Now CTA Button inside Panel */
-  .lux-prod-buy-btn {
-    width: 100% !important;
-    height: 40px !important;
-    background-color: #111111 !important;
-    color: #ffffff !important;
-    border-radius: 999px !important;
-    font-size: 11.5px !important;
-    font-weight: 500 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 0 4px 0 12px !important;
-    white-space: nowrap !important;
-    box-sizing: border-box !important;
-    border: none !important;
-    cursor: pointer !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  .lux-buy-arrow-icon {
-    width: 24px !important;
-    height: 24px !important;
-    background-color: #ffffff !important;
-    color: #111111 !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Cart Shopping Bag Button (Centered at bottom of Panel) */
-  .lux-prod-cart-btn {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    margin-top: 2px !important;
-    width: 34px !important;
-    height: 34px !important;
-    background: #ffffff !important;
-    color: #111111 !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-    z-index: 3 !important;
-    flex-shrink: 0 !important;
-    border: none !important;
-    cursor: pointer !important;
-  }
-
-  .lux-prod-cart-btn svg {
-    width: 16px !important;
-    height: 16px !important;
-  }
-
-  /* Hide old external actions row */
-  .lux-prod-actions {
-    display: none !important;
+    flex: 0 0 calc((100% - 10px) / 2);
+    max-width: calc((100% - 10px) / 2);
+    width: calc((100% - 10px) / 2);
   }
 }
 

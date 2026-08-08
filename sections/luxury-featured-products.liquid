@@ -134,11 +134,11 @@
 
   /* Grid and Slider Layout */
   .lux-products-grid {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: {{ section.settings.card_spacing | default: 30 }}px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: {{ section.settings.card_spacing | default: 30 }}px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .lux-products-slider {
@@ -155,12 +155,12 @@
 
   /* Product Items and Cards */
   .lux-prod-item {
-    flex: 0 0 calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }}) !important;
-    max-width: calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }}) !important;
-    width: calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }}) !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
+    flex: 0 0 calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }});
+    max-width: calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }});
+    width: calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }});
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
@@ -418,12 +418,12 @@
       margin-bottom: 32px;
     }
     .lux-products-grid {
-      gap: 16px !important;
+      gap: 16px;
     }
     .lux-prod-item {
-      flex: 0 0 calc((100% - 16px) / 2) !important;
-      max-width: calc((100% - 16px) / 2) !important;
-      width: calc((100% - 16px) / 2) !important;
+      flex: 0 0 calc((100% - 16px) / 2);
+      max-width: calc((100% - 16px) / 2);
+      width: calc((100% - 16px) / 2);
     }
     .lux-prod-card {
       width: 100%;
@@ -479,12 +479,12 @@
       font-size: 13px;
     }
     .lux-products-grid {
-      gap: 12px !important;
+      gap: 12px;
     }
     .lux-prod-item {
-      flex: 0 0 calc((100% - 12px) / 2) !important;
-      max-width: calc((100% - 12px) / 2) !important;
-      width: calc((100% - 12px) / 2) !important;
+      flex: 0 0 calc((100% - 12px) / 2);
+      max-width: calc((100% - 12px) / 2);
+      width: calc((100% - 12px) / 2);
     }
     .lux-prod-overlay {
       padding: 12px 14px;
@@ -496,12 +496,12 @@
 
   @media (max-width: 479px) {
     .lux-products-grid {
-      gap: 10px !important;
+      gap: 10px;
     }
     .lux-prod-item {
-      flex: 0 0 calc((100% - 10px) / 2) !important;
-      max-width: calc((100% - 10px) / 2) !important;
-      width: calc((100% - 10px) / 2) !important;
+      flex: 0 0 calc((100% - 10px) / 2);
+      max-width: calc((100% - 10px) / 2);
+      width: calc((100% - 10px) / 2);
     }
   }
 
