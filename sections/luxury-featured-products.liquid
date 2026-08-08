@@ -1,294 +1,1617 @@
+<!-- Load Swiper CSS non-blocking -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+<!-- Load Swiper JS deferred -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+{%- liquid
+  assign heading = section.settings.heading
+  if section.settings.highlight_word != blank
+    capture highlight_html
+      echo '<span style="color: ' | append: section.settings.highlight_color | append: '">' | append: section.settings.highlight_word | append: '</span>'
+    endcapture
+    assign heading = heading | replace: section.settings.highlight_word, highlight_html
+  endif
+-%}
+
 {% style %}
-  .lux-tabs-container {
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 15px;
+  .lux-featured-products-section {
+    background-color: {{ section.settings.bg_color | default: '#ffffff' }};
+    padding: {{ section.settings.padding_top | default: 80 }}px 0 {{ section.settings.padding_bottom | default: 80 }}px 0;
   }
-  
-  .lux-tab-btn {
-    font-family: var(--font-luxury-body);
-    font-size: 13px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-muted);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0 0 14px 0;
+
+  .lux-featured-container {
+    max-width: {{ section.settings.container_width | default: 1720 }}px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
     position: relative;
-    transition: var(--transition-smooth);
   }
-  
-  .lux-tab-btn:hover {
-    color: var(--color-primary);
+
+  /* Header style */
+  .lux-featured-header {
+    text-align: {{ section.settings.alignment | default: 'center' }};
+    margin-bottom: 48px;
   }
-  
-  .lux-tab-btn.active {
-    color: var(--color-accent);
+
+  .lux-featured-h2 {
+    font-family: var(--font-heading--family), serif;
+    font-size: {{ section.settings.heading_size_desktop | default: 64 }}px;
+    font-weight: {{ section.settings.heading_weight | default: '500' }};
+    color: {{ section.settings.heading_color | default: '#111111' }};
+    line-height: {{ section.settings.heading_line_height | default: '1.15' }};
+    margin: 0 0 16px 0;
+    letter-spacing: {{ section.settings.heading_letter_spacing | default: '-0.01' }}em;
+    text-transform: uppercase;
   }
-  
-  .lux-tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -16px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--color-accent);
+
+  .lux-featured-desc {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: {{ section.settings.desc_font_size | default: 16 }}px;
+    font-weight: 300;
+    color: {{ section.settings.desc_color | default: '#666666' }};
+    line-height: 1.6;
+    margin: 0;
+    max-width: 700px;
+    display: inline-block;
   }
-  
-  .lux-tab-panel {
-    display: none;
+
+  /* Filter and CTA Row */
+  .lux-filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
   }
-  
-  .lux-tab-panel.active {
-    display: block;
-    animation: luxFadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+
+  .lux-filter-tabs {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
   }
-  
-  @keyframes luxFadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+
+  .lux-filter-tab {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: {{ section.settings.filter_font_size | default: 15 }}px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: {{ section.settings.filter_radius | default: 100 }}px;
+    border: 1px solid {{ section.settings.filter_border_color | default: '#111111' }};
+    background-color: #ffffff;
+    color: {{ section.settings.filter_border_color | default: '#111111' }};
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    white-space: nowrap;
   }
-  
+
+  .lux-filter-tab.active {
+    background-color: {{ section.settings.filter_active_color | default: '#111111' }};
+    color: #ffffff;
+    border-color: {{ section.settings.filter_active_color | default: '#111111' }};
+  }
+
+  .lux-filter-tab:hover:not(.active) {
+    background-color: {{ section.settings.filter_hover_bg | default: '#f5f5f5' }};
+  }
+
+  /* Shop Now button */
+  .lux-shop-now-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    height: 54px;
+    padding: 0 28px;
+    background-color: {{ section.settings.shop_now_bg | default: '#111111' }};
+    color: {{ section.settings.shop_now_text | default: '#ffffff' }};
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: {{ section.settings.shop_now_radius | default: 100 }}px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .lux-shop-now-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+  }
+
+  .lux-shop-now-arrow {
+    width: 28px;
+    height: 28px;
+    background-color: #ffffff;
+    color: #111111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+  }
+
+  .lux-shop-now-btn:hover .lux-shop-now-arrow {
+    transform: rotate(45deg);
+  }
+
+  /* Grid and Slider Layout */
   .lux-products-grid {
-    display: grid;
-    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    gap: 30px;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: {{ section.settings.card_spacing | default: 30 }}px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
-  
-  .lux-products-footer {
-    text-align: center;
-    margin-top: 50px;
+
+  .lux-products-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
   }
-  
-  @media (max-width: 991px) {
+
+  .lux-swiper-container {
+    overflow: hidden;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+
+  /* Product Items and Cards */
+  .lux-prod-item {
+    flex: 0 0 calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }}) !important;
+    max-width: calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }}) !important;
+    width: calc((100% - ({{ section.settings.card_spacing | default: 30 }}px * ({{ section.settings.columns_desktop | default: 4 }} - 1))) / {{ section.settings.columns_desktop | default: 4 }}) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .lux-prod-item.swiper-slide-hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  .lux-prod-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.85;
+    border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .lux-prod-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .lux-prod-img-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+
+  .lux-prod-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .lux-prod-card:hover .lux-prod-img {
+    transform: scale(1.05);
+  }
+
+  /* Red HOT Badge */
+  .lux-prod-badge-hot {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background-color: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    font-size: {{ section.settings.badge_font_size }}px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: {{ section.settings.badge_radius }}px;
+    letter-spacing: 0.05em;
+    z-index: 3;
+  }
+
+  /* White cart circle button */
+  .lux-prod-cart-btn {
+    position: absolute;
+    top: 80px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 3;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .lux-prod-cart-btn:hover {
+    transform: scale(1.05);
+  }
+
+  /* Bottom semi-transparent overlay panel */
+  .lux-prod-overlay {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 24px;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 3;
+  }
+
+  .lux-prod-meta {
+    text-align: left;
+    flex: 1;
+    padding-right: 12px;
+  }
+
+  .lux-prod-title {
+    font-family: var(--font-heading--family), serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+
+  .lux-prod-subtitle {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+  }
+
+  /* Wishlist Heart Button */
+  .lux-prod-wishlist-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .lux-prod-wishlist-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .lux-prod-wishlist-btn.active {
+    color: #ff8c42; /* active peach-orange heart icon */
+  }
+
+  /* Below Card Actions */
+  .lux-prod-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .lux-prod-buy-btn {
+    flex: 1;
+    height: 52px;
+    background-color: #111111;
+    color: #ffffff;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-heading--family);
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 0 24px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .lux-prod-buy-btn:hover {
+    background-color: #333333;
+  }
+
+  .lux-buy-arrow-icon {
+    width: 36px;
+    height: 36px;
+    background-color: #ffffff;
+    color: #111111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+  }
+
+  .lux-prod-buy-btn:hover .lux-buy-arrow-icon {
+    transform: rotate(45deg);
+  }
+
+  .lux-prod-price-pill {
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 999px;
+    border: 1px solid #111111;
+    background-color: #ffffff;
+    color: #111111;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  /* Slider controls styling */
+  .lux-slider-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    justify-content: center;
+  }
+
+  .lux-slider-arrow {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid #111111;
+    background-color: #ffffff;
+    color: #111111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lux-slider-arrow:hover {
+    background-color: #111111;
+    color: #ffffff;
+  }
+
+  /* Breakpoint overrides */
+  @media (max-width: 1023px) {
+    .lux-featured-h2 {
+      font-size: {{ section.settings.heading_size_tablet | default: 48 }}px;
+    }
+    .lux-featured-container {
+      padding: 0 24px;
+    }
+    .lux-filter-row {
+      margin-bottom: 32px;
+    }
     .lux-products-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 16px !important;
+    }
+    .lux-prod-item {
+      flex: 0 0 calc((100% - 16px) / 2) !important;
+      max-width: calc((100% - 16px) / 2) !important;
+      width: calc((100% - 16px) / 2) !important;
+    }
+    .lux-prod-card {
+      width: 100%;
+      aspect-ratio: 0.85;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .lux-prod-img-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 18px;
+      position: relative;
+      background: #ececec;
+    }
+    .lux-prod-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
   }
-  
-  @media (max-width: 768px) {
-    .lux-tabs-container {
-      gap: 15px;
+
+  @media (max-width: 767px) {
+    .lux-featured-header {
+      margin-bottom: 28px;
+    }
+    .lux-featured-h2 {
+      font-size: {{ section.settings.heading_size_mobile | default: 32 }}px;
+      margin-bottom: 8px;
+    }
+    .lux-filter-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .lux-filter-tabs {
+      width: 100%;
+      gap: 8px;
       overflow-x: auto;
-      justify-content: flex-start;
-      padding-bottom: 10px;
-      white-space: nowrap;
+      flex-wrap: nowrap;
+      padding-bottom: 8px;
       -webkit-overflow-scrolling: touch;
     }
-    
-    .lux-tab-btn {
-      font-size: 11px;
-      padding-bottom: 8px;
+    .lux-filter-tab {
+      padding: 8px 16px;
+      font-size: 13px;
     }
-    
-    .lux-tab-btn.active::after {
-      bottom: -11px;
-    }
-    
     .lux-products-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 12px !important;
+    }
+    .lux-prod-item {
+      flex: 0 0 calc((100% - 12px) / 2) !important;
+      max-width: calc((100% - 12px) / 2) !important;
+      width: calc((100% - 12px) / 2) !important;
+    }
+    .lux-prod-overlay {
+      padding: 12px 14px;
+    }
+    .lux-prod-title {
+      font-size: 14px;
     }
   }
-  
-  @media (max-width: 480px) {
+
+  @media (max-width: 479px) {
     .lux-products-grid {
-      grid-template-columns: 1fr;
+      gap: 10px !important;
     }
+    .lux-prod-item {
+      flex: 0 0 calc((100% - 10px) / 2) !important;
+      max-width: calc((100% - 10px) / 2) !important;
+      width: calc((100% - 10px) / 2) !important;
+    }
+  }
+
+  /* Clickable Card link overlay */
+  .lux-prod-card-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  /* Cart animation keyframes */
+  @keyframes luxPopBounce {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.35) rotate(-12deg); }
+    60% { transform: scale(0.88) rotate(6deg); }
+    85% { transform: scale(1.08) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  @keyframes luxSparkleBurst {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
+  }
+
+  .lux-prod-cart-btn.animating {
+    animation: luxPopBounce 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .lux-cart-sparkle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 105, 180, 0.5) 45%, rgba(255, 255, 255, 0) 70%);
+    animation: luxSparkleBurst 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    z-index: 10;
+  }
+
+  /* Cart Success state classes */
+  .lux-prod-cart-btn.in-cart {
+    background-color: #e8f5e9 !important;
+    border: 1.5px solid #2e7d32 !important;
+    color: #2e7d32 !important;
+    box-shadow: 0 4px 14px rgba(46, 125, 50, 0.18) !important;
+  }
+
+  .lux-prod-cart-btn.in-cart:hover {
+    background-color: #d7ecd9 !important;
+  }
+
+  /* Toast notification styles */
+  .lux-toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+  .lux-toast {
+    pointer-events: auto;
+    background-color: #111111;
+    color: #ffffff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    max-width: 380px;
+  }
+
+  .lux-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .lux-toast-img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+  }
+
+  .lux-toast-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    text-align: left;
+  }
+
+  .lux-toast-title {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .lux-toast-msg {
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .lux-toast-btn {
+    background: #ffffff;
+    color: #111111;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+  }
+
+  .lux-toast-btn:hover {
+    background: #dddddd;
   }
 {% endstyle %}
 
-<section class="luxury-section" data-section-id="{{ section.id }}">
-  <div class="luxury-container">
-    {%- if section.settings.subheading != blank -%}
-      <span class="section-subtitle">{{ section.settings.subheading }}</span>
-    {%- endif -%}
+<section class="lux-featured-products-section" data-section-id="{{ section.id }}">
+  <div class="lux-featured-container">
     
-    {%- if section.settings.heading != blank -%}
-      <h2 class="luxury-h2">{{ section.settings.heading }}</h2>
-    {%- endif -%}
-
-    {%- if section.settings.description != blank -%}
-      <p class="luxury-p" style="text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 40px;">
-        {{ section.settings.description }}
-      </p>
-    {%- endif -%}
-
-    <!-- Tab buttons -->
-    <div class="lux-tabs-container">
-      {%- assign tab_count = 0 -%}
-      
-      {%- if section.settings.collection_1 != blank -%}
-        <button class="lux-tab-btn active" data-tab="tab-1">
-          {{ section.settings.tab_title_1 | default: section.settings.collection_1.title }}
-        </button>
-        {%- assign tab_count = tab_count | plus: 1 -%}
+    <!-- Section Header -->
+    <div class="lux-featured-header">
+      {%- if heading != blank -%}
+        <h2 class="lux-featured-h2">{{ heading }}</h2>
       {%- endif -%}
-
-      {%- if section.settings.collection_2 != blank -%}
-        <button class="lux-tab-btn {% if tab_count == 0 %}active{% endif %}" data-tab="tab-2">
-          {{ section.settings.tab_title_2 | default: section.settings.collection_2.title }}
-        </button>
-        {%- assign tab_count = tab_count | plus: 1 -%}
-      {%- endif -%}
-
-      {%- if section.settings.collection_3 != blank -%}
-        <button class="lux-tab-btn {% if tab_count == 0 %}active{% endif %}" data-tab="tab-3">
-          {{ section.settings.tab_title_3 | default: section.settings.collection_3.title }}
-        </button>
-        {%- assign tab_count = tab_count | plus: 1 -%}
-      {%- endif -%}
-
-      {%- if section.settings.collection_4 != blank -%}
-        <button class="lux-tab-btn {% if tab_count == 0 %}active{% endif %}" data-tab="tab-4">
-          {{ section.settings.tab_title_4 | default: section.settings.collection_4.title }}
-        </button>
+      {%- if section.settings.description != blank -%}
+        <p class="lux-featured-desc">{{ section.settings.description }}</p>
       {%- endif -%}
     </div>
 
-    <!-- Tab Panels -->
-    {%- assign panel_count = 0 -%}
-    
-    {%- if section.settings.collection_1 != blank -%}
-      <div class="lux-tab-panel active" id="tab-1">
-        <div class="lux-products-grid">
-          {%- for product in section.settings.collection_1.products limit: section.settings.products_limit -%}
-            {%- render 'luxury-product-card', product: product -%}
+    <!-- Filter Buttons & CTA -->
+    <div class="lux-filter-row">
+      {%- if section.settings.enable_filters and section.settings.collection_list != blank and section.settings.collection_list.count > 0 -%}
+        <div class="lux-filter-tabs">
+          <button class="lux-filter-tab active" data-filter-collection="all">{{ section.settings.filter_all_label | default: 'All' }}</button>
+          {%- for collection in section.settings.collection_list -%}
+            <button class="lux-filter-tab" data-filter-collection="{{ collection.handle }}">{{ collection.title }}</button>
           {%- endfor -%}
         </div>
-        {%- if section.settings.show_view_all -%}
-          <div class="lux-products-footer">
-            <a href="{{ section.settings.collection_1.url }}" class="luxury-btn luxury-btn-secondary">
-              View All {{ section.settings.collection_1.title }}
-            </a>
-          </div>
-        {%- endif -%}
-      </div>
-      {%- assign panel_count = panel_count | plus: 1 -%}
-    {%- endif -%}
+      {%- endif -%}
 
-    {%- if section.settings.collection_2 != blank -%}
-      <div class="lux-tab-panel {% if panel_count == 0 %}active{% endif %}" id="tab-2">
-        <div class="lux-products-grid">
-          {%- for product in section.settings.collection_2.products limit: section.settings.products_limit -%}
-            {%- render 'luxury-product-card', product: product -%}
-          {%- endfor -%}
-        </div>
-        {%- if section.settings.show_view_all -%}
-          <div class="lux-products-footer">
-            <a href="{{ section.settings.collection_2.url }}" class="luxury-btn luxury-btn-secondary">
-              View All {{ section.settings.collection_2.title }}
-            </a>
-          </div>
-        {%- endif -%}
-      </div>
-      {%- assign panel_count = panel_count | plus: 1 -%}
-    {%- endif -%}
+      {%- if section.settings.show_shop_now and section.settings.shop_now_link != blank -%}
+        <a href="{{ section.settings.shop_now_link }}" class="lux-shop-now-btn">
+          <span>{{ section.settings.shop_now_label | default: 'Shop Now' }}</span>
+          <span class="lux-shop-now-arrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </span>
+        </a>
+      {%- endif -%}
+    </div>
 
-    {%- if section.settings.collection_3 != blank -%}
-      <div class="lux-tab-panel {% if panel_count == 0 %}active{% endif %}" id="tab-3">
-        <div class="lux-products-grid">
-          {%- for product in section.settings.collection_3.products limit: section.settings.products_limit -%}
-            {%- render 'luxury-product-card', product: product -%}
-          {%- endfor -%}
-        </div>
-        {%- if section.settings.show_view_all -%}
-          <div class="lux-products-footer">
-            <a href="{{ section.settings.collection_3.url }}" class="luxury-btn luxury-btn-secondary">
-              View All {{ section.settings.collection_3.title }}
-            </a>
-          </div>
-        {%- endif -%}
-      </div>
-      {%- assign panel_count = panel_count | plus: 1 -%}
-    {%- endif -%}
+    <!-- Products List -->
+    {%- assign selected_collections = section.settings.collection_list -%}
+    {%- if selected_collections != blank and selected_collections.count > 0 -%}
+      <div class="lux-products-layout">
+        {%- if section.settings.display_mode == 'slider' -%}
+          <!-- Slider Mode -->
+          <div class="lux-products-slider">
+            <div class="swiper lux-swiper-container lux-swiper-{{ section.id }}">
+              <div class="swiper-wrapper">
+                {%- liquid
+                  assign rendered_product_ids = ""
+                -%}
+                {%- for collection in selected_collections -%}
+                  {%- for product in collection.products limit: section.settings.products_limit -%}
+                    {%- capture product_id_str -%},{{ product.id }},{%- endcapture -%}
+                    {%- unless rendered_product_ids contains product_id_str -%}
+                      {%- capture rendered_product_ids -%}{{ rendered_product_ids }}{{ product.id }},{%- endcapture -%}
+                      
+                      {%- assign product_collection_handles = "" -%}
+                      {%- for prod_col in product.collections -%}
+                        {%- for sel_col in selected_collections -%}
+                          {%- if prod_col.handle == sel_col.handle -%}
+                            {%- assign product_collection_handles = product_collection_handles | append: sel_col.handle | append: "," -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endfor -%}
 
-    {%- if section.settings.collection_4 != blank -%}
-      <div class="lux-tab-panel {% if panel_count == 0 %}active{% endif %}" id="tab-4">
-        <div class="lux-products-grid">
-          {%- for product in section.settings.collection_4.products limit: section.settings.products_limit -%}
-            {%- render 'luxury-product-card', product: product -%}
-          {%- endfor -%}
-        </div>
-        {%- if section.settings.show_view_all -%}
-          <div class="lux-products-footer">
-            <a href="{{ section.settings.collection_4.url }}" class="luxury-btn luxury-btn-secondary">
-              View All {{ section.settings.collection_4.title }}
-            </a>
+                      <div class="swiper-slide lux-prod-item" 
+                           data-collections="{{ product_collection_handles | downcase }}"
+                           data-tags="{{ product.tags | join: ',' | downcase }}"
+                           data-type="{{ product.type | downcase }}"
+                           data-vendor="{{ product.vendor | downcase }}">
+                        {%- liquid
+                          assign is_hot = false
+                          assign card_bg = section.settings.card_bg_default | default: '#ececec'
+                          assign subtitle = ''
+                          assign is_sold_out = true
+                          if product.available
+                            assign is_sold_out = false
+                          endif
+                          
+                          for tag in product.tags
+                            assign downcase_tag = tag | downcase
+                            if downcase_tag == 'hot'
+                              assign is_hot = true
+                            endif
+                            if downcase_tag contains 'color:'
+                              assign card_bg = tag | split: 'color:' | last
+                            endif
+                            if downcase_tag contains 'subtitle:'
+                              assign subtitle = tag | split: 'subtitle:' | last
+                            endif
+                          endfor
+
+                          if subtitle == blank
+                            if section.settings.subtitle_source == 'type'
+                              assign subtitle = product.type
+                            elsif section.settings.subtitle_source == 'vendor'
+                              assign subtitle = product.vendor
+                            endif
+                          endif
+                        -%}
+
+                        <div class="lux-prod-card" style="background: {{ card_bg }};" onclick="if(!event.target.closest('button')) window.location.href='{{ product.url }}'">
+                          <a href="{{ product.url }}" class="lux-prod-card-link" aria-label="{{ product.title }}"></a>
+                          <!-- Image -->
+                          <div class="lux-prod-img-container">
+                            {%- if product.featured_image != blank -%}
+                              {{ product.featured_image | image_url: width: 600 | image_tag: class: 'lux-prod-img', loading: 'lazy', alt: product.title }}
+                            {%- else -%}
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg lux-prod-img' }}
+                            {%- endif -%}
+                          </div>
+
+                          <!-- HOT Badge -->
+                          {%- if is_hot -%}
+                            <div class="lux-prod-badge-hot">HOT</div>
+                          {%- endif -%}
+
+                          <!-- Wishlist Heart Button (Top Right over Photo Media) -->
+                          <button class="lux-prod-wishlist-btn" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}" aria-label="Add to wishlist">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="heart-icon">
+                              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                            </svg>
+                          </button>
+
+                          <!-- Cart Shopping Bag AJAX Add Button (Floating top right under wishlist) -->
+                          <button class="lux-prod-cart-btn" data-variant-id="{{ product.first_available_variant.id }}" aria-label="Add to cart" {% if is_sold_out %}disabled{% endif %}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                              <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                          </button>
+
+                          <!-- Bottom overlay panel (Integrated Commerce Panel) -->
+                          <div class="lux-prod-overlay">
+                            <div class="lux-prod-meta">
+                              <h3 class="lux-prod-title">{{ product.title }}</h3>
+                              <p class="lux-prod-subtitle">{{ subtitle | default: 'Signature Scent' }}</p>
+                            </div>
+
+                            <div class="lux-prod-price-pill">
+                              {%- if product.compare_at_price > product.price -%}
+                                <span class="lux-prod-price-sale">{{ product.price | money }}</span>
+                                <s class="lux-prod-price-compare">{{ product.compare_at_price | money }}</s>
+                              {%- else -%}
+                                <span class="lux-prod-price-regular">{{ product.price | money }}</span>
+                              {%- endif -%}
+                            </div>
+
+                            <button class="lux-prod-buy-btn" data-variant-id="{{ product.first_available_variant.id }}" {% if is_sold_out %}disabled{% endif %}>
+                              <span>{% if is_sold_out %}Sold Out{% else %}Buy Now{% endif %}</span>
+                              {% unless is_sold_out %}
+                                <span class="lux-buy-arrow-icon">
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                                    <polyline points="7 7 17 7 17 17"></polyline>
+                                  </svg>
+                                </span>
+                              {% endunless %}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    {%- endunless -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+              </div>
+            </div>
+            
+            {%- if section.settings.show_nav -%}
+              <div class="lux-slider-controls">
+                <button class="lux-slider-arrow swiper-button-prev-{{ section.id }}" aria-label="Previous page">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <button class="lux-slider-arrow swiper-button-next-{{ section.id }}" aria-label="Next page">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <!-- Grid Mode -->
+          <div class="lux-products-grid">
+            {%- liquid
+              assign rendered_product_ids = ""
+            -%}
+            {%- for collection in selected_collections -%}
+              {%- for product in collection.products limit: section.settings.products_limit -%}
+                {%- capture product_id_str -%},{{ product.id }},{%- endcapture -%}
+                {%- unless rendered_product_ids contains product_id_str -%}
+                  {%- capture rendered_product_ids -%}{{ rendered_product_ids }}{{ product.id }},{%- endcapture -%}
+                  
+                  {%- assign product_collection_handles = "" -%}
+                  {%- for prod_col in product.collections -%}
+                    {%- for sel_col in selected_collections -%}
+                      {%- if prod_col.handle == sel_col.handle -%}
+                        {%- assign product_collection_handles = product_collection_handles | append: sel_col.handle | append: "," -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endfor -%}
+
+                  <div class="lux-prod-item" 
+                       data-collections="{{ product_collection_handles | downcase }}"
+                       data-tags="{{ product.tags | join: ',' | downcase }}"
+                       data-type="{{ product.type | downcase }}"
+                       data-vendor="{{ product.vendor | downcase }}">
+                    {%- liquid
+                      assign is_hot = false
+                      assign card_bg = section.settings.card_bg_default | default: '#ececec'
+                      assign subtitle = ''
+                      assign is_sold_out = true
+                      if product.available
+                        assign is_sold_out = false
+                      endif
+                      
+                      for tag in product.tags
+                        assign downcase_tag = tag | downcase
+                        if downcase_tag == 'hot'
+                          assign is_hot = true
+                        endif
+                        if downcase_tag contains 'color:'
+                          assign card_bg = tag | split: 'color:' | last
+                        endif
+                        if downcase_tag contains 'subtitle:'
+                          assign subtitle = tag | split: 'subtitle:' | last
+                        endif
+                      endfor
+
+                      if subtitle == blank
+                        if section.settings.subtitle_source == 'type'
+                          assign subtitle = product.type
+                        elsif section.settings.subtitle_source == 'vendor'
+                          assign subtitle = product.vendor
+                        endif
+                      endif
+                    -%}
+
+                    <div class="lux-prod-card" style="background: {{ card_bg }};" onclick="if(!event.target.closest('button')) window.location.href='{{ product.url }}'">
+                      <a href="{{ product.url }}" class="lux-prod-card-link" aria-label="{{ product.title }}"></a>
+                      <!-- Image -->
+                      <div class="lux-prod-img-container">
+                        {%- if product.featured_image != blank -%}
+                          {{ product.featured_image | image_url: width: 600 | image_tag: class: 'lux-prod-img', loading: 'lazy', alt: product.title }}
+                        {%- else -%}
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg lux-prod-img' }}
+                        {%- endif -%}
+                      </div>
+
+                      <!-- HOT Badge -->
+                      {%- if is_hot -%}
+                        <div class="lux-prod-badge-hot">HOT</div>
+                      {%- endif -%}
+
+                      <!-- Wishlist Heart Button (Top Right over Photo Media) -->
+                      <button class="lux-prod-wishlist-btn" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}" aria-label="Add to wishlist">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="heart-icon">
+                          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                        </svg>
+                      </button>
+
+                      <!-- Cart Shopping Bag AJAX Add Button (Floating top right under wishlist) -->
+                      <button class="lux-prod-cart-btn" data-variant-id="{{ product.first_available_variant.id }}" aria-label="Add to cart" {% if is_sold_out %}disabled{% endif %}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                      </button>
+
+                      <!-- Bottom overlay panel (Integrated Commerce Panel) -->
+                      <div class="lux-prod-overlay">
+                        <div class="lux-prod-meta">
+                          <h3 class="lux-prod-title">{{ product.title }}</h3>
+                          <p class="lux-prod-subtitle">{{ subtitle | default: 'Signature Scent' }}</p>
+                        </div>
+
+                        <div class="lux-prod-price-pill">
+                          {%- if product.compare_at_price > product.price -%}
+                            <span class="lux-prod-price-sale">{{ product.price | money }}</span>
+                            <s class="lux-prod-price-compare">{{ product.compare_at_price | money }}</s>
+                          {%- else -%}
+                            <span class="lux-prod-price-regular">{{ product.price | money }}</span>
+                          {%- endif -%}
+                        </div>
+
+                        <button class="lux-prod-buy-btn" data-variant-id="{{ product.first_available_variant.id }}" {% if is_sold_out %}disabled{% endif %}>
+                          <span>{% if is_sold_out %}Sold Out{% else %}Buy Now{% endif %}</span>
+                          {% unless is_sold_out %}
+                            <span class="lux-buy-arrow-icon">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                              </svg>
+                            </span>
+                          {% endunless %}
+                        </button>
+                      </div>
+                    </div>
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endfor -%}
           </div>
         {%- endif -%}
       </div>
+    {%- else -%}
+      {%- if request.design_mode -%}
+        <div class="lux-featured-container" style="text-align: center; padding: 40px 0;">
+          <p style="font-family: var(--font-body--family), sans-serif; font-size: 16px; color: {{ section.settings.desc_color | default: '#666666' }};">Please select one or more collections in the section settings to display products.</p>
+        </div>
+      {%- endif -%}
     {%- endif -%}
 
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('[data-section-id="{{ section.id }}"] .lux-tab-btn');
-    const panels = document.querySelectorAll('[data-section-id="{{ section.id }}"] .lux-tab-panel');
-    
+  function initFeaturedProducts_{{ section.id | replace: "-", "_" }}() {
+    const sectionContainer = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!sectionContainer) return;
+
+    const tabs = sectionContainer.querySelectorAll('.lux-filter-tab');
+    const items = sectionContainer.querySelectorAll('.lux-prod-item');
+    let swiperInstance = null;
+
+    function initSwiper() {
+      if (typeof Swiper !== 'undefined') {
+        const swiperEl = sectionContainer.querySelector('.lux-swiper-{{ section.id }}');
+        if (swiperEl) {
+          if (swiperEl.swiper) {
+            swiperEl.swiper.destroy(true, true);
+          }
+          swiperInstance = new Swiper(swiperEl, {
+            slidesPerView: 1,
+            spaceBetween: 12,
+            loop: false,
+            observer: true,
+            observeParents: true,
+            navigation: {
+              nextEl: '.swiper-button-next-{{ section.id }}',
+              prevEl: '.swiper-button-prev-{{ section.id }}',
+            },
+            simulateTouch: {{ section.settings.enable_drag }},
+            grabCursor: {{ section.settings.enable_drag }},
+            autoplay: {% if section.settings.autoplay %} { delay: {{ section.settings.autoplay_speed }} * 1000 } {% else %} false {% endif %},
+            breakpoints: {
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 12
+              },
+              360: {
+                slidesPerView: 2,
+                spaceBetween: 12
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 20
+              },
+              992: {
+                slidesPerView: 3,
+                spaceBetween: {{ section.settings.card_spacing }}
+              },
+              1200: {
+                slidesPerView: {{ section.settings.columns_desktop }},
+                spaceBetween: {{ section.settings.card_spacing }}
+              }
+            }
+          });
+        }
+      } else {
+        setTimeout(initSwiper, 50);
+      }
+    }
+
+    // Initialize Swiper if layout is slider
+    {%- if section.settings.display_mode == 'slider' -%}
+      initSwiper();
+    {%- endif -%}
+
+    // Tab Filtering Logic
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        // Remove active class from all tabs & panels
         tabs.forEach(t => t.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
-        
-        // Add active class to clicked tab and its panel
         tab.classList.add('active');
-        const targetId = tab.dataset.tab;
-        const targetPanel = document.getElementById(targetId);
-        if (targetPanel) {
-          targetPanel.classList.add('active');
+
+        const filterCollection = tab.dataset.filterCollection;
+
+        items.forEach(item => {
+          let isMatch = false;
+          if (filterCollection === 'all') {
+            isMatch = true;
+          } else {
+            const collections = item.dataset.collections ? item.dataset.collections.split(',').filter(Boolean) : [];
+            isMatch = collections.includes(filterCollection);
+          }
+
+          if (isMatch) {
+            item.style.display = '';
+            item.classList.remove('swiper-slide-hidden');
+          } else {
+            item.style.display = 'none';
+            item.classList.add('swiper-slide-hidden');
+          }
+        });
+
+        // If Swiper, update layouts
+        if (swiperInstance) {
+          swiperInstance.update();
+          swiperInstance.slideTo(0);
         }
       });
     });
-  });
+
+    // Helper functions for Toast Notification
+    function showToast(message, type = 'success', data = {}) {
+      let container = document.querySelector('.lux-toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'lux-toast-container';
+        document.body.appendChild(container);
+      }
+
+      const toast = document.createElement('div');
+      toast.className = `lux-toast lux-toast--${type}`;
+      
+      let html = '';
+      if (data.image) {
+        html += `<img src="${data.image}" class="lux-toast-img" alt="${data.title || ''}">`;
+      }
+      
+      html += `<div class="lux-toast-content">`;
+      html += `<p class="lux-toast-title">${message}</p>`;
+      if (data.subtitle) {
+        html += `<p class="lux-toast-msg">${data.subtitle}</p>`;
+      }
+      html += `</div>`;
+      
+      if (data.buttonText && data.buttonLink) {
+        html += `<a href="${data.buttonLink}" class="lux-toast-btn">${data.buttonText}</a>`;
+      }
+      
+      toast.innerHTML = html;
+      container.appendChild(toast);
+      
+      // Trigger animation
+      setTimeout(() => toast.classList.add('show'), 50);
+
+      // Auto remove
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Helper functions for Cart Count updates
+    function updateCartCount() {
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          document.querySelectorAll('.lux-cart-count').forEach(el => {
+            el.textContent = cart.item_count;
+          });
+          
+          // Re-evaluate cart states on product cards
+          updateCartStates(cart);
+        })
+        .catch(err => console.error(err));
+    }
+
+    function updateCartStates(cart) {
+      const variantIdsInCart = cart.items.map(item => item.variant_id.toString());
+      
+      sectionContainer.querySelectorAll('.lux-prod-cart-btn').forEach(btn => {
+        const id = btn.dataset.variantId;
+        if (variantIdsInCart.includes(id)) {
+          btn.classList.add('in-cart');
+          btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path><polyline points="8.5 13.5 11 16 15.5 10.5" stroke="#2e7d32" stroke-width="2.2"></polyline></svg>`;
+        } else {
+          btn.classList.remove('in-cart');
+          btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+        }
+      });
+    }
+
+    // Query cart on load
+    fetch('/cart.js')
+      .then(res => res.json())
+      .then(cart => updateCartStates(cart))
+      .catch(err => console.error(err));
+
+    // Handle AJAX Add/Remove Cart Toggle
+    sectionContainer.querySelectorAll('.lux-prod-cart-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const variantId = btn.dataset.variantId;
+        if (!variantId) return;
+
+        // Micro-animations: Pop bounce & Sparkle burst
+        btn.classList.add('animating');
+        setTimeout(() => btn.classList.remove('animating'), 600);
+
+        const cardObj = btn.closest('.lux-prod-card') || btn.parentElement;
+        if (cardObj) {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'lux-cart-sparkle';
+          cardObj.appendChild(sparkle);
+          setTimeout(() => sparkle.remove(), 650);
+        }
+
+        btn.style.opacity = '0.6';
+        btn.disabled = true;
+
+        // Get product details for toast
+        const cardItem = btn.closest('.lux-prod-item');
+        const productTitle = cardItem ? cardItem.querySelector('.lux-prod-title').textContent : 'Product';
+        const productImage = cardItem ? cardItem.querySelector('.lux-prod-img').src : '';
+
+        const isInCart = btn.classList.contains('in-cart');
+
+        if (isInCart) {
+          // Remove from cart
+          const cartPromise = fetch('/cart/change.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: variantId.toString(), quantity: 0 })
+          })
+          .then(res => res.json())
+          .then(cart => {
+            btn.style.opacity = '';
+            btn.disabled = false;
+            
+            updateCartCount();
+            
+            showToast('✓ Product removed from cart', 'info', {
+              image: productImage,
+              title: productTitle,
+              subtitle: 'Removed'
+            });
+
+            return { detail: { cart: cart } };
+          })
+          .catch(err => {
+            console.error(err);
+            btn.style.opacity = '';
+            btn.disabled = false;
+            throw err;
+          });
+
+          // Dispatch standard cart event for updating drawer
+          const event = new CustomEvent('shopify:cart:lines-update', { bubbles: true });
+          event.action = 'remove';
+          event.promise = cartPromise;
+          document.dispatchEvent(event);
+
+        } else {
+          // Add to cart
+          const cartPromise = fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+          })
+          .then(res => res.json())
+          .then(data => {
+            btn.style.opacity = '';
+            btn.disabled = false;
+            
+            updateCartCount();
+            
+            showToast('🎉 Product added to your cart!', 'success', {
+              image: productImage,
+              title: productTitle,
+              subtitle: 'Quantity: 1',
+              buttonText: 'View Cart',
+              buttonLink: '/cart'
+            });
+
+            return fetch('/cart.js').then(res => res.json()).then(cart => {
+              return { detail: { cart: cart } };
+            });
+          })
+          .catch(err => {
+            console.error(err);
+            btn.style.opacity = '';
+            btn.disabled = false;
+            throw err;
+          });
+
+          // Dispatch standard cart event for updating drawer
+          const event = new CustomEvent('shopify:cart:lines-update', { bubbles: true });
+          event.action = 'add';
+          event.promise = cartPromise;
+          document.dispatchEvent(event);
+        }
+      });
+    });
+
+    // Handle Buy Now checkout redirects
+    sectionContainer.querySelectorAll('.lux-prod-buy-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent card navigation
+        const variantId = btn.dataset.variantId;
+        if (!variantId) return;
+
+        btn.style.opacity = '0.6';
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+        })
+        .then(() => {
+          window.location.href = '/checkout';
+        })
+        .catch(err => {
+          console.error(err);
+          btn.style.opacity = '';
+        });
+      });
+    });
+
+    // Wishlist Logic using LocalStorage
+    const customerId = "{% if customer %}{{ customer.id }}{% endif %}";
+    const wishlistKey = customerId ? 'lux-wishlist-' + customerId : 'lux-wishlist';
+    const wishlist = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+    
+    sectionContainer.querySelectorAll('.lux-prod-wishlist-btn').forEach(btn => {
+      const id = btn.dataset.productId;
+      const handle = btn.dataset.productHandle;
+      
+      const isWishlisted = wishlist.some(item => {
+        const itemHandle = typeof item === 'string' ? item : item.handle;
+        return itemHandle === handle;
+      });
+      
+      if (isWishlisted) {
+        btn.classList.add('active');
+        const heart = btn.querySelector('.heart-icon');
+        if (heart) heart.setAttribute('fill', '#ff8c42');
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        let currentList = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+        const exists = currentList.some(item => {
+          const itemHandle = typeof item === 'string' ? item : item.handle;
+          return itemHandle === handle;
+        });
+        
+        const cardItem = btn.closest('.lux-prod-item');
+        const productTitle = cardItem ? cardItem.querySelector('.lux-prod-title').textContent : 'Product';
+        
+        if (exists) {
+          currentList = currentList.filter(item => {
+            const itemHandle = typeof item === 'string' ? item : item.handle;
+            return itemHandle !== handle;
+          });
+          btn.classList.remove('active');
+          const heart = btn.querySelector('.heart-icon');
+          if (heart) heart.setAttribute('fill', 'none');
+          
+          showToast('Removed from Wishlist', 'info', { subtitle: productTitle });
+        } else {
+          currentList.push({ id: id, handle: handle });
+          btn.classList.add('active');
+          const heart = btn.querySelector('.heart-icon');
+          if (heart) heart.setAttribute('fill', '#ff8c42');
+          
+          showToast('❤ Added to Wishlist', 'success', { subtitle: productTitle });
+        }
+        localStorage.setItem(wishlistKey, JSON.stringify(currentList));
+        document.dispatchEvent(new CustomEvent('lux:wishlist:update', { bubbles: true }));
+      });
+    });
+  }
+
+  // Expose function globally for the section load listener
+  window.initFeaturedProducts_{{ section.id | replace: "-", "_" }} = initFeaturedProducts_{{ section.id | replace: "-", "_" }};
+
+  // Run immediately for instant Theme Editor reload support
+  initFeaturedProducts_{{ section.id | replace: "-", "_" }}();
+
+  if (!window.featuredProductsListenersBound) {
+    window.featuredProductsListenersBound = true;
+    document.addEventListener('shopify:section:load', function(e) {
+      const initFnName = 'initFeaturedProducts_' + e.detail.sectionId.replace(/-/g, '_');
+      if (typeof window[initFnName] === 'function') {
+        window[initFnName]();
+      }
+    });
+  }
 </script>
 
 {% schema %}
 {
-  "name": "Featured Products Tabs",
+  "name": "Featured Products",
   "settings": [
     {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subtitle",
-      "default": "Our Collection"
+      "type": "header",
+      "content": "Section Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1200,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Width",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Section Header Settings"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Discover Our Signature Collection"
+      "default": "INDULGE IN EXQUISITE FRAGRANCES"
+    },
+    {
+      "type": "text",
+      "id": "highlight_word",
+      "label": "Highlight Word",
+      "default": "FRAGRANCES"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight Color",
+      "default": "#e89241"
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Description",
-      "default": "A selection of premium fragrances crafted with natural essences, offering a unique and long-lasting scent journey."
+      "default": "Discover our signature scents crafted with elegance, sophistication, and timeless allure."
     },
     {
       "type": "range",
-      "id": "products_limit",
-      "min": 2,
-      "max": 12,
+      "id": "heading_size_desktop",
+      "min": 24,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "heading_size_tablet",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Tablet)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#111111"
+    },
+    {
+      "type": "text",
+      "id": "heading_letter_spacing",
+      "label": "Letter Spacing (em)",
+      "default": "-0.01"
+    },
+    {
+      "type": "select",
+      "id": "heading_line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "1.0", "label": "1.0" },
+        { "value": "1.15", "label": "1.15" },
+        { "value": "1.25", "label": "1.25" }
+      ],
+      "default": "1.15"
+    },
+    {
+      "type": "range",
+      "id": "desc_font_size",
+      "min": 12,
+      "max": 24,
       "step": 1,
-      "label": "Products limit",
-      "default": 8
+      "unit": "px",
+      "label": "Description Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Color",
+      "default": "#666666"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Filter Tabs Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filters",
+      "label": "Enable Filter Tabs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "filter_all_label",
+      "label": "Filter 'All' Label",
+      "default": "All"
+    },
+    {
+      "type": "color",
+      "id": "filter_active_color",
+      "label": "Active Tab Background Color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "filter_border_color",
+      "label": "Tab Border/Text Color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "filter_hover_bg",
+      "label": "Tab Hover Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "range",
+      "id": "filter_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Font Size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "filter_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Tab Border Radius",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Shop Now Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_now",
+      "label": "Show Shop Now Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shop_now_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "shop_now_link",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "shop_now_bg",
+      "label": "Button Background",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "shop_now_text",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "shop_now_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Radius",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display Mode",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider" }
+      ],
+      "default": "grid"
     },
     {
       "type": "range",
@@ -296,79 +1619,136 @@
       "min": 2,
       "max": 5,
       "step": 1,
-      "label": "Products per row (Desktop)",
+      "label": "Columns (Desktop)",
       "default": 4
     },
     {
+      "type": "range",
+      "id": "card_spacing",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Spacing",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Radius",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "card_bg_default",
+      "label": "Card Default Background",
+      "default": "#ececec"
+    },
+    {
+      "type": "header",
+      "content": "Product Source"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Select Collections"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "label": "Products Limit",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "subtitle_source",
+      "label": "Subtitle Source",
+      "options": [
+        { "value": "tags", "label": "Tags starting with subtitle:" },
+        { "value": "type", "label": "Product Type" },
+        { "value": "vendor", "label": "Product Vendor" }
+      ],
+      "default": "tags"
+    },
+    {
+      "type": "header",
+      "content": "Red HOT Badge Settings"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#e60023"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "badge_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge Border Radius",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Slider Physics"
+    },
+    {
       "type": "checkbox",
-      "id": "show_view_all",
-      "label": "Show View All Button",
+      "id": "show_nav",
+      "label": "Show Navigation Arrows",
       "default": true
     },
     {
-      "type": "header",
-      "content": "Tab 1 Settings"
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": false
     },
     {
-      "type": "text",
-      "id": "tab_title_1",
-      "label": "Tab Title",
-      "default": "Latest Items"
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay Duration (seconds)",
+      "default": 5
     },
     {
-      "type": "collection",
-      "id": "collection_1",
-      "label": "Collection"
-    },
-    {
-      "type": "header",
-      "content": "Tab 2 Settings"
-    },
-    {
-      "type": "text",
-      "id": "tab_title_2",
-      "label": "Tab Title",
-      "default": "Best Sellers"
-    },
-    {
-      "type": "collection",
-      "id": "collection_2",
-      "label": "Collection"
-    },
-    {
-      "type": "header",
-      "content": "Tab 3 Settings"
-    },
-    {
-      "type": "text",
-      "id": "tab_title_3",
-      "label": "Tab Title",
-      "default": "Popular"
-    },
-    {
-      "type": "collection",
-      "id": "collection_3",
-      "label": "Collection"
-    },
-    {
-      "type": "header",
-      "content": "Tab 4 Settings"
-    },
-    {
-      "type": "text",
-      "id": "tab_title_4",
-      "label": "Tab Title",
-      "default": "New Arrival"
-    },
-    {
-      "type": "collection",
-      "id": "collection_4",
-      "label": "Collection"
+      "type": "checkbox",
+      "id": "enable_drag",
+      "label": "Enable Mouse Drag/Swipe",
+      "default": true
     }
   ],
   "presets": [
     {
-      "name": "Featured Products Tabs"
+      "name": "Featured Products Redesign"
     }
   ]
 }

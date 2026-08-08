@@ -1,0 +1,1100 @@
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+%}
+
+{% style %}
+  .lux-pdp-section {
+    background-color: {{ section.settings.bg_color | default: "#FAF6EE" }};
+    color: #111111;
+    padding-top: {{ section.settings.padding_top | default: 40 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .lux-pdp-container {
+    max-width: {{ section.settings.container_width | default: 1320 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* Breadcrumb Navigation */
+  .lux-pdp-breadcrumb {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 13px;
+    color: #666666;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lux-pdp-breadcrumb a {
+    color: #666666;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lux-pdp-breadcrumb a:hover {
+    color: #111111;
+  }
+
+  .lux-pdp-breadcrumb span {
+    color: #999999;
+  }
+
+  /* Main 2-Column Desktop Grid */
+  .lux-pdp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* Left Sticky Media Column */
+  .lux-pdp-media-column {
+    position: sticky;
+    top: calc(var(--header-height, 100px) + -70px);
+    align-self: start;
+    z-index: 10;
+  }
+
+  /* Right Details Column */
+  .lux-pdp-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 1023px) {
+    .lux-pdp-media-column {
+      position: relative;
+      top: 0;
+    }
+  }
+
+  /* Tax Label */
+  .lux-pdp-tax-label {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 12px;
+    color: #777777;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Product Title */
+  .lux-pdp-title {
+    font-family: var(--font-heading--family), serif;
+    font-size: clamp(1.5rem, 5.5vw, 2.8rem);
+    font-weight: 700;
+    color: #111111;
+    line-height: 1.15;
+    margin: 0 0 16px 0;
+  }
+
+  /* Price Area */
+  .lux-pdp-price-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .lux-pdp-compare-price {
+    font-size: 20px;
+    color: #888888;
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+
+  .lux-pdp-current-price {
+    font-size: 26px;
+    font-weight: 700;
+    color: #E07A5F; /* Orange/Gold accent */
+  }
+
+  /* Rating & Review Meta Bar */
+  .lux-pdp-rating-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .lux-pdp-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #F59E0B;
+  }
+
+  .lux-pdp-rating-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111111;
+  }
+
+  .lux-pdp-meta-divider {
+    width: 1px;
+    height: 18px;
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  /* Product Information Box */
+  .lux-pdp-info-block {
+    margin-bottom: 24px;
+  }
+
+  .lux-pdp-info-title {
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 8px 0;
+  }
+
+  .lux-pdp-info-body {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #444444;
+    margin: 0;
+  }
+
+  /* Quantity & Action Buttons Area */
+  .lux-pdp-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 28px 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  /* Quantity Selector */
+  .lux-pdp-qty-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #EFEAE2;
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  .lux-pdp-qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background-color: #E5DFC9;
+    color: #111111;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .lux-pdp-qty-btn.dark {
+    background-color: #111111;
+    color: #FFFFFF;
+  }
+
+  .lux-pdp-qty-btn:hover {
+    transform: scale(1.08);
+  }
+
+  .lux-pdp-qty-val {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111111;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  /* Buttons */
+  .lux-pdp-add-btn {
+    flex: 1;
+    min-width: 150px;
+    height: 52px;
+    border-radius: 999px;
+    border: 1px solid #111111;
+    background-color: transparent;
+    color: #111111;
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  }
+
+  .lux-pdp-add-btn:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .lux-pdp-add-btn:active {
+    transform: scale(0.97);
+  }
+
+  .lux-pdp-add-btn.in-cart {
+    background-color: #111111;
+    border-color: #111111;
+    color: #FFFFFF;
+    animation: luxPulse 0.4s ease;
+  }
+
+  .lux-pdp-add-btn.added-success {
+    background-color: #2D6A4F;
+    border-color: #2D6A4F;
+    color: #FFFFFF;
+    animation: luxBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes luxPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes luxBounce {
+    0% { transform: scale(0.95); }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes luxSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .lux-pdp-buy-now-btn {
+    flex: 1;
+    min-width: 150px;
+    height: 52px;
+    border-radius: 999px;
+    border: none;
+    background-color: #111111;
+    color: #FFFFFF;
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .lux-pdp-buy-now-btn:hover {
+    background-color: #333333;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 1023px) {
+    .lux-pdp-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .lux-pdp-section {
+      padding-top: 16px;
+      padding-bottom: 80px; /* Space for sticky ATC bar */
+    }
+    
+    .lux-pdp-container {
+      padding: 0 16px;
+    }
+
+    .lux-pdp-grid {
+      gap: 24px;
+    }
+
+    .lux-pdp-breadcrumb {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: block;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .lux-pdp-title {
+      margin-bottom: 12px;
+    }
+
+    .lux-pdp-current-price {
+      font-size: 22px;
+    }
+
+    .lux-pdp-compare-price {
+      font-size: 17px;
+    }
+
+    .lux-pdp-price-box {
+      margin-bottom: 16px;
+    }
+
+    .lux-pdp-rating-meta {
+      margin-bottom: 16px;
+      padding: 12px 0;
+    }
+
+    .lux-pdp-actions-row {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .lux-pdp-qty-selector {
+      flex: 0 0 auto;
+      height: 50px;
+      box-sizing: border-box;
+      align-self: center;
+    }
+
+    .lux-pdp-add-btn {
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+      height: 50px;
+    }
+
+    .lux-pdp-buy-now-btn {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 50px;
+    }
+  }
+
+  /* Sticky Bottom ATC Bar (Mobile Only) */
+  .lux-pdp-sticky-atc {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    padding: 10px 16px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .lux-pdp-sticky-atc.visible {
+    transform: translateY(0);
+  }
+
+  .lux-pdp-sticky-atc-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lux-pdp-sticky-atc-title {
+    font-family: var(--font-heading--family), serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .lux-pdp-sticky-atc-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #E07A5F;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .lux-pdp-sticky-atc-btn {
+    flex-shrink: 0;
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 999px;
+    border: none;
+    background-color: #111111;
+    color: #FFFFFF;
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .lux-pdp-sticky-atc-btn:hover {
+    background-color: #333333;
+  }
+
+  .lux-pdp-sticky-atc-btn:active {
+    transform: scale(0.97);
+  }
+
+  .lux-pdp-sticky-atc-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (min-width: 768px) {
+    .lux-pdp-sticky-atc {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .lux-pdp-sticky-atc {
+      display: flex;
+    }
+
+    .lux-toast-container {
+      bottom: 72px;
+    }
+  }
+
+  /* Toast Notification Styling */
+  .lux-toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  .lux-toast {
+    background-color: #111111;
+    color: #ffffff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto;
+    max-width: 380px;
+  }
+
+  .lux-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .lux-toast-content {
+    flex: 1;
+  }
+
+  .lux-toast-title {
+    font-weight: 600;
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  .lux-toast-msg {
+    font-size: 12px;
+    color: #cccccc;
+    margin: 2px 0 0 0;
+  }
+
+  .lux-toast-btn {
+    background-color: #ffffff;
+    color: #111111;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+
+  .lux-toast-btn:hover {
+    background-color: #e0e0e0;
+  }
+{% endstyle %}
+
+<section class="lux-pdp-section" role="region" aria-label="Product Information">
+  <div class="lux-pdp-container">
+    
+    <!-- Breadcrumb Header -->
+    <nav class="lux-pdp-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Shop</a>
+      <span>&gt;</span>
+      <a href="/collections/all">{{ product.type | default: "Men's Luxury Perfume" }}</a>
+      <span>&gt;</span>
+      <span style="color: #111111; font-weight: 500;">{{ product.title }}</span>
+    </nav>
+
+    <!-- Main Product 2-Column Grid -->
+    <div class="lux-pdp-grid">
+      
+      <!-- LEFT COLUMN: Product Media & Wishlist -->
+      <div class="lux-pdp-media-column">
+        {% render 'product-media-custom', product: product, current_variant: current_variant %}
+      </div>
+
+      <!-- RIGHT COLUMN: Product Details & Purchase Form -->
+      <div class="lux-pdp-details">
+        
+        <!-- Tax / MRP Label -->
+        <span class="lux-pdp-tax-label">MRP inclusive of all taxes</span>
+
+        <!-- Product Title -->
+        <h1 class="lux-pdp-title">{{ product.title }}</h1>
+
+        <!-- Price Area -->
+        <div class="lux-pdp-price-box">
+          <span id="pdp-compare-price" class="lux-pdp-compare-price" {% unless current_variant.compare_at_price > current_variant.price %}style="display: none;"{% endunless %}>
+            {{ current_variant.compare_at_price | money }}
+          </span>
+          <span id="pdp-current-price" class="lux-pdp-current-price">
+            {{ current_variant.price | money }}
+          </span>
+        </div>
+
+        <!-- Rating & Reviews Bar -->
+        <div class="lux-pdp-rating-meta">
+          <div class="lux-pdp-stars">
+            {% for i in (1..5) %}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            {% endfor %}
+          </div>
+          <span class="lux-pdp-rating-text">4.0 (1015 reviews)</span>
+        </div>
+
+        <!-- Dynamic Product Variant Selector -->
+        {% render 'product-variant-picker-custom', product: product, current_variant: current_variant %}
+
+        <!-- Product Information Paragraph -->
+        <div class="lux-pdp-info-block">
+          <h3 class="lux-pdp-info-title">Product information</h3>
+          <p class="lux-pdp-info-body">
+            {{ product.description | strip_html | truncatewords: 45 | default: "A captivating blend of velvety rose, jasmine, and warm vanilla, wrapped in the richness of sandalwood and musk. This long-lasting fragrance exudes elegance, making it perfect for both day and night." }}
+          </p>
+        </div>
+
+        <!-- Benefits 3-Column Feature Row -->
+        {% render 'product-benefits-custom', section: section %}
+
+        <!-- Quantity & Modified Action Buttons -->
+        <form method="post" action="/cart/add" id="pdp-add-to-cart-form">
+          <input type="hidden" name="id" id="pdp-selected-variant-id" value="{{ current_variant.id }}">
+          <input type="hidden" name="quantity" id="pdp-form-quantity" value="1">
+
+          <div class="lux-pdp-actions-row">
+            <!-- Quantity Control -->
+            <div class="lux-pdp-qty-selector" aria-label="Quantity selector">
+              <button type="button" class="lux-pdp-qty-btn" id="pdp-qty-minus" aria-label="Decrease quantity">−</button>
+              <span class="lux-pdp-qty-val" id="pdp-qty-val">1</span>
+              <button type="button" class="lux-pdp-qty-btn dark" id="pdp-qty-plus" aria-label="Increase quantity">+</button>
+            </div>
+
+            <!-- LEFT BUTTON: Add to Cart (AJAX) -->
+            <button type="button" class="lux-pdp-add-btn" id="pdp-add-to-cart-btn" {% unless current_variant.available %}disabled{% endunless %}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>{% if current_variant.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+            </button>
+
+            <!-- RIGHT BUTTON: Buy Now (Direct Checkout) -->
+            <button type="button" class="lux-pdp-buy-now-btn" id="pdp-buy-now-btn" {% unless current_variant.available %}disabled{% endunless %}>
+              <span>Buy Now</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </button>
+          </div>
+        </form>
+
+        <!-- Product Details / Reviews / Q&A Tabs -->
+        {% render 'product-tabs-custom', product: product, current_variant: current_variant %}
+
+      </div>
+
+    </div>
+
+    <!-- Related Products Recommendation Section -->
+    {% render 'related-products-custom', product: product, section: section %}
+
+  </div>
+</section>
+
+<!-- Sticky Bottom ATC Bar (Mobile) -->
+<div class="lux-pdp-sticky-atc" id="pdp-sticky-atc" aria-label="Quick add to cart">
+  <div class="lux-pdp-sticky-atc-info">
+    <p class="lux-pdp-sticky-atc-title">{{ product.title }}</p>
+    <p class="lux-pdp-sticky-atc-price" id="pdp-sticky-price">{{ current_variant.price | money }}</p>
+  </div>
+  <button type="button" class="lux-pdp-sticky-atc-btn" id="pdp-sticky-atc-btn" {% unless current_variant.available %}disabled{% endunless %}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <span id="pdp-sticky-atc-text">{% if current_variant.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+  </button>
+</div>
+
+<script>
+  window.showToast = window.showToast || function(message, type = 'success', data = {}) {
+    let container = document.querySelector('.lux-toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'lux-toast-container';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `lux-toast lux-toast--${type}`;
+    
+    let html = '';
+    if (data.image) {
+      html += `<img src="${data.image}" class="lux-toast-img" alt="${data.title || ''}" style="width:36px; height:36px; object-fit:cover; border-radius:6px;">`;
+    }
+    
+    html += `<div class="lux-toast-content">`;
+    html += `<p class="lux-toast-title">${message}</p>`;
+    if (data.subtitle) {
+      html += `<p class="lux-toast-msg">${data.subtitle}</p>`;
+    }
+    html += `</div>`;
+    
+    if (data.buttonText && data.buttonLink) {
+      html += `<a href="${data.buttonLink}" class="lux-toast-btn">${data.buttonText}</a>`;
+    }
+    
+    toast.innerHTML = html;
+    container.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 50);
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  };
+
+  (function() {
+    function initPDPController() {
+      // Quantity selector handlers
+      let qty = 1;
+      const qtyMinus = document.getElementById('pdp-qty-minus');
+      const qtyPlus = document.getElementById('pdp-qty-plus');
+      const qtyVal = document.getElementById('pdp-qty-val');
+      const hiddenQty = document.getElementById('pdp-form-quantity');
+
+      if (qtyMinus && qtyPlus && qtyVal) {
+        qtyMinus.addEventListener('click', () => {
+          if (qty > 1) {
+            qty--;
+            qtyVal.textContent = qty;
+            if (hiddenQty) hiddenQty.value = qty;
+          }
+        });
+
+        qtyPlus.addEventListener('click', () => {
+          qty++;
+          qtyVal.textContent = qty;
+          if (hiddenQty) hiddenQty.value = qty;
+        });
+      }
+
+      // Add to Cart AJAX handler
+      const addToCartBtn = document.getElementById('pdp-add-to-cart-btn');
+      const hiddenVariantInput = document.getElementById('pdp-selected-variant-id');
+
+      if (addToCartBtn) {
+        const defaultContent = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span>{% if current_variant.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+        `;
+
+        function checkPDPInCartState(targetVariantId) {
+          const vInput = document.getElementById('pdp-selected-variant-id');
+          const vId = targetVariantId || (vInput ? vInput.value : "{{ current_variant.id }}");
+          
+          if (addToCartBtn && addToCartBtn.disabled && !addToCartBtn.classList.contains('in-cart') && !addToCartBtn.classList.contains('added-success')) {
+            // Button is disabled (Sold Out / Unavailable), do not overwrite state
+            return;
+          }
+
+          fetch('/cart.js')
+            .then(res => res.json())
+            .then(cart => {
+              const inCart = cart.items && cart.items.some(item => String(item.variant_id) === String(vId));
+              if (inCart && addToCartBtn && !addToCartBtn.disabled) {
+                addToCartBtn.classList.add('in-cart');
+                addToCartBtn.innerHTML = `
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>In Cart</span>
+                `;
+              } else if (addToCartBtn && !addToCartBtn.disabled && !addToCartBtn.classList.contains('added-success')) {
+                addToCartBtn.classList.remove('in-cart');
+                addToCartBtn.innerHTML = defaultContent;
+              }
+            })
+            .catch(err => console.error(err));
+        }
+
+        window.checkPDPInCartState = checkPDPInCartState;
+        checkPDPInCartState();
+        document.addEventListener('shopify:cart:lines-update', checkPDPInCartState);
+
+        addToCartBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const vInput = document.getElementById('pdp-selected-variant-id');
+          const variantId = vInput ? vInput.value : "{{ current_variant.id }}";
+          
+          if (addToCartBtn.classList.contains('in-cart')) {
+            // REMOVE FROM CART ACTION
+            addToCartBtn.style.opacity = '0.7';
+            addToCartBtn.disabled = true;
+            addToCartBtn.innerHTML = `
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon" style="animation: luxSpin 0.8s linear infinite;">
+                <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke-linecap="round"/>
+              </svg>
+              <span>Removing...</span>
+            `;
+
+            fetch('/cart/change.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: String(variantId), quantity: 0 })
+            })
+            .then(res => res.json())
+            .then(cart => {
+              addToCartBtn.style.opacity = '';
+              addToCartBtn.disabled = false;
+              addToCartBtn.classList.remove('in-cart', 'added-success');
+              addToCartBtn.innerHTML = defaultContent;
+
+              // Reset quantity input to 1
+              qty = 1;
+              if (qtyVal) qtyVal.textContent = 1;
+              if (hiddenQty) hiddenQty.value = 1;
+
+              // Trigger event for cart count badge & drawer update
+              document.dispatchEvent(new CustomEvent('shopify:cart:lines-update', { bubbles: true }));
+
+              // Show toast notification
+              if (typeof showToast === 'function') {
+                showToast('ℹ️ Product removed from your cart', 'info', {
+                  title: "{{ product.title | escape }}",
+                  subtitle: 'Item removed',
+                  image: "{{ product.featured_image | image_url: width: 100 }}"
+                });
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              addToCartBtn.style.opacity = '';
+              addToCartBtn.disabled = false;
+              addToCartBtn.classList.add('in-cart');
+              addToCartBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>In Cart</span>
+              `;
+            });
+          } else {
+            // ADD TO CART ACTION
+            addToCartBtn.style.opacity = '0.7';
+            addToCartBtn.disabled = true;
+            addToCartBtn.innerHTML = `
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon" style="animation: luxSpin 0.8s linear infinite;">
+                <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke-linecap="round"/>
+              </svg>
+              <span>Adding...</span>
+            `;
+
+            fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: [{ id: variantId, quantity: qty }] })
+            })
+            .then(res => res.json())
+            .then(data => {
+              addToCartBtn.style.opacity = '';
+              addToCartBtn.disabled = false;
+              addToCartBtn.classList.remove('in-cart');
+              addToCartBtn.classList.add('added-success');
+
+              addToCartBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Added to Cart</span>
+              `;
+
+              // Trigger custom event for cart drawer & header badge update
+              document.dispatchEvent(new CustomEvent('shopify:cart:lines-update', { bubbles: true }));
+
+              // Show toast notification
+              if (typeof showToast === 'function') {
+                showToast('🎉 Product added to your cart!', 'success', {
+                  title: "{{ product.title | escape }}",
+                  subtitle: `Quantity: ${qty}`,
+                  buttonText: 'View Cart',
+                  buttonLink: '/cart',
+                  image: "{{ product.featured_image | image_url: width: 100 }}"
+                });
+              }
+
+              setTimeout(() => {
+                addToCartBtn.classList.remove('added-success');
+                addToCartBtn.classList.add('in-cart');
+                addToCartBtn.innerHTML = `
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>In Cart</span>
+                `;
+              }, 1500);
+            })
+            .catch(err => {
+              console.error(err);
+              addToCartBtn.style.opacity = '';
+              addToCartBtn.disabled = false;
+              addToCartBtn.innerHTML = defaultContent;
+            });
+          }
+        });
+      }
+
+      // Buy Now handler (Direct Checkout)
+      const buyNowBtn = document.getElementById('pdp-buy-now-btn');
+      if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const vInput = document.getElementById('pdp-selected-variant-id');
+          const variantId = vInput ? vInput.value : "{{ current_variant.id }}";
+
+          buyNowBtn.style.opacity = '0.6';
+          buyNowBtn.disabled = true;
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{ id: variantId, quantity: qty }] })
+          })
+          .then(() => {
+            window.location.href = '/checkout';
+          })
+          .catch(err => {
+            console.error(err);
+            buyNowBtn.style.opacity = '';
+            buyNowBtn.disabled = false;
+          });
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPDPController);
+    } else {
+      initPDPController();
+    }
+  })();
+</script>
+
+<!-- Sticky ATC Bar Controller -->
+<script>
+  (function() {
+    function initStickyATCBar() {
+      const actionsRow = document.querySelector('.lux-pdp-actions-row');
+      const stickyBar = document.getElementById('pdp-sticky-atc');
+      const stickyBtn = document.getElementById('pdp-sticky-atc-btn');
+      const stickyBtnText = document.getElementById('pdp-sticky-atc-text');
+      const stickyPrice = document.getElementById('pdp-sticky-price');
+      const mainAddBtn = document.getElementById('pdp-add-to-cart-btn');
+
+      if (!actionsRow || !stickyBar || !stickyBtn || window.innerWidth >= 768) return;
+
+      // IntersectionObserver: show sticky bar when main buttons scroll out of view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            stickyBar.classList.add('visible');
+          } else {
+            stickyBar.classList.remove('visible');
+          }
+        });
+      }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+
+      observer.observe(actionsRow);
+
+      // Sync sticky bar button state with main ATC button
+      function syncStickyState() {
+        if (!mainAddBtn || !stickyBtn) return;
+        stickyBtn.disabled = mainAddBtn.disabled;
+        
+        if (mainAddBtn.classList.contains('in-cart')) {
+          stickyBtnText.textContent = 'In Cart';
+          stickyBtn.style.backgroundColor = '#111111';
+        } else if (mainAddBtn.classList.contains('added-success')) {
+          stickyBtnText.textContent = 'Added!';
+          stickyBtn.style.backgroundColor = '#2D6A4F';
+        } else if (mainAddBtn.disabled) {
+          stickyBtnText.textContent = 'Sold Out';
+          stickyBtn.style.backgroundColor = '#111111';
+        } else {
+          stickyBtnText.textContent = 'Add to Cart';
+          stickyBtn.style.backgroundColor = '#111111';
+        }
+      }
+
+      // Observe main ATC button attribute/class changes
+      const atcObserver = new MutationObserver(syncStickyState);
+      if (mainAddBtn) {
+        atcObserver.observe(mainAddBtn, { attributes: true, childList: true, subtree: true });
+      }
+
+      // Sync price updates
+      const priceEl = document.getElementById('pdp-current-price');
+      if (priceEl && stickyPrice) {
+        const priceObserver = new MutationObserver(() => {
+          stickyPrice.textContent = priceEl.textContent;
+        });
+        priceObserver.observe(priceEl, { childList: true, characterData: true, subtree: true });
+      }
+
+      // Click handler: trigger main ATC button click
+      stickyBtn.addEventListener('click', () => {
+        if (mainAddBtn && !mainAddBtn.disabled) {
+          mainAddBtn.click();
+        }
+      });
+
+      // Initial sync
+      syncStickyState();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initStickyATCBar);
+    } else {
+      initStickyATCBar();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Product Details",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF6EE"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Max Container Width (px)",
+      "min": 1100,
+      "max": 1600,
+      "step": 20,
+      "default": 1320
+    },
+    {
+      "type": "header",
+      "content": "Product Benefits Text"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1_text",
+      "label": "Benefit 1 Text",
+      "default": "Long-Lasting Formula"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_text",
+      "label": "Benefit 2 Text",
+      "default": "Premium Ingredients"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_text",
+      "label": "Benefit 3 Text",
+      "default": "Perfect for Daily & Special Occasions"
+    },
+    {
+      "type": "header",
+      "content": "Related Products Settings"
+    },
+    {
+      "type": "text",
+      "id": "related_subtitle",
+      "label": "Related Products Subtitle",
+      "default": "Discover the most-loved fragrances, handpicked by our customers"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Controls"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding (px)",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Product Details"
+    }
+  ]
+}
+{% endschema %}

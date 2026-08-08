@@ -60,9 +60,38 @@
   @media (max-width: 768px) {
     .lux-features {
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      gap: 16px;
+    }
+
+    .lux-feature-item {
+      padding: 28px 18px;
     }
   }
+
+  @media (max-width: 640px) {
+    .lux-features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .lux-feature-item {
+      padding: 24px 14px;
+    }
+
+    .lux-feature-item__icon-container svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .lux-feature-item__title {
+      font-size: 12px;
+    }
+
+    .lux-feature-item__desc {
+      font-size: 11px;
+    }
+  }
+
   @media (max-width: 480px) {
     .lux-features {
       grid-template-columns: 1fr;

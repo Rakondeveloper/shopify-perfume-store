@@ -110,6 +110,42 @@
       display: none; /* Hide floating bottle on tablet/mobile for spacing */
     }
   }
+
+  @media (max-width: 767px) {
+    .lux-newsletter__heading {
+      font-size: calc(1.4rem + 0.8vw);
+    }
+
+    .lux-newsletter__desc {
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .lux-newsletter__content-container {
+      padding: 28px 16px;
+    }
+
+    /* Stack email input and button vertically on very small phones */
+    .lux-newsletter .luxury-input-group {
+      flex-direction: column;
+      border-radius: 16px;
+      padding: 6px;
+      gap: 6px;
+    }
+
+    .lux-newsletter .luxury-input {
+      padding: 10px 16px;
+      text-align: center;
+    }
+
+    .lux-newsletter .luxury-input-submit {
+      width: 100%;
+      border-radius: 12px;
+      padding: 12px;
+    }
+  }
 {% endstyle %}
 
 <section class="lux-newsletter-section luxury-section">

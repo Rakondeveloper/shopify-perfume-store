@@ -112,6 +112,13 @@
     .lux-hero__content-container {
       padding: 40px 24px;
     }
+
+    /* Center-align hero content on mobile regardless of desktop setting */
+    .lux-hero__content {
+      text-align: center;
+      align-items: center;
+      margin: 0 auto;
+    }
     
     .lux-hero__heading {
       font-size: calc(1.8rem + 1.5vw);
@@ -123,8 +130,21 @@
     }
     
     .lux-hero__btn {
-      padding: 12px 32px;
+      padding: 14px 32px;
       font-size: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .lux-hero__heading {
+      font-size: calc(1.5rem + 1vw);
+    }
+
+    .lux-hero__subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
     }
   }
 {% endstyle %}

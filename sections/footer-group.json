@@ -2,55 +2,29 @@
   "type": "footer",
   "name": "Footer Group",
   "sections": {
-    "luxury_footer": {
-      "type": "luxury-footer",
-      "blocks": {
-        "brand_info": {
-          "type": "brand_info",
-          "settings": {
-            "logo_text": "Fragranço",
-            "text": "Discover curated luxury fragrances designed to enhance elegance and self-expression.",
-            "show_socials": true
-          }
-        },
-        "shop_links": {
-          "type": "link_list",
-          "settings": {
-            "title": "Shop",
-            "menu": "main-menu"
-          }
-        },
-        "support_links": {
-          "type": "link_list",
-          "settings": {
-            "title": "Support",
-            "menu": "footer"
-          }
-        },
-        "newsletter_signup": {
-          "type": "newsletter",
-          "settings": {
-            "title": "Newsletter",
-            "text": "Sign up to receive updates and exclusive deals.",
-            "placeholder": "Enter your email..."
-          }
-        }
-      },
-      "block_order": [
-        "brand_info",
-        "shop_links",
-        "support_links",
-        "newsletter_signup"
-      ],
+    "footer_fragranco": {
+      "type": "footer-fragranco",
       "settings": {
-        "copyright_text": "Fragranço Luxury Store",
+        "brand_text": "Fragranco",
+        "show_starburst": true,
+        "title_shop": "SHOP",
+        "title_customer_care": "CUSTOMER CARE",
+        "title_information": "INFORMATION",
+        "show_country_selector": true,
         "show_payment_icons": true,
-        "show_giant_logo": true,
-        "giant_logo_text": "Fragranço"
+        "show_social_icons": true,
+        "bg_color": "#000000",
+        "heading_color": "#F5F5F5",
+        "link_color": "#A3A3A3",
+        "link_hover_color": "#FFFFFF",
+        "brand_text_color": "#F5F5F5",
+        "container_width": 1400,
+        "padding_top": 80,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
-    "luxury_footer"
+    "footer_fragranco"
   ]
 }

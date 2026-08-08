@@ -1,0 +1,130 @@
+{% style %}
+  .lux-pdp-benefits-container {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 18px 0;
+    margin: 24px 0;
+    width: 100%;
+  }
+
+  .lux-pdp-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    gap: 0;
+  }
+
+  .lux-pdp-benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    position: relative;
+  }
+
+  .lux-pdp-benefit-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+
+  .lux-pdp-benefit-item:first-child {
+    padding-left: 0;
+  }
+
+  .lux-pdp-benefit-item:last-child {
+    padding-right: 0;
+  }
+
+  .lux-pdp-benefit-icon {
+    width: 28px;
+    height: 28px;
+    color: #111111;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lux-pdp-benefit-text {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #111111;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  @media (max-width: 767px) {
+    .lux-pdp-benefits-container {
+      margin: 16px 0;
+      padding: 14px 0;
+    }
+
+    .lux-pdp-benefits-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .lux-pdp-benefit-item {
+      padding: 10px 0;
+    }
+
+    .lux-pdp-benefit-item:not(:last-child) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .lux-pdp-benefit-item:not(:last-child)::after {
+      display: none;
+    }
+
+    .lux-pdp-benefit-text {
+      font-size: 12.5px;
+    }
+
+    .lux-pdp-benefit-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+{% endstyle %}
+
+<div class="lux-pdp-benefits-container">
+  <div class="lux-pdp-benefits-grid">
+    <!-- Benefit 1: Long-Lasting Formula -->
+    <div class="lux-pdp-benefit-item">
+      <div class="lux-pdp-benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v3M9 5h6M9 8h6M7 11h10l1 10H6L7 11z"></path>
+          <path d="M19 4l1.5-1.5M4.5 2.5L6 4"></path>
+        </svg>
+      </div>
+      <p class="lux-pdp-benefit-text">{{ section.settings.benefit_1_text | default: "Long-Lasting Formula" }}</p>
+    </div>
+
+    <!-- Benefit 2: Premium Ingredients -->
+    <div class="lux-pdp-benefit-item">
+      <div class="lux-pdp-benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11a8 8 0 0016 0H4z"></path>
+          <line x1="12" y1="3" x2="16" y2="10"></line>
+        </svg>
+      </div>
+      <p class="lux-pdp-benefit-text">{{ section.settings.benefit_2_text | default: "Premium Ingredients" }}</p>
+    </div>
+
+    <!-- Benefit 3: Perfect for Daily & Special Occasions -->
+    <div class="lux-pdp-benefit-item">
+      <div class="lux-pdp-benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L15 8.5L22 9.5L17 14.5L18.5 21.5L12 18L5.5 21.5L7 14.5L2 9.5L9 8.5L12 2Z"></path>
+        </svg>
+      </div>
+      <p class="lux-pdp-benefit-text">{{ section.settings.benefit_3_text | default: "Perfect for Daily & Special Occasions" }}</p>
+    </div>
+  </div>
+</div>

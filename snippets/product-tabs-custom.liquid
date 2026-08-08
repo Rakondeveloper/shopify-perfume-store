@@ -1,0 +1,411 @@
+{% style %}
+  .lux-pdp-tabs-wrapper {
+    margin-top: 36px;
+    width: 100%;
+  }
+
+  .lux-pdp-tab-headers {
+    display: flex;
+    gap: 36px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0;
+    margin-bottom: 28px;
+  }
+
+  .lux-pdp-tab-btn {
+    background: none;
+    border: none;
+    padding: 0 0 12px 0;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #666666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .lux-pdp-tab-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .lux-pdp-tab-btn:hover {
+    color: #111111;
+  }
+
+  .lux-pdp-tab-btn.active {
+    color: #111111;
+  }
+
+  .lux-pdp-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #E07A5F;
+  }
+
+  .lux-pdp-tab-pane {
+    display: none;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333333;
+  }
+
+  .lux-pdp-tab-pane.active {
+    display: block;
+  }
+
+  .lux-pdp-notes-block {
+    margin-bottom: 24px;
+  }
+
+  .lux-pdp-notes-title {
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 12px 0;
+  }
+
+  .lux-pdp-notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .lux-pdp-notes-list li {
+    position: relative;
+    padding-left: 16px;
+  }
+
+  .lux-pdp-notes-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #111111;
+  }
+  .lux-pdp-notes-body {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444444;
+  }
+
+  .lux-pdp-notes-block p {
+    margin: 0 0 8px 0;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444444;
+  }
+
+  .lux-pdp-notes-block ul,
+  .lux-pdp-notes-block .metafield-rich-text_container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .lux-pdp-notes-block ul li,
+  .lux-pdp-notes-block .metafield-rich-text_container ul li {
+    position: relative;
+    padding-left: 16px;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333333;
+  }
+
+  .lux-pdp-notes-block ul li::before,
+  .lux-pdp-notes-block .metafield-rich-text_container ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #111111;
+  }
+
+  .lux-pdp-description-content {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #444444;
+  }
+
+  .lux-pdp-description-content p {
+    margin-bottom: 12px;
+  }
+
+  .lux-pdp-custom-details {
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 767px) {
+    .lux-pdp-tabs-wrapper {
+      margin-top: 24px;
+    }
+
+    .lux-pdp-tab-headers {
+      gap: 16px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .lux-pdp-tab-headers::-webkit-scrollbar {
+      display: none;
+    }
+
+    .lux-pdp-tab-btn {
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .lux-pdp-tab-btn svg {
+      display: none;
+    }
+
+    .lux-pdp-tab-pane {
+      font-size: 13px;
+    }
+
+    .lux-pdp-notes-title {
+      font-size: 15px;
+    }
+
+    .lux-pdp-notes-list li,
+    .lux-pdp-notes-body,
+    .lux-pdp-notes-block p,
+    .lux-pdp-notes-block ul li {
+      font-size: 13px;
+    }
+  }
+{% endstyle %}
+
+<div class="lux-pdp-tabs-wrapper">
+  <!-- Tab Buttons -->
+  <div class="lux-pdp-tab-headers" role="tablist">
+    <button type="button" class="lux-pdp-tab-btn active" role="tab" aria-selected="true" aria-controls="pdp-tab-details" id="pdp-tab-btn-details">
+      <!-- File/Details SVG -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <line x1="10" y1="9" x2="8" y2="9"></line>
+      </svg>
+      <span>Details</span>
+    </button>
+
+    <button type="button" class="lux-pdp-tab-btn" role="tab" aria-selected="false" aria-controls="pdp-tab-reviews" id="pdp-tab-btn-reviews">
+      <!-- Star/Reviews SVG -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+      <span>Reviews</span>
+    </button>
+
+    <button type="button" class="lux-pdp-tab-btn" role="tab" aria-selected="false" aria-controls="pdp-tab-qna" id="pdp-tab-btn-qna">
+      <!-- Help/Q&A SVG -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <span>Q&A</span>
+    </button>
+  </div>
+
+  <!-- Tab Content Panes -->
+  
+  <!-- Tab 1: Details -->
+  <div id="pdp-tab-details" class="lux-pdp-tab-pane active" role="tabpanel" aria-labelledby="pdp-tab-btn-details">
+    
+    {% comment %} 1. Product Specifications (Rich Text Metafield or Category Metafields) {% endcomment %}
+    {% assign specs_mf = product.metafields.custom.product_specifications | default: product.metafields.custom.product_specification | default: product.metafields.custom.specifications | default: product.metafields.custom.specification %}
+    
+    {% if specs_mf != blank %}
+      <div class="lux-pdp-notes-block">
+        <h4 class="lux-pdp-notes-title">Product Specifications</h4>
+        {% if specs_mf.type == 'rich_text_field' %}
+          {{ specs_mf | metafield_tag }}
+        {% else %}
+          <div class="lux-pdp-notes-body">{{ specs_mf }}</div>
+        {% endif %}
+      </div>
+    {% else %}
+      {% comment %} Check Shopify Category Metafields {% endcomment %}
+      {% assign has_category_metafields = false %}
+      {% for metafield_entry in product.metafields.shopify %}
+        {% if metafield_entry.last.value != blank %}
+          {% assign has_category_metafields = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      {% if has_category_metafields %}
+        <div class="lux-pdp-notes-block">
+          <h4 class="lux-pdp-notes-title">Product Specifications</h4>
+          <ul class="lux-pdp-notes-list">
+            {% for metafield_entry in product.metafields.shopify %}
+              {% assign field_key = metafield_entry.first %}
+              {% assign field_val = metafield_entry.last %}
+              {% if field_val.value != blank %}
+                <li><strong>{{ field_key | replace: '_', ' ' | replace: '-', ' ' | capitalize }}:</strong> 
+                  {% if field_val.type contains 'list.metaobject' %}
+                    {% for item in field_val.value %}
+                      {{ item.label | default: item.name }}{% unless forloop.last %}, {% endunless %}
+                    {% endfor %}
+                  {% elsif field_val.type contains 'metaobject' %}
+                    {{ field_val.value.label | default: field_val.value.name }}
+                  {% else %}
+                    {{ field_val | metafield_text }}
+                  {% endif %}
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% comment %} 2. Fragrance Notes (Rich Text Metafield or Individual Notes) {% endcomment %}
+    {% assign fragrance_notes_mf = product.metafields.custom.fragrance_notes | default: product.metafields.custom.fragrance_note %}
+    {% assign top_notes = product.metafields.custom.top_notes | default: product.metafields.custom.top_note %}
+    {% assign heart_notes = product.metafields.custom.heart_notes | default: product.metafields.custom.heart_note | default: product.metafields.custom.middle_notes %}
+    {% assign base_notes = product.metafields.custom.base_notes | default: product.metafields.custom.base_note %}
+
+    {% if fragrance_notes_mf != blank or top_notes != blank or heart_notes != blank or base_notes != blank %}
+      <div class="lux-pdp-notes-block">
+        <h4 class="lux-pdp-notes-title">Fragrance Notes</h4>
+        {% if fragrance_notes_mf != blank %}
+          {% if fragrance_notes_mf.type == 'rich_text_field' %}
+            {{ fragrance_notes_mf | metafield_tag }}
+          {% else %}
+            <div class="lux-pdp-notes-body">{{ fragrance_notes_mf }}</div>
+          {% endif %}
+        {% else %}
+          <ul class="lux-pdp-notes-list">
+            {% if top_notes != blank %}
+              <li><strong>Top Notes:</strong> {{ top_notes }}</li>
+            {% endif %}
+            {% if heart_notes != blank %}
+              <li><strong>Heart Notes:</strong> {{ heart_notes }}</li>
+            {% endif %}
+            {% if base_notes != blank %}
+              <li><strong>Base Notes:</strong> {{ base_notes }}</li>
+            {% endif %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %} 3. Dynamic Why You'll Love It {% endcomment %}
+    {% assign why_love_it = product.metafields.custom.why_youll_love_it | default: product.metafields.custom.why_love_it %}
+    {% if why_love_it != blank %}
+      <div class="lux-pdp-notes-block">
+        <h4 class="lux-pdp-notes-title">Why You'll Love It</h4>
+        {% if why_love_it.type == 'list.single_line_text_field' or why_love_it.type == 'list.mixed_integer_text' %}
+          <ul class="lux-pdp-notes-list">
+            {% for item in why_love_it.value %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% elsif why_love_it.type == 'rich_text_field' %}
+          {{ why_love_it | metafield_tag }}
+        {% else %}
+          <div class="lux-pdp-notes-body">{{ why_love_it }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %} 4. Dynamic How to Use {% endcomment %}
+    {% assign how_to_use = product.metafields.custom.how_to_use | default: product.metafields.custom.usage %}
+    {% if how_to_use != blank %}
+      <div class="lux-pdp-notes-block">
+        <h4 class="lux-pdp-notes-title">How to Use</h4>
+        {% if how_to_use.type == 'list.single_line_text_field' %}
+          <ul class="lux-pdp-notes-list">
+            {% for step in how_to_use.value %}
+              <li>{{ step }}</li>
+            {% endfor %}
+          </ul>
+        {% elsif how_to_use.type == 'rich_text_field' %}
+          {{ how_to_use | metafield_tag }}
+        {% else %}
+          <div class="lux-pdp-notes-body">{{ how_to_use }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %} 5. Dynamic Full Product Description removed as requested {% endcomment %}
+  </div>
+
+  <!-- Tab 2: Reviews -->
+  <div id="pdp-tab-reviews" class="lux-pdp-tab-pane" role="tabpanel" aria-labelledby="pdp-tab-btn-reviews">
+    <div id="shopify-product-reviews" data-id="{{ product.id }}">
+      <p style="color: #666; padding: 20px 0;">Customer reviews and ratings will be rendered here.</p>
+    </div>
+  </div>
+
+  <!-- Tab 3: Q&A -->
+  <div id="pdp-tab-qna" class="lux-pdp-tab-pane" role="tabpanel" aria-labelledby="pdp-tab-btn-qna">
+    <div class="lux-pdp-qna-block">
+      <h4 class="lux-pdp-notes-title">Frequently Asked Questions</h4>
+      <ul class="lux-pdp-notes-list">
+        <li><strong>How long does the fragrance last?</strong> Our formula is crafted with high perfume oil concentration lasting 8-12 hours.</li>
+        <li><strong>Is this unisex?</strong> Yes, the balanced combination of floral and warm woody notes creates an elegant gender-neutral profile.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initPDPTabs() {
+      const tabBtns = document.querySelectorAll('.lux-pdp-tab-btn');
+      const tabPanes = document.querySelectorAll('.lux-pdp-tab-pane');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('aria-controls');
+
+          tabBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+
+          tabPanes.forEach(p => p.classList.remove('active'));
+
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+
+          const activePane = document.getElementById(targetId);
+          if (activePane) activePane.classList.add('active');
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPDPTabs);
+    } else {
+      initPDPTabs();
+    }
+  })();
+</script>

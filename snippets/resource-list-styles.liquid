@@ -25,20 +25,20 @@
   .resource-list--grid {
     display: grid;
     gap: var(--resource-list-row-gap) var(--resource-list-column-gap);
-    grid-template-columns: var(--resource-list-columns-mobile);
+    grid-template-columns: var(--resource-list-columns-mobile, repeat(2, 1fr));
 
     @media screen and (min-width: 750px) {
-      grid-template-columns: var(--resource-list-columns);
+      grid-template-columns: var(--resource-list-columns, repeat(4, 1fr));
     }
 
     @container resource-list (max-width: 449px) {
-      grid-template-columns: var(--resource-list-columns-mobile);
+      grid-template-columns: var(--resource-list-columns-mobile, repeat(2, 1fr));
     }
 
     @container resource-list(min-width: 450px) and (max-width: 749px) {
       --resource-list-columns-per-row: 3;
 
-      grid-template-columns: repeat(var(--resource-list-columns-per-row), 1fr);
+      grid-template-columns: repeat(var(--resource-list-columns-per-row, 3), 1fr);
 
       /* Avoid orphan in last row when there are 4, 7, or 10 items */
       &:has(.resource-list__item:first-child:nth-last-child(3n + 1)),
@@ -49,7 +49,9 @@
     }
 
     @container resource-list (min-width: 750px) {
-      grid-template-columns: repeat(var(--resource-list-columns-per-row), 1fr);
+      --resource-list-columns-per-row: 4;
+
+      grid-template-columns: var(--resource-list-columns, repeat(var(--resource-list-columns-per-row, 4), 1fr));
 
       &:has(.resource-list__item:first-child:nth-last-child(n + 9)) {
         --resource-list-columns-per-row: 5;

@@ -117,6 +117,24 @@
       padding: 60px 16px;
       min-height: 400px;
     }
+
+    .lux-promo__content {
+      align-items: center;
+      text-align: center;
+    }
+
+    .lux-promo__heading {
+      text-align: center;
+    }
+
+    .lux-promo__desc {
+      text-align: center;
+    }
+
+    .lux-promo__btn {
+      width: 100%;
+      justify-content: center;
+    }
     
     .lux-countdown {
       gap: 10px;
@@ -133,6 +151,30 @@
     
     .lux-countdown__label {
       font-size: 8px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .lux-promo__heading {
+      font-size: calc(1.3rem + 1vw);
+    }
+
+    .lux-promo__desc {
+      font-size: 13px;
+    }
+
+    /* Hide large decorative text on very small screens */
+    .lux-promo__bg-text {
+      display: none;
+    }
+
+    .lux-countdown__item {
+      min-width: 52px;
+      padding: 8px 4px;
+    }
+
+    .lux-countdown__num {
+      font-size: 18px;
     }
   }
 {% endstyle %}

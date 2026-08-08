@@ -1,0 +1,658 @@
+{% style %}
+  .lux-pdp-media-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .lux-pdp-media-main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.88;
+    border-radius: 36px;
+    overflow: hidden;
+    background-color: #EFEAE2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    cursor: zoom-in;
+  }
+
+  .lux-pdp-media-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.35 ease, transform 0.35s ease;
+  }
+
+  /* Top-Left Discount Badge */
+  .lux-pdp-discount-badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background-color: #E03E2D;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+    z-index: 4;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 12px rgba(224, 62, 45, 0.25);
+  }
+
+  /* Top-Right Wishlist Heart Button */
+  .lux-pdp-wishlist-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    z-index: 4;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .lux-pdp-wishlist-btn:hover {
+    transform: scale(1.06);
+  }
+
+  .lux-pdp-wishlist-btn.active {
+    color: #E07A5F;
+  }
+
+  /* Expand Zoom Icon Button */
+  .lux-pdp-expand-btn {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 4;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .lux-pdp-expand-btn:hover {
+    transform: scale(1.08);
+    background-color: #ffffff;
+  }
+
+  /* Slider Navigation Arrows */
+  .lux-pdp-slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 4;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  .lux-pdp-media-main:hover .lux-pdp-slider-arrow {
+    opacity: 1;
+  }
+
+  .lux-pdp-slider-arrow--prev {
+    left: 16px;
+  }
+
+  .lux-pdp-slider-arrow--next {
+    right: 16px;
+  }
+
+  .lux-pdp-slider-arrow:hover {
+    background-color: #ffffff;
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  /* Thumbnail gallery strip */
+  .lux-pdp-thumbnails {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .lux-pdp-thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: #EFEAE2;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .lux-pdp-thumb.active {
+    border-color: #111111;
+    transform: scale(1.02);
+  }
+
+  .lux-pdp-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Lightbox Modal */
+  .lux-pdp-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    inset: 0;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(12px);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: luxFadeIn 0.3s ease;
+  }
+
+  .lux-pdp-lightbox.open {
+    display: flex;
+  }
+
+  .lux-pdp-lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10001;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .lux-pdp-lightbox-close:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.08);
+  }
+
+  .lux-pdp-lightbox-img-wrapper {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .lux-pdp-lightbox-img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+  }
+
+  .lux-pdp-lightbox-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10001;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .lux-pdp-lightbox-arrow--prev {
+    left: 32px;
+  }
+
+  .lux-pdp-lightbox-arrow--next {
+    right: 32px;
+  }
+
+  .lux-pdp-lightbox-arrow:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  .lux-pdp-lightbox-counter {
+    position: absolute;
+    bottom: 24px;
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes luxFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Tablet breakpoint */
+  @media (max-width: 1023px) {
+    .lux-pdp-media-main {
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .lux-pdp-media-main {
+      aspect-ratio: 1 / 1;
+      border-radius: 20px;
+    }
+
+    .lux-pdp-slider-arrow {
+      opacity: 1;
+      width: 36px;
+      height: 36px;
+    }
+
+    .lux-pdp-slider-arrow--prev { left: 10px; }
+    .lux-pdp-slider-arrow--next { right: 10px; }
+
+    .lux-pdp-discount-badge {
+      top: 16px;
+      left: 16px;
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
+    .lux-pdp-wishlist-btn {
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .lux-pdp-expand-btn {
+      bottom: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+    }
+
+    .lux-pdp-thumbnails {
+      gap: 10px;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.2) transparent;
+    }
+
+    .lux-pdp-thumbnails::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .lux-pdp-thumbnails::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+
+    .lux-pdp-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+    }
+
+    .lux-pdp-lightbox-arrow {
+      width: 42px;
+      height: 42px;
+    }
+    .lux-pdp-lightbox-arrow--prev { left: 12px; }
+    .lux-pdp-lightbox-arrow--next { right: 12px; }
+  }
+{% endstyle %}
+
+<div class="lux-pdp-media-wrapper" id="pdp-media-wrapper">
+  {% assign featured_media = current_variant.featured_media | default: product.featured_media %}
+  
+  <div class="lux-pdp-media-main" id="pdp-media-main-box">
+    <!-- Discount Badge -->
+    {% if current_variant.compare_at_price > current_variant.price %}
+      {% assign discount_save = current_variant.compare_at_price | minus: current_variant.price %}
+      {% assign discount_pct = discount_save | times: 100 | divided_by: current_variant.compare_at_price %}
+      <span class="lux-pdp-discount-badge" id="pdp-discount-badge">{{ discount_pct }}% Discount</span>
+    {% else %}
+      <span class="lux-pdp-discount-badge" id="pdp-discount-badge" style="display: none;"></span>
+    {% endif %}
+
+    <!-- Wishlist Heart Overlay Button -->
+    <button type="button" class="lux-pdp-wishlist-btn" id="pdp-wishlist-btn" data-product-handle="{{ product.handle }}" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="pdp-heart-icon">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+      </svg>
+    </button>
+
+    <!-- Expand Zoom Button -->
+    <button type="button" class="lux-pdp-expand-btn" id="pdp-expand-btn" aria-label="Full screen image view">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+
+    <!-- Slider Navigation Arrows -->
+    {% if product.media.size > 1 %}
+      <button type="button" class="lux-pdp-slider-arrow lux-pdp-slider-arrow--prev" id="pdp-slider-prev" aria-label="Previous image">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button type="button" class="lux-pdp-slider-arrow lux-pdp-slider-arrow--next" id="pdp-slider-next" aria-label="Next image">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    {% endif %}
+
+    <!-- Main Image -->
+    {% if featured_media %}
+      <img src="{{ featured_media | image_url: width: 1200 }}" id="pdp-main-image" class="lux-pdp-media-img" alt="{{ featured_media.alt | default: product.title | escape }}" loading="eager">
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'lux-pdp-media-img' }}
+    {% endif %}
+  </div>
+
+  <!-- Thumbnails (if > 1) -->
+  {% if product.media.size > 1 %}
+    <div class="lux-pdp-thumbnails">
+      {% for media in product.media %}
+        <div class="lux-pdp-thumb{% if media.id == featured_media.id %} active{% endif %}" data-index="{{ forloop.index0 }}" data-media-src="{{ media | image_url: width: 1200 }}">
+          <img src="{{ media | image_url: width: 200 }}" alt="{{ media.alt | escape }}" loading="lazy">
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<!-- Full Screen Lightbox Modal -->
+<div class="lux-pdp-lightbox" id="pdp-lightbox">
+  <button type="button" class="lux-pdp-lightbox-close" id="pdp-lightbox-close" aria-label="Close full screen view">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <button type="button" class="lux-pdp-lightbox-arrow lux-pdp-lightbox-arrow--prev" id="pdp-lightbox-prev" aria-label="Previous photo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+
+  <div class="lux-pdp-lightbox-img-wrapper">
+    <img src="" id="pdp-lightbox-img" class="lux-pdp-lightbox-img" alt="{{ product.title | escape }}">
+  </div>
+
+  <button type="button" class="lux-pdp-lightbox-arrow lux-pdp-lightbox-arrow--next" id="pdp-lightbox-next" aria-label="Next photo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
+
+  <div class="lux-pdp-lightbox-counter" id="pdp-lightbox-counter">1 / {{ product.media.size | default: 1 }}</div>
+</div>
+
+<script>
+  (function() {
+    function initPDPMediaGallery() {
+      const mediaUrls = [
+        {% for media in product.media %}
+          "{{ media | image_url: width: 1600 }}"{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ];
+      if (!mediaUrls.length) {
+        const mainImg = document.getElementById('pdp-main-image');
+        if (mainImg) mediaUrls.push(mainImg.src);
+      }
+
+      let currentIndex = 0;
+      let autoSlideTimer = null;
+
+      const mainImg = document.getElementById('pdp-main-image');
+      const mainBox = document.getElementById('pdp-media-main-box');
+      const thumbs = document.querySelectorAll('.lux-pdp-thumb');
+      const prevBtn = document.getElementById('pdp-slider-prev');
+      const nextBtn = document.getElementById('pdp-slider-next');
+      const expandBtn = document.getElementById('pdp-expand-btn');
+
+      // Lightbox elements
+      const lightbox = document.getElementById('pdp-lightbox');
+      const lightboxImg = document.getElementById('pdp-lightbox-img');
+      const lightboxClose = document.getElementById('pdp-lightbox-close');
+      const lightboxPrev = document.getElementById('pdp-lightbox-prev');
+      const lightboxNext = document.getElementById('pdp-lightbox-next');
+      const lightboxCounter = document.getElementById('pdp-lightbox-counter');
+
+      function updateSlide(index) {
+        if (!mediaUrls.length) return;
+        currentIndex = (index + mediaUrls.length) % mediaUrls.length;
+
+        if (mainImg) {
+          mainImg.style.opacity = '0.5';
+          setTimeout(() => {
+            mainImg.src = mediaUrls[currentIndex];
+            mainImg.style.opacity = '1';
+          }, 120);
+        }
+
+        thumbs.forEach((t, i) => {
+          if (i === currentIndex) t.classList.add('active');
+          else t.classList.remove('active');
+        });
+
+        if (lightbox && lightbox.classList.contains('open')) {
+          updateLightbox();
+        }
+      }
+
+      function nextSlide() {
+        updateSlide(currentIndex + 1);
+      }
+
+      function prevSlide() {
+        updateSlide(currentIndex - 1);
+      }
+
+      // Auto Sliding Timer
+      function startAutoSlide() {
+        if (mediaUrls.length <= 1) return;
+        stopAutoSlide();
+        autoSlideTimer = setInterval(nextSlide, 4000);
+      }
+
+      function stopAutoSlide() {
+        if (autoSlideTimer) {
+          clearInterval(autoSlideTimer);
+          autoSlideTimer = null;
+        }
+      }
+
+      if (mainBox) {
+        mainBox.addEventListener('mouseenter', stopAutoSlide);
+        mainBox.addEventListener('mouseleave', startAutoSlide);
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+
+      thumbs.forEach((thumb, idx) => {
+        thumb.addEventListener('click', () => updateSlide(idx));
+      });
+
+      // Touch swipe gestures
+      let touchStartX = 0;
+      if (mainBox) {
+        mainBox.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        mainBox.addEventListener('touchend', (e) => {
+          const touchEndX = e.changedTouches[0].screenX;
+          if (touchStartX - touchEndX > 40) nextSlide();
+          else if (touchEndX - touchStartX > 40) prevSlide();
+        }, { passive: true });
+      }
+
+      // Lightbox Modal Logic
+      function openLightbox() {
+        if (!lightbox || !lightboxImg) return;
+        stopAutoSlide();
+        if (lightbox.parentElement !== document.body) {
+          document.body.appendChild(lightbox);
+        }
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        updateLightbox();
+      }
+
+      function closeLightbox() {
+        if (!lightbox) return;
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        startAutoSlide();
+      }
+
+      function updateLightbox() {
+        if (!lightboxImg) return;
+        lightboxImg.src = mediaUrls[currentIndex];
+        if (lightboxCounter) {
+          lightboxCounter.textContent = `${currentIndex + 1} / ${mediaUrls.length}`;
+        }
+      }
+
+      if (mainImg) mainImg.addEventListener('click', openLightbox);
+      if (expandBtn) expandBtn.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(); });
+      if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+      if (lightboxPrev) lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+      if (lightboxNext) lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+
+      if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox || e.target.classList.contains('lux-pdp-lightbox-img-wrapper')) {
+            closeLightbox();
+          }
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (lightbox && lightbox.classList.contains('open')) {
+          if (e.key === 'Escape') closeLightbox();
+          else if (e.key === 'ArrowRight') nextSlide();
+          else if (e.key === 'ArrowLeft') prevSlide();
+        }
+      });
+
+      // Start automatic sliding
+      startAutoSlide();
+
+      // Wishlist toggle integration
+      const wishlistBtn = document.getElementById('pdp-wishlist-btn');
+      if (!wishlistBtn) return;
+
+      const handle = wishlistBtn.dataset.productHandle;
+      const customerId = "{% if customer %}{{ customer.id }}{% endif %}";
+      const key = customerId ? 'lux-wishlist-' + customerId : 'lux-wishlist';
+
+      function syncWishlistState() {
+        const list = JSON.parse(localStorage.getItem(key) || '[]');
+        const inList = list.some(item => (typeof item === 'string' ? item : item.handle) === handle);
+        const heartSvg = wishlistBtn.querySelector('svg');
+        
+        if (inList) {
+          wishlistBtn.classList.add('active');
+          if (heartSvg) {
+            heartSvg.setAttribute('fill', '#E07A5F');
+            heartSvg.setAttribute('stroke', '#E07A5F');
+          }
+        } else {
+          wishlistBtn.classList.remove('active');
+          if (heartSvg) {
+            heartSvg.setAttribute('fill', 'none');
+            heartSvg.setAttribute('stroke', 'currentColor');
+          }
+        }
+      }
+
+      wishlistBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let list = JSON.parse(localStorage.getItem(key) || '[]');
+        const inList = list.some(item => (typeof item === 'string' ? item : item.handle) === handle);
+
+        if (inList) {
+          list = list.filter(item => (typeof item === 'string' ? item : item.handle) !== handle);
+        } else {
+          list.push({ id: wishlistBtn.dataset.productId, handle: handle });
+        }
+
+        localStorage.setItem(key, JSON.stringify(list));
+        syncWishlistState();
+        document.dispatchEvent(new CustomEvent('lux:wishlist:update', { bubbles: true }));
+      });
+
+      syncWishlistState();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPDPMediaGallery);
+    } else {
+      initPDPMediaGallery();
+    }
+  })();
+</script>

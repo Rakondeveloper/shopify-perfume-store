@@ -7,10 +7,11 @@
 :root {
   --font-luxury-heading: var(--font-heading--family), serif;
   --font-luxury-body: var(--font-body--family), sans-serif;
-  
+
   --color-primary: #121212;
   --color-secondary: #5a5a5a;
-  --color-accent: #c49a6c; /* Elegant luxury gold accent */
+  --color-accent: #c49a6c;
+  /* Elegant luxury gold accent */
   --color-bg-light: #ffffff;
   --color-bg-cream: #faf9f6;
   --color-bg-gray: #f5f5f5;
@@ -20,12 +21,12 @@
   --color-text-muted: #757575;
   --color-white: #ffffff;
   --color-black: #000000;
-  
+
   --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-slow: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.03);
   --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.06);
-  
+
   --border-radius-pill: 100px;
   --border-radius-card: 16px;
   --border-radius-section: 24px;
@@ -49,7 +50,10 @@
 }
 
 /* Typography styles */
-.luxury-h1, .luxury-h2, .luxury-h3, .luxury-h4 {
+.luxury-h1,
+.luxury-h2,
+.luxury-h3,
+.luxury-h4 {
   font-family: var(--font-luxury-heading);
   font-weight: 500;
   line-height: 1.2;
@@ -267,10 +271,325 @@
   background-color: var(--color-accent);
 }
 
+/* Clean Luxury Products Grid System */
+.lux-products-grid,
+.lux-related-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 30px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  grid-template-columns: none !important;
+  grid-template-areas: none !important;
+}
+
+.lux-prod-item {
+  flex: 0 0 calc((100% - 90px) / 4) !important;
+  max-width: calc((100% - 90px) / 4) !important;
+  width: calc((100% - 90px) / 4) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+  grid-area: auto !important;
+}
+
 /* Responsive spacing tweaks */
+@media (max-width: 1023px) {
+  .lux-products-grid,
+  .lux-related-grid {
+    gap: 16px !important;
+  }
+
+  .lux-prod-item {
+    flex: 0 0 calc((100% - 16px) / 2) !important;
+    max-width: calc((100% - 16px) / 2) !important;
+    width: calc((100% - 16px) / 2) !important;
+  }
+}
+
 @media (max-width: 768px) {
   .luxury-section {
-    padding: 50px 0;
+    padding: 44px 0;
+  }
+
+  .luxury-container {
+    padding: 0 16px;
+  }
+
+  .lux-card__info {
+    padding: 14px 12px;
+  }
+
+  .lux-card__title {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  /* Make Quick Add button visible by default on mobile/touch screens */
+  .lux-card__quick-add {
+    transform: translateY(0);
+    padding: 10px;
+  }
+
+  .lux-card__quick-add-btn {
+    padding: 8px 12px !important;
+    font-size: 10px !important;
+  }
+
+  /* Shared product card responsive fixes for mobile */
+  .lux-products-grid,
+  .lux-related-grid {
+    gap: 12px !important;
+  }
+
+  .lux-prod-item {
+    flex: 0 0 calc((100% - 12px) / 2) !important;
+    max-width: calc((100% - 12px) / 2) !important;
+    width: calc((100% - 12px) / 2) !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (max-width: 479px) {
+  .lux-products-grid,
+  .lux-related-grid {
+    gap: 10px !important;
+  }
+
+  .lux-prod-item {
+    flex: 0 0 calc((100% - 10px) / 2) !important;
+    max-width: calc((100% - 10px) / 2) !important;
+    width: calc((100% - 10px) / 2) !important;
+  }
+}
+
+  .lux-prod-item {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    margin-bottom: 8px !important;
+  }
+
+  .lux-prod-card {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    aspect-ratio: 0.85 !important;
+    border-radius: 18px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background: #ececec !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .lux-prod-img-container {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+    position: relative !important;
+    background: #ececec !important;
+  }
+
+  .lux-prod-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  .lux-prod-badge-hot {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    font-size: 9.5px !important;
+    padding: 3px 8px !important;
+    z-index: 3 !important;
+    border-radius: 999px !important;
+  }
+
+  .lux-prod-wishlist-btn {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    width: 34px !important;
+    height: 34px !important;
+    background: #ffffff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+    z-index: 3 !important;
+  }
+
+  .lux-prod-wishlist-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  /* Integrated Glass Commerce Info Panel (Extends Downward, Overlaps Photo Bottom by ~24px) */
+  .lux-prod-overlay {
+    position: relative !important;
+    margin-top: -24px !important;
+    z-index: 5 !important;
+    width: calc(100% - 16px) !important;
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    box-sizing: border-box !important;
+    background: rgba(255, 255, 255, 0.28) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-radius: 18px !important;
+    padding: 12px 10px 10px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    flex-direction: column;
+    text-align: center !important;
+    gap: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  .lux-prod-meta {
+    padding: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-align: center !important;
+  }
+
+  .lux-prod-title {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    margin: 0 0 2px 0 !important;
+    line-height: 1.25 !important;
+    font-family: var(--font-heading--family), serif !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    word-break: break-word !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .lux-prod-subtitle {
+    font-size: 9.5px !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Price Pill inside Panel */
+  .lux-prod-price-pill {
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .lux-prod-price-sale {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+
+  .lux-prod-price-compare {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 11px !important;
+    text-decoration: line-through !important;
+  }
+
+  /* Buy Now CTA Button inside Panel */
+  .lux-prod-buy-btn {
+    width: 100% !important;
+    height: 40px !important;
+    background-color: #111111 !important;
+    color: #ffffff !important;
+    border-radius: 999px !important;
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 4px 0 12px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .lux-buy-arrow-icon {
+    width: 24px !important;
+    height: 24px !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Cart Shopping Bag Button (Centered at bottom of Panel) */
+  .lux-prod-cart-btn {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    margin-top: 2px !important;
+    width: 34px !important;
+    height: 34px !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    z-index: 3 !important;
+    flex-shrink: 0 !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  .lux-prod-cart-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Hide old external actions row */
+  .lux-prod-actions {
+    display: none !important;
   }
 }
 
@@ -296,7 +615,8 @@
 .lux-card__media-wrapper {
   position: relative;
   width: 100%;
-  padding-bottom: 120%; /* Aspect ratio 5:6 */
+  padding-bottom: 120%;
+  /* Aspect ratio 5:6 */
   overflow: hidden;
   background-color: var(--color-bg-gray);
 }
@@ -405,7 +725,7 @@
   z-index: 3;
   transform: translateY(100%);
   transition: var(--transition-smooth);
-  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
 }
 
 .lux-card:hover .lux-card__quick-add {
@@ -484,4 +804,3 @@
   text-decoration: line-through;
   color: var(--color-text-muted);
 }
-

@@ -1,0 +1,796 @@
+{% style %}
+  .fragranco-footer {
+    background-color: {{ section.settings.bg_color | default: "#000000" }};
+    color: {{ section.settings.text_color | default: "#F5F5F5" }};
+    padding-top: {{ section.settings.padding_top | default: 80 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
+    font-family: var(--font-body--family), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .fragranco-footer__inner {
+    max-width: {{ section.settings.container_width | default: 1400 }}px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+  }
+
+  /* Upper Navigation Grid */
+  .fragranco-footer__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px 60px;
+    margin-bottom: 90px;
+  }
+
+  .fragranco-footer-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Accordion Header (Desktop: static, Mobile: interactive) */
+  .fragranco-col-heading {
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: {{ section.settings.heading_color | default: "#F5F5F5" }};
+    margin: 0 0 24px 0;
+    padding: 0;
+    background: none;
+    border: none;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    cursor: default;
+  }
+
+  .fragranco-col-heading-chevron {
+    display: none;
+    transition: transform 0.3s ease;
+  }
+
+  /* Link Lists */
+  .fragranco-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .fragranco-menu__link {
+    color: {{ section.settings.link_color | default: "#A3A3A3" }};
+    font-size: 14px;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.25s ease, transform 0.25s ease;
+    display: inline-block;
+  }
+
+  .fragranco-menu__link:hover,
+  .fragranco-menu__link:focus-visible {
+    color: {{ section.settings.link_hover_color | default: "#FFFFFF" }};
+    transform: translateX(3px);
+  }
+
+  /* Column 4 Controls (Currency, Payments, Socials) */
+  .fragranco-controls-col {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* Localization / Currency Form */
+  .fragranco-localization-form {
+    position: relative;
+    display: inline-block;
+  }
+
+  .fragranco-currency-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #F5F5F5;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .fragranco-currency-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .fragranco-flag-icon {
+    width: 20px;
+    height: 14px;
+    border-radius: 2px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .fragranco-currency-label {
+    letter-spacing: 0.05em;
+  }
+
+  /* Native localization dropdown menu */
+  .fragranco-localization-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 8px;
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 160px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    z-index: 10;
+    display: none;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  .fragranco-localization-menu.show {
+    display: block;
+  }
+
+  .fragranco-localization-item {
+    width: 100%;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    color: #A3A3A3;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .fragranco-localization-item:hover,
+  .fragranco-localization-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+  }
+
+  /* Payment Method Badges */
+  .fragranco-payments-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .fragranco-payment-badge {
+    height: 24px;
+    width: 38px;
+    border-radius: 4px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 2px 4px;
+  }
+
+  .fragranco-payment-badge svg {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  /* Social Icons */
+  .fragranco-socials-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .fragranco-social-link {
+    color: {{ section.settings.link_color | default: "#F5F5F5" }};
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .fragranco-social-link:hover {
+    color: #FFFFFF;
+    transform: translateY(-2px);
+  }
+
+  .fragranco-social-link svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  /* Oversized Brand Wordmark */
+  .fragranco-wordmark-container {
+    width: 100%;
+    margin-top: 40px;
+    position: relative;
+    user-select: none;
+  }
+
+  .fragranco-wordmark-flex {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .fragranco-wordmark-title {
+    font-family: var(--font-heading--family), 'Inter', 'Montserrat', -apple-system, sans-serif;
+    font-size: clamp(3.5rem, 14vw, 15.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    color: {{ section.settings.brand_text_color | default: "#F5F5F5" }};
+    margin: 0;
+    padding: 0;
+    text-transform: none;
+    display: inline-flex;
+    align-items: flex-start;
+  }
+
+  .fragranco-wordmark-logo-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Starburst / Sunburst Icon */
+  .fragranco-starburst-icon {
+    display: inline-block;
+    width: clamp(2rem, 8.5vw, 9.5rem);
+    height: clamp(2rem, 8.5vw, 9.5rem);
+    margin-left: -0.08em;
+    margin-top: -0.05em;
+    color: {{ section.settings.brand_text_color | default: "#F5F5F5" }};
+    vertical-align: top;
+    flex-shrink: 0;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 1023px) {
+    .fragranco-footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 50px 40px;
+      margin-bottom: 60px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .fragranco-footer {
+      padding-top: 50px;
+      padding-bottom: 40px;
+    }
+
+    .fragranco-footer__inner {
+      padding: 0 24px;
+    }
+
+    .fragranco-footer__grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 50px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .fragranco-footer-col {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .fragranco-col-heading {
+      padding: 20px 0;
+      margin: 0;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .fragranco-col-heading-chevron {
+      display: block;
+    }
+
+    .fragranco-footer-col.active .fragranco-col-heading-chevron {
+      transform: rotate(180deg);
+    }
+
+    .fragranco-accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fragranco-footer-col.active .fragranco-accordion-body {
+      max-height: 350px;
+    }
+
+    .fragranco-menu {
+      padding-bottom: 20px;
+      gap: 12px;
+    }
+
+    .fragranco-controls-col {
+      padding-top: 30px;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .fragranco-wordmark-container {
+      margin-top: 30px;
+    }
+  }
+
+  /* Keyboard Accessibility */
+  .fragranco-col-heading:focus-visible,
+  .fragranco-currency-btn:focus-visible,
+  .fragranco-social-link:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 4px;
+  }
+{% endstyle %}
+
+<footer class="fragranco-footer" role="contentinfo">
+  <div class="fragranco-footer__inner">
+    
+    <!-- 4-Column Navigation & Controls Grid -->
+    <div class="fragranco-footer__grid">
+      
+      <!-- Column 1: SHOP -->
+      <div class="fragranco-footer-col">
+        <button type="button" class="fragranco-col-heading" aria-expanded="false" aria-controls="fragranco-menu-shop">
+          <span>{{ section.settings.title_shop | default: "SHOP" }}</span>
+          <svg class="fragranco-col-heading-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div id="fragranco-menu-shop" class="fragranco-accordion-body">
+          <ul class="fragranco-menu">
+            {% if section.settings.menu_shop != blank %}
+              {% for link in section.settings.menu_shop.links %}
+                <li><a href="{{ link.url }}" class="fragranco-menu__link">{{ link.title }}</a></li>
+              {% endfor %}
+            {% else %}
+              <li><a href="/collections/all" class="fragranco-menu__link">All Perfumes</a></li>
+              <li><a href="/collections/all" class="fragranco-menu__link">Best Sellers</a></li>
+              <li><a href="/collections/all" class="fragranco-menu__link">New Arrivals</a></li>
+              <li><a href="/collections/all" class="fragranco-menu__link">Gift Sets</a></li>
+              <li><a href="/collections/all" class="fragranco-menu__link">Offers & Discounts</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Column 2: CUSTOMER CARE -->
+      <div class="fragranco-footer-col">
+        <button type="button" class="fragranco-col-heading" aria-expanded="false" aria-controls="fragranco-menu-care">
+          <span>{{ section.settings.title_customer_care | default: "CUSTOMER CARE" }}</span>
+          <svg class="fragranco-col-heading-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div id="fragranco-menu-care" class="fragranco-accordion-body">
+          <ul class="fragranco-menu">
+            {% if section.settings.menu_customer_care != blank %}
+              {% for link in section.settings.menu_customer_care.links %}
+                <li><a href="{{ link.url }}" class="fragranco-menu__link">{{ link.title }}</a></li>
+              {% endfor %}
+            {% else %}
+              <li><a href="/pages/contact" class="fragranco-menu__link">Contact Us</a></li>
+              <li><a href="/pages/faqs" class="fragranco-menu__link">FAQs</a></li>
+              <li><a href="/pages/shipping" class="fragranco-menu__link">Shipping & Delivery</a></li>
+              <li><a href="/pages/returns" class="fragranco-menu__link">Returns & Refunds</a></li>
+              <li><a href="/pages/order-tracking" class="fragranco-menu__link">Order Tracking</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Column 3: INFORMATION -->
+      <div class="fragranco-footer-col">
+        <button type="button" class="fragranco-col-heading" aria-expanded="false" aria-controls="fragranco-menu-info">
+          <span>{{ section.settings.title_information | default: "INFORMATION" }}</span>
+          <svg class="fragranco-col-heading-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div id="fragranco-menu-info" class="fragranco-accordion-body">
+          <ul class="fragranco-menu">
+            {% if section.settings.menu_information != blank %}
+              {% for link in section.settings.menu_information.links %}
+                <li><a href="{{ link.url }}" class="fragranco-menu__link">{{ link.title }}</a></li>
+              {% endfor %}
+            {% else %}
+              <li><a href="/policies/privacy-policy" class="fragranco-menu__link">Privacy Policy</a></li>
+              <li><a href="/policies/terms-of-service" class="fragranco-menu__link">Terms & Conditions</a></li>
+              <li><a href="/policies/refund-policy" class="fragranco-menu__link">Refund Policy</a></li>
+              <li><a href="/pages/disclaimer" class="fragranco-menu__link">Disclaimer</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Column 4: STORE CONTROLS (Currency, Payments, Socials) -->
+      <div class="fragranco-controls-col">
+        
+        <!-- Country / Currency Selector -->
+        {% if section.settings.show_country_selector %}
+          <div class="fragranco-localization-form">
+            {% form 'localization', id: 'FooterFragrancoLocalization' %}
+              <button type="button" class="fragranco-currency-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select Country and Currency">
+                <!-- US Flag SVG Icon -->
+                <svg class="fragranco-flag-icon" viewBox="0 0 640 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="#bd3d44" d="M0 0h640v480H0z"/>
+                  <path stroke="#fff" stroke-width="37" d="M0 55.5h640M0 130h640M0 203h640M0 277h640M0 350h640M0 425h640"/>
+                  <path fill="#192f5d" d="M0 0h256v258H0z"/>
+                  <circle cx="28" cy="26" r="6" fill="#fff"/><circle cx="78" cy="26" r="6" fill="#fff"/><circle cx="128" cy="26" r="6" fill="#fff"/><circle cx="178" cy="26" r="6" fill="#fff"/><circle cx="228" cy="26" r="6" fill="#fff"/>
+                  <circle cx="53" cy="52" r="6" fill="#fff"/><circle cx="103" cy="52" r="6" fill="#fff"/><circle cx="153" cy="52" r="6" fill="#fff"/><circle cx="203" cy="52" r="6" fill="#fff"/>
+                  <circle cx="28" cy="78" r="6" fill="#fff"/><circle cx="78" cy="78" r="6" fill="#fff"/><circle cx="128" cy="78" r="6" fill="#fff"/><circle cx="178" cy="78" r="6" fill="#fff"/><circle cx="228" cy="78" r="6" fill="#fff"/>
+                  <circle cx="53" cy="104" r="6" fill="#fff"/><circle cx="103" cy="104" r="6" fill="#fff"/><circle cx="153" cy="104" r="6" fill="#fff"/><circle cx="203" cy="104" r="6" fill="#fff"/>
+                  <circle cx="28" cy="130" r="6" fill="#fff"/><circle cx="78" cy="130" r="6" fill="#fff"/><circle cx="128" cy="130" r="6" fill="#fff"/><circle cx="178" cy="130" r="6" fill="#fff"/><circle cx="228" cy="130" r="6" fill="#fff"/>
+                  <circle cx="53" cy="156" r="6" fill="#fff"/><circle cx="103" cy="156" r="6" fill="#fff"/><circle cx="153" cy="156" r="6" fill="#fff"/><circle cx="203" cy="156" r="6" fill="#fff"/>
+                  <circle cx="28" cy="182" r="6" fill="#fff"/><circle cx="78" cy="182" r="6" fill="#fff"/><circle cx="128" cy="182" r="6" fill="#fff"/><circle cx="178" cy="182" r="6" fill="#fff"/><circle cx="228" cy="182" r="6" fill="#fff"/>
+                  <circle cx="53" cy="208" r="6" fill="#fff"/><circle cx="103" cy="208" r="6" fill="#fff"/><circle cx="153" cy="208" r="6" fill="#fff"/><circle cx="203" cy="208" r="6" fill="#fff"/>
+                  <circle cx="28" cy="234" r="6" fill="#fff"/><circle cx="78" cy="234" r="6" fill="#fff"/><circle cx="128" cy="234" r="6" fill="#fff"/><circle cx="178" cy="234" r="6" fill="#fff"/><circle cx="228" cy="234" r="6" fill="#fff"/>
+                </svg>
+                <span class="fragranco-currency-label">{{ localization.country.currency.iso_code | default: "USD" }}/{{ localization.country.iso_code | default: "US" }}</span>
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 1L5 5L9 1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <ul class="fragranco-localization-menu" role="list">
+                {% for country in localization.available_countries %}
+                  <li>
+                    <button type="submit" name="country_code" value="{{ country.iso_code }}" class="fragranco-localization-item{% if country.iso_code == localization.country.iso_code %} active{% endif %}">
+                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                    </button>
+                  </li>
+                {% else %}
+                  <li>
+                    <button type="button" class="fragranco-localization-item active">United States (USD $)</button>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endform %}
+          </div>
+        {% endif %}
+
+        <!-- Payment Method Icons -->
+        {% if section.settings.show_payment_icons %}
+          <div class="fragranco-payments-row" aria-label="Supported Payment Methods">
+            {% if shop.enabled_payment_types != empty %}
+              {% for type in shop.enabled_payment_types %}
+                <div class="fragranco-payment-badge">{{ type | payment_type_svg_tag: class: 'payment-icon' }}</div>
+              {% endfor %}
+            {% else %}
+              <!-- Fallback Crisp SVG Payment Badges -->
+              <!-- Amex -->
+              <div class="fragranco-payment-badge" title="American Express">
+                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="24" rx="3" fill="#006FCF"/><path d="M6 14.5l1.2-3h2l.7 3h-1.2l-.2-.8H7.3l-.2.8H6zm1.5-1.6h.8l-.4-1.2-.4 1.2zm4.5 1.6V9.5h2.2l1 2.8 1-2.8H18.5v5h-1.2v-3.5l-1 2.8h-.8l-1-2.8v3.5h-1.2zm8.5 0V9.5h3.5v1h-2.3v1h2.2v1h-2.2v1h2.3v1h-3.5zm4.8 0l1.2-2.5-1.2-2.5h1.4l.6 1.4.6-1.4h1.4l-1.2 2.5 1.2 2.5h-1.4l-.6-1.4-.6 1.4h-1.4z" fill="#FFF"/></svg>
+              </div>
+              <!-- Visa -->
+              <div class="fragranco-payment-badge" title="Visa">
+                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="24" rx="3" fill="#1A1F71"/><path d="M15.2 16.5l1.6-9.8h2.6l-1.6 9.8h-2.6zm8.8-9.6c-.5-.2-1.3-.4-2.3-.4-2.5 0-4.3 1.3-4.3 3.2 0 1.4 1.3 2.2 2.2 2.7.9.5 1.2.8 1.2 1.2 0 .6-.8.9-1.5.9-1 0-1.5-.1-2.3-.5l-.3-.2-.4 2.4c.7.3 1.9.6 3.2.6 3 0 4.9-1.5 4.9-3.7 0-1.2-.7-2.2-2.3-2.9-.9-.5-1.5-.8-1.5-1.2 0-.4.5-.8 1.5-.8.8 0 1.5.2 2 .4l.2.1.4-2.3zm6.6-.2h-2c-.6 0-1.1.2-1.3.8l-3.7 8.9h2.7l.5-1.5h3.3l.3 1.5h2.4l-2.2-9.7zm-2.8 6.2l1.1-3.1.6 3.1h-1.7zM12.5 6.7L9.9 13.3l-.3-1.4c-.5-1.7-2.1-3.6-3.9-4.5l2.5 9.1h2.7l4.1-9.8h-2.5z" fill="#FFF"/><path d="M7.7 6.7H3.6l-.1.3c3.1.8 5.2 2.7 6.1 5L8.7 7.6c-.3-.7-.9-.9-1-0.9z" fill="#F7B600"/></svg>
+              </div>
+              <!-- Mastercard -->
+              <div class="fragranco-payment-badge" title="Mastercard">
+                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="24" rx="3" fill="#252525"/><circle cx="15" cy="12" r="7" fill="#EB001B"/><circle cx="23" cy="12" r="7" fill="#F79E1B"/><path d="M19 6.8a6.9 6.9 0 0 0-2.6 5.2c0 2 0.9 3.9 2.6 5.2a6.9 6.9 0 0 0 2.6-5.2c0-2-.9-3.9-2.6-5.2z" fill="#FF5F00"/></svg>
+              </div>
+              <!-- PayPal -->
+              <div class="fragranco-payment-badge" title="PayPal">
+                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="24" rx="3" fill="#003087"/><path d="M12.5 17h-2.2l1.8-11.2h4.5c2.3 0 3.7 1.1 3.3 3.3-.4 2.5-2.2 3.9-4.5 3.9h-1.6L12.5 17z" fill="#0079C1"/><path d="M14.5 14h-2.1l1.3-8.2h4.5c1.8 0 3.1.9 2.8 2.8-.4 2.5-2.2 3.9-4.5 3.9h-2L14.5 14z" fill="#00457C"/><path d="M16 19h-2.2l1.3-8.2h4.5c2.3 0 3.7 1.1 3.3 3.3-.4 2.5-2.2 3.9-4.5 3.9h-1.6L16 19z" fill="#0079C1"/></svg>
+              </div>
+              <!-- Amazon Pay -->
+              <div class="fragranco-payment-badge" title="Amazon Pay">
+                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="24" rx="3" fill="#F8991D"/><path d="M12.5 14.2c-2.1.2-3.5-.8-3.5-2.3 0-1.8 1.6-2.5 3.5-2.5h1.2v.8c0 1.2-.5 2.1-1.2 2.6v1.4zm1.2-5.8h-1.5c-2.8 0-4.8 1.2-4.8 3.6 0 2.2 1.8 3.5 4.1 3.5 1.6 0 2.8-.7 3.4-1.7v1.4h1.7V8.4h-2.9v0zm9.4 6.7h1.7V11c0-1.8-1.1-2.6-2.7-2.6-1.5 0-2.6.7-3.1 1.7l1.3.8c.4-.6 1-1 1.8-1 .9 0 1.4.4 1.4 1.2v.5c-.6 0-1.4 0-2.3.1-2.1.2-3.4 1.1-3.4 2.6 0 1.5 1.2 2.4 2.7 2.4 1.2 0 2.2-.5 2.7-1.3v1.3zm-1.7-1.4c-.4.5-1.1.8-1.8.8-.8 0-1.3-.4-1.3-1.1 0-.8.7-1.2 1.8-1.3.6 0 1.1 0 1.3.1v1.5z" fill="#111"/></svg>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <!-- Social Media Links -->
+        {% if section.settings.show_social_icons %}
+          <div class="fragranco-socials-row">
+            <!-- Facebook -->
+            {% if settings.social_facebook_link != blank or true %}
+              <a href="{{ settings.social_facebook_link | default: '#' }}" class="fragranco-social-link" aria-label="Facebook" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+              </a>
+            {% endif %}
+
+            <!-- X / Twitter -->
+            {% if settings.social_x_link != blank or settings.social_twitter_link != blank or true %}
+              <a href="{{ settings.social_x_link | default: settings.social_twitter_link | default: '#' }}" class="fragranco-social-link" aria-label="X (Twitter)" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+              </a>
+            {% endif %}
+
+            <!-- Instagram -->
+            {% if settings.social_instagram_link != blank or true %}
+              <a href="{{ settings.social_instagram_link | default: '#' }}" class="fragranco-social-link" aria-label="Instagram" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              </a>
+            {% endif %}
+
+            <!-- Pinterest -->
+            {% if settings.social_pinterest_link != blank or true %}
+              <a href="{{ settings.social_pinterest_link | default: '#' }}" class="fragranco-social-link" aria-label="Pinterest" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.627 0 11.999-5.373 11.999-12S18.644 0 12.017 0z"></path></svg>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+    <!-- Oversized Brand Wordmark -->
+    <div class="fragranco-wordmark-container">
+      <div class="fragranco-wordmark-flex">
+        {% if section.settings.brand_logo != blank %}
+          <img src="{{ section.settings.brand_logo | image_url: width: 1200 }}" alt="{{ shop.name }}" class="fragranco-wordmark-logo-img" loading="lazy">
+        {% else %}
+          <h2 class="fragranco-wordmark-title">
+            <span>{{ section.settings.brand_text | default: "Fragranco" }}</span>
+            {% if section.settings.show_starburst %}
+              <!-- Decorative 7-Ray Starburst Vector Icon -->
+              <svg class="fragranco-starburst-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Center point ray bursts radiating top-right -->
+                <path d="M20 80 L75 25 M75 25 L50 20 M75 25 L80 45" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="20" y1="80" x2="20" y2="40" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <line x1="20" y1="80" x2="55" y2="50" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <line x1="20" y1="80" x2="60" y2="80" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <line x1="20" y1="80" x2="80" y2="10" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <line x1="20" y1="80" x2="40" y2="15" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <line x1="20" y1="80" x2="90" y2="45" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+              </svg>
+            {% endif %}
+          </h2>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  (function() {
+    function initFooterAccordion() {
+      const isMobile = () => window.innerWidth < 768;
+      const columns = document.querySelectorAll('.fragranco-footer-col');
+
+      columns.forEach(col => {
+        const btn = col.querySelector('.fragranco-col-heading');
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+          if (!isMobile()) return;
+          
+          const isActive = col.classList.contains('active');
+          
+          // Collapse all other columns
+          columns.forEach(otherCol => {
+            if (otherCol !== col) {
+              otherCol.classList.remove('active');
+              const otherBtn = otherCol.querySelector('.fragranco-col-heading');
+              if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+            }
+          });
+
+          // Toggle clicked column
+          if (isActive) {
+            col.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          } else {
+            col.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      // Handle Currency Dropdown Toggle
+      const currencyBtn = document.querySelector('.fragranco-currency-btn');
+      const currencyMenu = document.querySelector('.fragranco-localization-menu');
+
+      if (currencyBtn && currencyMenu) {
+        currencyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isExpanded = currencyBtn.getAttribute('aria-expanded') === 'true';
+          currencyBtn.setAttribute('aria-expanded', !isExpanded);
+          currencyMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!currencyBtn.contains(e.target) && !currencyMenu.contains(e.target)) {
+            currencyBtn.setAttribute('aria-expanded', 'false');
+            currencyMenu.classList.remove('show');
+          }
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFooterAccordion);
+    } else {
+      initFooterAccordion();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Fragranco Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Wordmark Settings"
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand Name",
+      "default": "Fragranco"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Custom Brand Logo (Optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_starburst",
+      "label": "Show Starburst Symbol",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation Menus"
+    },
+    {
+      "type": "text",
+      "id": "title_shop",
+      "label": "Column 1 Title",
+      "default": "SHOP"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_shop",
+      "label": "Column 1 Menu"
+    },
+    {
+      "type": "text",
+      "id": "title_customer_care",
+      "label": "Column 2 Title",
+      "default": "CUSTOMER CARE"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_customer_care",
+      "label": "Column 2 Menu"
+    },
+    {
+      "type": "text",
+      "id": "title_information",
+      "label": "Column 3 Title",
+      "default": "INFORMATION"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_information",
+      "label": "Column 3 Menu"
+    },
+    {
+      "type": "header",
+      "content": "Store Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show Country/Currency Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show Payment Method Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show Social Media Links",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Color System"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link & Muted Text Color",
+      "default": "#A3A3A3"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "brand_text_color",
+      "label": "Brand Wordmark Color",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "header",
+      "content": "Layout Spacing"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Max Container Width (px)",
+      "min": 1100,
+      "max": 1800,
+      "step": 50,
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding (px)",
+      "min": 20,
+      "max": 160,
+      "step": 10,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding (px)",
+      "min": 20,
+      "max": 160,
+      "step": 10,
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fragranco Footer"
+    }
+  ]
+}
+{% endschema %}

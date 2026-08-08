@@ -3,9 +3,9 @@
     position: relative;
     z-index: 100;
     width: 100%;
-    background-color: var(--color-bg-light);
-    border-bottom: 1px solid var(--color-border);
-    transition: var(--transition-smooth);
+    background-color: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
   }
   
   .lux-header-wrapper.lux-header--sticky {
@@ -13,182 +13,314 @@
     top: 0;
   }
   
-  .lux-header-wrapper.lux-header--transparent {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  }
-  
   /* Scrolled sticky state */
   .lux-header-wrapper.lux-header--scrolled {
-    background-color: var(--color-bg-light) !important;
-    box-shadow: var(--shadow-subtle);
-    border-bottom: 1px solid var(--color-border) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #f0f0f0 !important;
   }
   
   .lux-header {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 20px 0;
-    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
   }
   
   .lux-header-wrapper.lux-header--scrolled .lux-header {
-    padding: 12px 0;
+    padding: 10px 0 8px 0;
   }
-  
-  /* Menu styling */
+
+  .lux-header__row-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Left Search Column */
+  .lux-header__search-col {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .lux-header__search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 310px;
+    height: 46px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 23px; /* rounded pill */
+    padding: 0 16px 0 20px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+  }
+
+  .lux-header__search-form:focus-within {
+    border-color: #111111;
+  }
+
+  .lux-header__search-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: #111111;
+    padding: 0;
+  }
+
+  .lux-header__search-input::placeholder {
+    color: #8c8c8c;
+  }
+
+  .lux-header__search-submit {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111111;
+  }
+
+  .lux-header__search-submit svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Center Logo Column */
+  .lux-header__logo-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lux-header__logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #111111;
+    font-family: var(--font-heading--family), serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .lux-header__logo-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    transition: max-width 0.3s ease;
+  }
+
+  /* Right Actions Column */
+  .lux-header__actions-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 28px; /* Spacing approx 28px */
+  }
+
+  .lux-header__action-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #111111;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .lux-header__action-link:hover {
+    opacity: 0.8;
+  }
+
+  .lux-header__action-icon {
+    display: flex;
+    align-items: center;
+    color: inherit;
+  }
+
+  .lux-header__action-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .lux-header__action-label {
+    display: inline-block;
+  }
+
+  .lux-cart-count,
+  .lux-wishlist-count {
+    background-color: #111111;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 600;
+    border-radius: 50%;
+    min-width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    box-sizing: border-box;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  }
+
+  /* Row 2 Navigation */
+  .lux-header__row-bottom {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .lux-nav-container {
+    display: block;
+  }
+
   .lux-nav {
     display: flex;
-    gap: 28px;
+    justify-content: center;
+    align-items: center;
+    gap: 32px; /* equal spacing */
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
   }
-  
+
+  .lux-nav__item {
+    position: relative;
+  }
+
   .lux-nav__link {
-    font-family: var(--font-luxury-body);
+    font-family: inherit;
     font-size: 13px;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-primary);
+    letter-spacing: 0.08em;
+    color: #111111;
     text-decoration: none;
-    transition: var(--transition-smooth);
-    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     padding: 8px 0;
+    transition: opacity 0.25s ease;
+    position: relative;
   }
-  
-  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-nav__link {
-    color: var(--color-white);
-  }
-  
+
+  /* Hover state identical to Dawn */
   .lux-nav__link::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
-    height: 1px;
-    background-color: var(--color-accent);
-    transition: var(--transition-smooth);
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.25s ease;
   }
-  
-  .lux-nav__link:hover::after,
+
+  .lux-nav__item:hover .lux-nav__link::after,
   .lux-nav__link--active::after {
     width: 100%;
   }
-  
-  .lux-nav__link:hover {
-    color: var(--color-accent) !important;
+
+  .lux-nav__arrow {
+    font-size: 7px;
+    opacity: 0.7;
   }
-  
-  /* Logo */
-  .lux-header__logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .lux-header__logo-link {
-    font-family: var(--font-luxury-heading);
-    font-size: 28px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-  
-  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-header__logo-link {
-    color: var(--color-white);
-  }
-  
-  .lux-header__logo-img {
-    display: block;
-    height: auto;
-    transition: var(--transition-smooth);
-  }
-  
-  /* Icons & Actions */
-  .lux-header__actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 20px;
-  }
-  
-  .lux-header__action {
-    color: var(--color-primary);
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-header__action {
-    color: var(--color-white);
-  }
-  
-  .lux-header__action:hover {
-    color: var(--color-accent) !important;
-  }
-  
-  .lux-header__action svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .lux-cart-count {
+
+  /* Dropdown Menu */
+  .lux-nav__dropdown {
     position: absolute;
-    top: -6px;
-    right: -10px;
-    background-color: var(--color-accent);
-    color: var(--color-white);
-    font-size: 9px;
-    font-weight: 600;
-    border-radius: 50%;
-    min-width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-    box-sizing: border-box;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    padding: 8px 0;
+    min-width: 180px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    list-style: none;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    z-index: 1000;
   }
-  
-  /* Mobile Menu Drawer */
+
+  .lux-nav__item:hover .lux-nav__dropdown {
+    opacity: 1;
+    visibility: visible;
+    top: calc(100% - 2px);
+  }
+
+  .lux-nav__dropdown-item {
+    margin: 0;
+  }
+
+  .lux-nav__dropdown-link {
+    display: block;
+    padding: 8px 20px;
+    color: #333333;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background-color 0.2s, color 0.2s;
+    text-align: left;
+  }
+
+  .lux-nav__dropdown-link:hover {
+    background-color: #f5f5f5;
+    color: #000000;
+  }
+
+  /* Mobile Hamburger Menu */
   .lux-header__hamburger {
     display: none;
-    color: var(--color-primary);
     background: transparent;
     border: none;
     cursor: pointer;
+    color: #111111;
+    padding: 0;
   }
-  
-  .lux-header-wrapper.lux-header--transparent:not(.lux-header--scrolled) .lux-header__hamburger {
-    color: var(--color-white);
+
+  .lux-header__hamburger svg {
+    width: 24px;
+    height: 24px;
   }
-  
+
+  /* Mobile Drawer Menu */
   .lux-mobile-drawer {
     position: fixed;
     top: 0;
     left: -100%;
     width: 320px;
     height: 100vh;
-    background-color: var(--color-bg-light);
+    background-color: #ffffff;
     z-index: 1000;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
     padding: 40px 24px;
     box-sizing: border-box;
-    transition: var(--transition-smooth);
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
   }
@@ -207,7 +339,7 @@
     z-index: 999;
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition-smooth);
+    transition: all 0.3s ease;
   }
   
   .lux-mobile-drawer__overlay.open {
@@ -220,13 +352,52 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: var(--color-primary);
-    margin-bottom: 40px;
+    color: #111111;
+    margin-bottom: 24px;
+    padding: 0;
   }
   
   .lux-mobile-drawer__close svg {
     width: 24px;
     height: 24px;
+  }
+
+  .lux-mobile-drawer__search {
+    margin-bottom: 24px;
+  }
+
+  .lux-mobile-drawer__search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .lux-mobile-drawer__search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .lux-mobile-drawer__search-submit {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #111111;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .lux-mobile-drawer__search-submit svg {
+    width: 16px;
+    height: 16px;
   }
   
   .lux-mobile-nav {
@@ -239,60 +410,84 @@
   }
   
   .lux-mobile-nav__link {
-    font-family: var(--font-luxury-body);
+    font-family: inherit;
     font-size: 16px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--color-primary);
+    color: #111111;
     text-decoration: none;
   }
-  
-  /* Mega menu classes */
-  .lux-nav__item {
-    position: relative;
-  }
-  
+
+  /* Responsive Viewports */
   @media (max-width: 991px) {
     .lux-header {
-      grid-template-columns: auto 1fr auto;
-      padding: 16px 0;
+      padding: 12px 0;
     }
-    
-    .lux-nav-container {
-      display: none;
+
+    .lux-header__row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    
+
+    .lux-header__search-col {
+      display: none; /* Collapse search into menu drawer on mobile/tablet */
+    }
+
     .lux-header__hamburger {
-      display: inline-block;
-      margin-right: 16px;
+      display: flex;
+      align-items: center;
     }
-    
-    .lux-header__hamburger svg {
-      width: 24px;
-      height: 24px;
+
+    .lux-header__logo-col {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
-    
-    .lux-header__logo {
-      justify-content: flex-start;
+
+    .lux-header__actions-col {
+      gap: 16px;
+    }
+
+    .lux-header__action-label {
+      display: none; /* hide text labels on mobile/tablet */
+    }
+
+    .lux-header__row-bottom {
+      display: none; /* hide standard desktop nav */
     }
   }
 {% endstyle %}
 
-{%- liquid
-  assign is_transparent = false
-  if section.settings.transparent_header and template.name == 'index'
-    assign is_transparent = true
-  endif
--%}
-
-<luxury-header data-sticky="{{ section.settings.sticky_header }}" data-transparent="{{ is_transparent }}">
-  <div class="lux-header-wrapper {% if section.settings.sticky_header %}lux-header--sticky{% endif %} {% if is_transparent %}lux-header--transparent{% endif %}">
+<luxury-header data-sticky="{{ section.settings.sticky_header }}" data-transparent="false">
+  <div class="lux-header-wrapper {% if section.settings.sticky_header %}lux-header--sticky{% endif %}">
     <div class="luxury-container">
       <header class="lux-header">
         
-        <!-- Hamburg Menu (Mobile) / Nav links (Desktop) -->
-        <div class="lux-nav-side">
+        <!-- Row 1: Logo & Utilities -->
+        <div class="lux-header__row-top">
+          <!-- Hamburger (Mobile Only) / Search (Desktop Only) -->
+          <div class="lux-header__search-col">
+            {%- if section.settings.enable_search -%}
+              <form action="/search" method="get" role="search" class="lux-header__search-form">
+                <input 
+                  type="text" 
+                  name="q" 
+                  placeholder="{{ section.settings.search_placeholder | default: 'Hey, what are you looking for?' }}" 
+                  class="lux-header__search-input"
+                  aria-label="Search store"
+                >
+                <button type="submit" class="lux-header__search-submit" aria-label="Submit search">
+                  <svg class="lux-icon lux-icon-search" viewBox="0 0 20 20" fill="none">
+                    <circle cx="9" cy="9" r="4.75" stroke="currentColor" stroke-width="1.5"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12.5 12.5 3.25 3.25"/>
+                  </svg>
+                </button>
+              </form>
+            {%- endif -%}
+          </div>
+
           <button class="lux-header__hamburger" aria-label="Open mobile menu" id="hamburger-button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -301,69 +496,94 @@
             </svg>
           </button>
           
+          <!-- Logo -->
+          <div class="lux-header__logo-col">
+            <a href="/" class="lux-header__logo-link">
+              {%- if section.settings.logo != blank -%}
+                {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+                {%- assign logo_width = section.settings.logo_width -%}
+                <img 
+                  src="{{ section.settings.logo | image_url: width: logo_width }}" 
+                  alt="{{ logo_alt }}"
+                  class="lux-header__logo-img"
+                  width="{{ logo_width }}"
+                  height="{{ logo_width | divided_by: section.settings.logo.aspect_ratio }}"
+                  style="max-width: {{ logo_width }}px"
+                >
+              {%- else -%}
+                {{ shop.name }}
+              {%- endif -%}
+            </a>
+          </div>
+
+          <!-- Action Icons (Wishlist, Bag, Account) -->
+          <div class="lux-header__actions-col">
+            <!-- Wishlist (♡) -->
+            {%- if section.settings.enable_wishlist -%}
+              <a href="/pages/wishlist" class="lux-header__action-link" aria-label="Wishlist">
+                <span class="lux-header__action-icon">
+                  <svg viewBox="0 0 20 20" fill="none" class="lux-icon">
+                    <path d="M10 5.2393L8.5149 3.77392C6.79996 2.08174 4.01945 2.08174 2.30451 3.77392C0.589562 5.4661 0.589563 8.2097 2.30451 9.90188L10 17.4952L17.6955 9.90188C19.4104 8.2097 19.4104 5.4661 17.6955 3.77392C15.9805 2.08174 13.2 2.08174 11.4851 3.77392L10 5.2393ZM10.765 3.06343C12.8777 0.978857 16.3029 0.978856 18.4155 3.06343C20.5282 5.148 20.5282 8.52779 18.4155 10.6124L10.72 18.2057C10.3224 18.5981 9.67763 18.5981 9.27996 18.2057L1.58446 10.6124C-0.528154 8.52779 -0.528154 5.14801 1.58446 3.06343C3.69708 0.978859 7.12233 0.978858 9.23495 3.06343L10 3.81832L10.765 3.06343Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span class="lux-wishlist-count" style="display: none;">0</span>
+              </a>
+            {%- endif -%}
+
+            <!-- Cart/Bag (Bag Text + Count) -->
+            {%- if section.settings.enable_cart -%}
+              <a href="/cart" class="lux-header__action-link" aria-label="Shopping Cart" id="cart-icon-bubble">
+                <span class="lux-header__action-icon">
+                  <svg viewBox="0 0 20 20" fill="none" class="lux-icon">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.392 6.875h13.216v8.016c0 .567-.224 1.112-.624 1.513-.4.402-.941.627-1.506.627H5.522a2.13 2.13 0 0 1-1.506-.627 2.15 2.15 0 0 1-.624-1.513zM8.818 2.969h2.333c.618 0 1.211.247 1.649.686a2.35 2.35 0 0 1 .683 1.658v1.562H6.486V5.313c0-.622.246-1.218.683-1.658a2.33 2.33 0 0 1 1.65-.686"/>
+                  </svg>
+                </span>
+                <span class="lux-header__action-label">Bag</span>
+                <span class="lux-cart-count">{{ cart.item_count }}</span>
+              </a>
+            {%- endif -%}
+
+            <!-- Account -->
+            {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
+              <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="lux-header__action-link" aria-label="Account">
+                <span class="lux-header__action-icon">
+                  <svg viewBox="0 0 20 20" fill="none" class="lux-icon">
+                    <circle cx="10" cy="6.5" r="2.75" stroke="currentColor" stroke-width="1.5"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m5.172 14.591-.437.786a.588.588 0 0 0 .514.873h9.502a.588.588 0 0 0 .514-.873l-.437-.786a5.523 5.523 0 0 0-9.656 0"/>
+                  </svg>
+                </span>
+                <span class="lux-header__action-label">Account</span>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!-- Row 2: Navigation -->
+        <div class="lux-header__row-bottom">
           <nav class="lux-nav-container" aria-label="Primary navigation">
             <ul class="lux-nav">
               {%- for link in section.settings.menu.links -%}
                 <li class="lux-nav__item">
                   <a href="{{ link.url }}" class="lux-nav__link {% if link.active %}lux-nav__link--active{% endif %}">
                     {{ link.title }}
+                    {% if link.links != blank %}
+                      <span class="lux-nav__arrow">▼</span>
+                    {% endif %}
                   </a>
+                  
+                  {% if link.links != blank %}
+                    <ul class="lux-nav__dropdown">
+                      {% for childlink in link.links %}
+                        <li class="lux-nav__dropdown-item">
+                          <a href="{{ childlink.url }}" class="lux-nav__dropdown-link">{{ childlink.title }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
                 </li>
               {%- endfor -%}
             </ul>
           </nav>
-        </div>
-
-        <!-- Logo -->
-        <div class="lux-header__logo">
-          <a href="/" class="lux-header__logo-link">
-            {%- if section.settings.logo != blank -%}
-              {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
-              {%- assign logo_width = section.settings.logo_width -%}
-              <img 
-                src="{{ section.settings.logo | image_url: width: logo_width }}" 
-                alt="{{ logo_alt }}"
-                class="lux-header__logo-img"
-                width="{{ logo_width }}"
-                height="{{ logo_width | divided_by: section.settings.logo.aspect_ratio }}"
-                style="max-width: {{ logo_width }}px"
-              >
-            {%- else -%}
-              {{ shop.name }}
-            {%- endif -%}
-          </a>
-        </div>
-
-        <!-- Actions -->
-        <div class="lux-header__actions">
-          {%- if section.settings.enable_search -%}
-            <button class="lux-header__action" aria-label="Search" id="header-search-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </button>
-          {%- endif -%}
-
-          {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
-            <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="lux-header__action" aria-label="Account">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </a>
-          {%- endif -%}
-
-          {%- if section.settings.enable_cart -%}
-            <a href="/cart" class="lux-header__action" aria-label="Shopping Cart" id="cart-icon-bubble">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
-              <span class="lux-cart-count">{{ cart.item_count }}</span>
-            </a>
-          {%- endif -%}
         </div>
 
       </header>
@@ -379,6 +599,26 @@
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
+
+    {%- if section.settings.enable_search -%}
+      <div class="lux-mobile-drawer__search">
+        <form action="/search" method="get" role="search" class="lux-mobile-drawer__search-form">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Search..." 
+            class="lux-mobile-drawer__search-input"
+          >
+          <button type="submit" class="lux-mobile-drawer__search-submit" aria-label="Submit search">
+            <svg viewBox="0 0 20 20" fill="none">
+              <circle cx="9" cy="9" r="4.75" stroke="currentColor" stroke-width="1.5"/>
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12.5 12.5 3.25 3.25"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    {%- endif -%}
+
     <ul class="lux-mobile-nav">
       {%- for link in section.settings.menu.links -%}
         <li>
@@ -390,7 +630,7 @@
     </ul>
     
     {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
-      <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--color-border);">
+      <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #f0f0f0;">
         <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="lux-mobile-nav__link" style="font-size: 14px;">
           {% if customer %}My Account{% else %}Login / Register{% endif %}
         </a>
@@ -409,13 +649,11 @@
       connectedCallback() {
         this.wrapper = this.querySelector('.lux-header-wrapper');
         this.sticky = this.dataset.sticky === 'true';
-        this.transparent = this.dataset.transparent === 'true';
         
         if (this.sticky) {
           this.scrollHandler = this.onScroll.bind(this);
           window.addEventListener('scroll', this.scrollHandler);
-          // Initial check
-          this.onScroll();
+          this.onScroll(); // Initial check
         }
         
         // Mobile Drawer functionality
@@ -461,6 +699,39 @@
     }
     customElements.define('luxury-header', LuxuryHeader);
   }
+
+  function updateCartCountHeader() {
+    fetch('/cart.js')
+      .then(res => res.json())
+      .then(cart => {
+        document.querySelectorAll('.lux-cart-count').forEach(el => {
+          el.textContent = cart.item_count;
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  function updateWishlistHeaderCount() {
+    const customerId = "{% if customer %}{{ customer.id }}{% endif %}";
+    const wishlistKey = customerId ? 'lux-wishlist-' + customerId : 'lux-wishlist';
+    const wishlist = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+    const count = wishlist.length;
+    document.querySelectorAll('.lux-wishlist-count').forEach(el => {
+      el.textContent = count;
+      if (count > 0) {
+        el.style.display = 'flex';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateWishlistHeaderCount();
+    updateCartCountHeader();
+  });
+  document.addEventListener('lux:wishlist:update', updateWishlistHeaderCount);
+  document.addEventListener('shopify:cart:lines-update', updateCartCountHeader);
 </script>
 
 {% schema %}
@@ -495,19 +766,25 @@
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "transparent_header",
-      "label": "Enable Transparent Header (Homepage)",
-      "default": true
-    },
-    {
       "type": "header",
       "content": "Action Icons"
     },
     {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder",
+      "default": "Hey, what are you looking for?"
+    },
+    {
       "type": "checkbox",
       "id": "enable_search",
-      "label": "Enable Search Icon",
+      "label": "Enable Search Box",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wishlist",
+      "label": "Enable Wishlist Icon",
       "default": true
     },
     {

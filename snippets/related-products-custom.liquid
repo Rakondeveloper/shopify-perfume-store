@@ -1,0 +1,674 @@
+{% style %}
+  .lux-related-section {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    width: 100%;
+  }
+
+  .lux-related-header {
+    text-align: left;
+    margin-bottom: 40px;
+  }
+
+  .lux-related-title {
+    margin: 0 0 8px 0;
+    line-height: 1.1;
+  }
+
+  .lux-related-title-accent {
+    font-family: var(--font-heading--family), serif;
+    font-style: italic;
+    font-size: clamp(2rem, 3.8vw, 3.2rem);
+    font-weight: 500;
+    color: #E07A5F;
+    text-transform: capitalize;
+    margin-right: 8px;
+  }
+
+  .lux-related-title-main {
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: clamp(2rem, 3.8vw, 3.2rem);
+    font-weight: 700;
+    color: #111111;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .lux-related-subtitle {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    color: #666666;
+    margin: 0;
+  }
+
+  .lux-related-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Related Product Card Styling */
+  .lux-prod-item {
+    flex: 0 0 calc((100% - 72px) / 4) !important;
+    max-width: calc((100% - 72px) / 4) !important;
+    width: calc((100% - 72px) / 4) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .lux-prod-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.85;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ececec;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .lux-prod-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .lux-prod-img-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .lux-prod-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .lux-prod-card:hover .lux-prod-img {
+    transform: scale(1.05);
+  }
+
+  .lux-prod-badge-hot {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #E0533C;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    z-index: 3;
+  }
+
+  .lux-prod-cart-btn {
+    position: absolute;
+    top: 76px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 3;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .lux-prod-cart-btn:hover {
+    transform: scale(1.08);
+  }
+
+  .lux-prod-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 3;
+  }
+
+  .lux-prod-meta {
+    text-align: left;
+    flex: 1;
+    padding-right: 10px;
+  }
+
+  .lux-prod-title {
+    font-family: var(--font-heading--family), serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .lux-prod-subtitle {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .lux-prod-wishlist-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #111111;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .lux-prod-wishlist-btn:hover {
+    transform: scale(1.08);
+  }
+
+  .lux-prod-wishlist-btn.active {
+    color: #E07A5F;
+  }
+
+  .lux-prod-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 14px;
+    align-items: center;
+  }
+
+  .lux-prod-buy-btn {
+    flex: 1;
+    height: 48px;
+    border-radius: 999px;
+    background-color: #EFEAE2;
+    color: #111111;
+    border: none;
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .lux-prod-buy-btn:hover {
+    background-color: #e0d8ca;
+  }
+
+  .lux-prod-price-pill {
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background-color: #EFEAE2;
+    color: #111111;
+    font-family: var(--font-heading--family), sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1023px) {
+    .lux-related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .lux-prod-item {
+      min-width: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-sizing: border-box !important;
+    }
+
+    .lux-prod-card {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      aspect-ratio: 0.72 !important;
+      border-radius: 18px !important;
+      position: relative !important;
+      overflow: hidden !important;
+      background: #ececec !important;
+      margin-bottom: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .lux-prod-img-container {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      overflow: hidden !important;
+      border-radius: 18px !important;
+      position: relative !important;
+      background: #ececec !important;
+    }
+
+    .lux-prod-img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    .lux-prod-badge-hot {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 9.5px;
+      padding: 3px 8px;
+      z-index: 3;
+      border-radius: 999px;
+    }
+
+    .lux-prod-wishlist-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 34px;
+      height: 34px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      z-index: 3;
+    }
+
+    .lux-prod-wishlist-btn svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .lux-prod-overlay {
+      position: absolute !important;
+      bottom: 8px !important;
+      left: 8px !important;
+      right: 8px !important;
+      transform: none !important;
+      z-index: 5 !important;
+      width: auto !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+      background: rgba(255, 255, 255, 0.28) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-radius: 16px !important;
+      padding: 10px 10px 8px 10px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+      overflow: hidden !important;
+    }
+
+    .lux-prod-overlay-header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      gap: 6px !important;
+    }
+
+    .lux-prod-meta {
+      padding-right: 4px !important;
+      min-width: 0 !important;
+      flex: 1 !important;
+      overflow: hidden !important;
+      text-align: left !important;
+    }
+
+    .lux-prod-title {
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      margin: 0 0 1px 0 !important;
+      line-height: 1.25 !important;
+      font-family: var(--font-heading--family), serif !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+      word-break: break-word !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+    }
+
+    .lux-prod-subtitle {
+      font-size: 9.5px !important;
+      color: rgba(255, 255, 255, 0.85) !important;
+      margin: 0 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    .lux-prod-card .lux-prod-cart-btn {
+      position: absolute !important;
+      top: 50px !important;
+      right: 10px !important;
+      width: 34px !important;
+      height: 34px !important;
+      background: #ffffff !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+      z-index: 3 !important;
+    }
+
+    .lux-prod-cart-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .lux-prod-actions {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      gap: 6px !important;
+      margin-top: 2px !important;
+      box-sizing: border-box !important;
+    }
+
+    .lux-prod-price-pill {
+      order: 1 !important;
+      width: auto !important;
+      height: auto !important;
+      padding: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      color: #ffffff !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+      display: flex !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+    }
+
+    .lux-prod-buy-btn {
+      order: 2 !important;
+      flex: 1 !important;
+      min-width: 0 !important;
+      height: 34px !important;
+      background-color: #111111 !important;
+      color: #ffffff !important;
+      border-radius: 999px !important;
+      font-size: 10.5px !important;
+      font-weight: 500 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 0 4px 0 8px !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+    }
+
+    .lux-buy-arrow-icon {
+      width: 20px !important;
+      height: 20px !important;
+      background-color: #ffffff !important;
+      color: #111111 !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+  }
+
+  @media (max-width: 340px) {
+    .lux-related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .lux-prod-actions {
+      flex-direction: column !important;
+      gap: 4px !important;
+    }
+
+    .lux-prod-buy-btn {
+      width: 100% !important;
+      height: 34px !important;
+      font-size: 10px !important;
+    }
+
+    .lux-prod-price-pill {
+      width: 100% !important;
+      height: 32px !important;
+      font-size: 9.5px !important;
+    }
+  }
+{% endstyle %}
+
+<div class="lux-related-section">
+  <div class="lux-related-header">
+    <h2 class="lux-related-title">
+      <span class="lux-related-title-accent">RELATED</span>
+      <span class="lux-related-title-main">PRODUCT</span>
+    </h2>
+    <p class="lux-related-subtitle">{{ section.settings.related_subtitle | default: "Discover the most-loved fragrances, handpicked by our customers" }}</p>
+  </div>
+
+  <div class="lux-related-grid" id="pdp-related-grid">
+    {% assign related_collection = collections['all'] %}
+    {% for rel_prod in related_collection.products limit: 4 %}
+      {% unless rel_prod.id == product.id %}
+        {% assign formatted_price = rel_prod.price | money %}
+        <div class="lux-prod-item">
+          <div class="lux-prod-card" onclick="if(!event.target.closest('button')) window.location.href='{{ rel_prod.url }}'">
+            <a href="{{ rel_prod.url }}" class="lux-prod-card-link" aria-label="{{ rel_prod.title }}" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:2;"></a>
+            
+            <span class="lux-prod-badge-hot">HOT</span>
+
+            <div class="lux-prod-img-container">
+              <img src="{{ rel_prod.featured_image | image_url: width: 600 }}" class="lux-prod-img" loading="lazy" alt="{{ rel_prod.title }}">
+            </div>
+            
+            <button type="button" class="lux-prod-wishlist-btn pdp-rel-wishlist-btn" data-product-id="{{ rel_prod.id }}" data-product-handle="{{ rel_prod.handle }}" aria-label="Add to wishlist" style="z-index:3;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="heart-icon">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+              </svg>
+            </button>
+
+            <!-- Cart Shopping Bag AJAX Add Button (Floating top right under wishlist) -->
+            <button type="button" class="lux-prod-cart-btn pdp-rel-cart-btn" data-variant-id="{{ rel_prod.selected_or_first_available_variant.id }}" data-product-title="{{ rel_prod.title | escape }}" data-product-image="{{ rel_prod.featured_image | image_url: width: 100 }}" aria-label="Add to Cart" style="z-index:3;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+
+            <!-- Integrated Glass Commerce Info Panel -->
+            <div class="lux-prod-overlay">
+              <div class="lux-prod-meta">
+                <h3 class="lux-prod-title">{{ rel_prod.title }}</h3>
+                <p class="lux-prod-subtitle">{{ rel_prod.type | default: 'Signature Scent' }}</p>
+              </div>
+
+              <div class="lux-prod-price-pill">
+                {%- if rel_prod.compare_at_price > rel_prod.price -%}
+                  <span class="lux-prod-price-sale">{{ rel_prod.price | money }}</span>
+                  <s class="lux-prod-price-compare">{{ rel_prod.compare_at_price | money }}</s>
+                {%- else -%}
+                  <span class="lux-prod-price-regular">{{ rel_prod.price | money }}</span>
+                {%- endif -%}
+              </div>
+
+              <button type="button" class="lux-prod-buy-btn pdp-rel-buy-btn" data-variant-id="{{ rel_prod.selected_or_first_available_variant.id }}" {% unless rel_prod.available %}disabled{% endunless %}>
+                <span>{% if rel_prod.available %}Buy Now{% else %}Sold Out{% endif %}</span>
+                <span class="lux-buy-arrow-icon">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </span>
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initRelatedProducts() {
+      function syncRelatedCartStates() {
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cart => {
+            if (!cart || !cart.items) return;
+            document.querySelectorAll('.pdp-rel-cart-btn').forEach(btn => {
+              const vId = btn.dataset.variantId;
+              const inCart = cart.items.some(item => String(item.variant_id) === String(vId));
+              if (inCart) {
+                btn.style.backgroundColor = '#2D6A4F';
+                btn.style.color = '#FFFFFF';
+                btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+              }
+            });
+          })
+          .catch(err => console.error(err));
+      }
+
+      syncRelatedCartStates();
+      document.addEventListener('shopify:cart:lines-update', syncRelatedCartStates);
+
+      // Add to cart buttons in related section
+      document.querySelectorAll('.pdp-rel-cart-btn').forEach(btn => {
+        const defaultHtml = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const variantId = btn.dataset.variantId;
+          const title = btn.dataset.productTitle || 'Product';
+          const image = btn.dataset.productImage || '';
+
+          btn.style.opacity = '0.7';
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+          })
+          .then(res => res.json())
+          .then(() => {
+            btn.style.opacity = '';
+            btn.style.backgroundColor = '#2D6A4F';
+            btn.style.color = '#FFFFFF';
+            btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+            document.dispatchEvent(new CustomEvent('shopify:cart:lines-update', { bubbles: true }));
+
+            if (typeof showToast === 'function') {
+              showToast('🎉 Product added to your cart!', 'success', {
+                title: title,
+                subtitle: 'Quantity: 1',
+                buttonText: 'View Cart',
+                buttonLink: '/cart',
+                image: image
+              });
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            btn.style.opacity = '';
+            btn.innerHTML = defaultHtml;
+          });
+        });
+      });
+
+      // Buy now buttons in related section
+      document.querySelectorAll('.pdp-rel-buy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const variantId = btn.dataset.variantId;
+          btn.style.opacity = '0.6';
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+          })
+          .then(() => {
+            window.location.href = '/checkout';
+          })
+          .catch(err => {
+            console.error(err);
+            btn.style.opacity = '';
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initRelatedProducts);
+    } else {
+      initRelatedProducts();
+    }
+  })();
+</script>

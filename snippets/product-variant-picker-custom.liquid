@@ -1,0 +1,309 @@
+{% style %}
+  .lux-pdp-variants {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .lux-pdp-option-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .lux-pdp-option-label {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111111;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lux-pdp-option-label svg {
+    width: 18px;
+    height: 18px;
+    color: #111111;
+  }
+
+  .lux-pdp-values {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .lux-pdp-value-pill {
+    background-color: transparent;
+    border: 1px solid #111111;
+    border-radius: 999px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111111;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    user-select: none;
+    font-family: var(--font-body--family);
+  }
+
+  .lux-pdp-value-pill:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .lux-pdp-value-pill.selected {
+    background-color: #111111;
+    color: #FFFFFF;
+  }
+
+  .lux-pdp-value-pill.disabled {
+    opacity: 0.4;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+{% endstyle %}
+
+{% unless product.has_only_default_variant %}
+  <div class="lux-pdp-variants" id="pdp-variant-picker">
+    {% for option in product.options_with_values %}
+      <div class="lux-pdp-option-group" data-option-index="{{ forloop.index0 }}">
+        <span class="lux-pdp-option-label">
+          <!-- Perfume Bottle SVG Icon for Size/Option -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 3h6M10 3v3h4V3M7 8h10l1 13H6L7 8z"></path>
+          </svg>
+          {{ option.name }}:
+        </span>
+        <div class="lux-pdp-values">
+          {% for value in option.values %}
+            <button
+              type="button"
+              class="lux-pdp-value-pill{% if option.selected_value == value %} selected{% endif %}"
+              data-value="{{ value | escape }}"
+            >
+              {{ value }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endunless %}
+
+<script>
+  (function() {
+    function initPDPVariantPicker() {
+      const productVariants = {{ product.variants | json }};
+      const optionGroups = document.querySelectorAll('.lux-pdp-option-group');
+
+      if (!optionGroups.length || !productVariants.length) return;
+
+      function getSelectedOptions() {
+        const selected = [];
+        optionGroups.forEach(group => {
+          const activePill = group.querySelector('.lux-pdp-value-pill.selected');
+          if (activePill) {
+            selected.push(activePill.dataset.value);
+          }
+        });
+        return selected;
+      }
+
+      function findMatchingVariant(selectedOptions) {
+        return productVariants.find(variant => {
+          return variant.options.every((opt, idx) => opt === selectedOptions[idx]);
+        });
+      }
+
+      function formatMoney(cents, format) {
+        if (typeof cents === 'string') { cents = cents.replace('.', ''); }
+        var value = '';
+        var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+        var formatString = format || {{ shop.money_format | json }} || 'Rs. {{amount}}';
+
+        function formatWithDelimiters(number, precision, thousands, decimal) {
+          precision = precision === undefined ? 2 : precision;
+          thousands = thousands === undefined ? ',' : thousands;
+          decimal = decimal === undefined ? '.' : decimal;
+
+          if (isNaN(number) || number == null) { return 0; }
+
+          number = (number / 100.0).toFixed(precision);
+
+          var parts = number.split('.'),
+              dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+              centsVal = parts[1] ? (decimal + parts[1]) : '';
+
+          return dollars + centsVal;
+        }
+
+        if (!formatString.match(placeholderRegex)) {
+          return 'Rs. ' + (cents / 100).toFixed(2);
+        }
+
+        switch(formatString.match(placeholderRegex)[1]) {
+          case 'amount':
+            value = formatWithDelimiters(cents, 2);
+            break;
+          case 'amount_no_decimals':
+            value = formatWithDelimiters(cents, 0);
+            break;
+          case 'amount_with_comma_separator':
+            value = formatWithDelimiters(cents, 2, '.', ',');
+            break;
+          case 'amount_no_decimals_with_comma_separator':
+            value = formatWithDelimiters(cents, 0, '.', ',');
+            break;
+          default:
+            value = formatWithDelimiters(cents, 2);
+            break;
+        }
+
+        return formatString.replace(placeholderRegex, value);
+      }
+
+      function updateVariantUI(variant) {
+        const hiddenVariantInput = document.getElementById('pdp-selected-variant-id');
+        const priceDisplay = document.getElementById('pdp-current-price');
+        const comparePriceDisplay = document.getElementById('pdp-compare-price');
+        const discountBadge = document.getElementById('pdp-discount-badge');
+        const addToCartBtn = document.getElementById('pdp-add-to-cart-btn');
+        const buyNowBtn = document.getElementById('pdp-buy-now-btn');
+        const mainImg = document.getElementById('pdp-main-image');
+
+        if (!variant) {
+          if (addToCartBtn) {
+            addToCartBtn.disabled = true;
+            addToCartBtn.classList.remove('in-cart', 'added-success');
+            addToCartBtn.innerHTML = `<span>Unavailable</span>`;
+          }
+          if (buyNowBtn) buyNowBtn.disabled = true;
+          return;
+        }
+
+        // Update hidden input for purchase forms
+        if (hiddenVariantInput) {
+          hiddenVariantInput.value = variant.id;
+        }
+
+        // Update URL query param
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('variant', variant.id);
+        window.history.replaceState({}, '', newUrl.toString());
+
+        // Update Price
+        if (priceDisplay) {
+          priceDisplay.textContent = formatMoney(variant.price);
+        }
+
+        // Update Compare Price & Discount
+        if (comparePriceDisplay) {
+          if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+            comparePriceDisplay.textContent = formatMoney(variant.compare_at_price);
+            comparePriceDisplay.style.display = 'inline';
+
+            if (discountBadge) {
+              const save = variant.compare_at_price - variant.price;
+              const pct = Math.round((save * 100) / variant.compare_at_price);
+              discountBadge.textContent = pct + '% Discount';
+              discountBadge.style.display = 'inline-block';
+            }
+          } else {
+            comparePriceDisplay.style.display = 'none';
+            if (discountBadge) discountBadge.style.display = 'none';
+          }
+        }
+
+        // Update Image if variant has featured image
+        if (variant.featured_image && variant.featured_image.src && mainImg) {
+          mainImg.src = variant.featured_image.src;
+        }
+
+        // Update Stock Availability & Action Buttons
+        if (variant.available) {
+          if (addToCartBtn) {
+            addToCartBtn.disabled = false;
+            if (!addToCartBtn.classList.contains('in-cart') && !addToCartBtn.classList.contains('added-success')) {
+              addToCartBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span>Add to Cart</span>
+              `;
+            }
+          }
+          if (buyNowBtn) buyNowBtn.disabled = false;
+
+          // Sync In-Cart state if available
+          if (typeof window.checkPDPInCartState === 'function') {
+            window.checkPDPInCartState(variant.id);
+          }
+        } else {
+          if (addToCartBtn) {
+            addToCartBtn.disabled = true;
+            addToCartBtn.classList.remove('in-cart', 'added-success');
+            addToCartBtn.innerHTML = `
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>Sold Out</span>
+            `;
+          }
+          if (buyNowBtn) buyNowBtn.disabled = true;
+        }
+      }
+
+      // Add click handlers to size option pills
+      optionGroups.forEach(group => {
+        const pills = group.querySelectorAll('.lux-pdp-value-pill');
+        pills.forEach(pill => {
+          pill.addEventListener('click', () => {
+            pills.forEach(p => p.classList.remove('selected'));
+            pill.classList.add('selected');
+
+            const selectedOptions = getSelectedOptions();
+            const variant = findMatchingVariant(selectedOptions);
+            updateVariantUI(variant);
+          });
+        });
+      });
+
+      // Handle initial load URL variant parameter (e.g. ?variant=123456)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlVariantId = urlParams.get('variant');
+      if (urlVariantId) {
+        const urlVariant = productVariants.find(v => String(v.id) === String(urlVariantId));
+        if (urlVariant) {
+          // Select corresponding option pills
+          urlVariant.options.forEach((optVal, idx) => {
+            const group = optionGroups[idx];
+            if (group) {
+              const matchingPill = group.querySelector(`.lux-pdp-value-pill[data-value="${CSS.escape(optVal)}"]`);
+              if (matchingPill) {
+                group.querySelectorAll('.lux-pdp-value-pill').forEach(p => p.classList.remove('selected'));
+                matchingPill.classList.add('selected');
+              }
+            }
+          });
+          updateVariantUI(urlVariant);
+          return;
+        }
+      }
+
+      // Default initial sync for selected variant
+      const initialOptions = getSelectedOptions();
+      const initialVariant = findMatchingVariant(initialOptions);
+      if (initialVariant) {
+        updateVariantUI(initialVariant);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPDPVariantPicker);
+    } else {
+      initPDPVariantPicker();
+    }
+  })();
+</script>

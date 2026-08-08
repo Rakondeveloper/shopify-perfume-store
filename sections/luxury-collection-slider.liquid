@@ -1,176 +1,833 @@
-{%- if section.settings.collection != blank -%}
-  <!-- Load Swiper CSS non-blocking -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
-  <!-- Load Swiper JS deferred -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<!-- Load Swiper CSS non-blocking -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+<!-- Load Swiper JS deferred -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 
-  {% style %}
-    .lux-slider-wrapper {
-      position: relative;
-      margin-top: 40px;
+{% style %}
+  .lux-collection-slider-section {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+  }
+
+  .lux-collection-container {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 40px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  /* Category Badge style */
+  .lux-category-badge {
+    display: inline-block;
+    background-color: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    font-size: {{ section.settings.badge_font_size }}px;
+    font-weight: 500;
+    padding: 8px 24px;
+    border-radius: {{ section.settings.badge_radius }}px;
+    margin-bottom: 24px;
+    text-transform: capitalize;
+  }
+
+  /* Heading style */
+  .lux-collection-heading {
+    font-family: var(--font-heading--family), serif;
+    font-size: {{ section.settings.heading_size_desktop }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    line-height: {{ section.settings.heading_line_height }};
+    max-width: {{ section.settings.heading_max_width }}px;
+    margin: 0 auto 48px auto;
+    text-align: center;
+    letter-spacing: {{ section.settings.heading_letter_spacing }}em;
+  }
+
+  /* Navigation Row */
+  .lux-nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    width: 100%;
+  }
+
+  .lux-nav-arrows {
+    display: flex;
+    gap: 16px;
+  }
+
+  .lux-nav-arrow {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .lux-nav-arrow--prev {
+    background-color: {{ section.settings.arrow_bg_prev }};
+    color: {{ section.settings.arrow_color_prev }};
+  }
+
+  .lux-nav-arrow--next {
+    background-color: {{ section.settings.arrow_bg_next }};
+    color: {{ section.settings.arrow_color_next }};
+  }
+
+  .lux-nav-arrow--prev:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  .lux-nav-arrow--next:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  .lux-view-all-link {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: {{ section.settings.view_all_font_size }}px;
+    font-weight: 500;
+    color: {{ section.settings.view_all_color }};
+    text-decoration: none;
+    border-bottom: 1.5px solid currentColor;
+    padding-bottom: 4px;
+    transition: opacity 0.2s ease;
+  }
+
+  .lux-view-all-link:hover {
+    opacity: 0.8;
+  }
+
+  /* Slider Container spacing */
+  .lux-collection-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .lux-slider-inner-container {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* Card styling */
+  .col-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.85; /* Beautiful vertical proportion */
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .col-card__link-wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
+
+  /* Card 1: Overlay styling */
+  .col-card--overlay {
+    background-color: #000000;
+  }
+
+  .col-card__img--cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .col-card--overlay:hover .col-card__img--cover {
+    transform: scale(1.03);
+  }
+
+  .col-card__overlay-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .col-card__badge {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 999px;
+    z-index: 3;
+  }
+
+  .col-card__bottom-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    z-index: 3;
+    text-align: left;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .col-card__title {
+    font-family: var(--font-heading--family), serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+  }
+
+  .col-card__desc {
+    font-family: var(--font-body--family), sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 28px 0;
+    line-height: 1.5;
+    max-width: 100%;
+  }
+
+  .col-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 24px;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 999px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .col-card__btn:hover {
+    transform: scale(1.03);
+    opacity: 0.95;
+  }
+
+  /* Other Cards: Centered product image style */
+  .col-card--centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    transition: background-color 0.3s ease;
+  }
+
+  .col-card__img-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .col-card__img--contain {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 0.85;
+    transition: transform 0.4s ease;
+  }
+
+  .col-card--centered:hover .col-card__img--contain {
+    transform: scale(1.04);
+  }
+
+  /* Tablet and Mobile Breakpoint styling */
+  @media (max-width: 991px) {
+    .lux-collection-heading {
+      font-size: {{ section.settings.heading_size_tablet }}px;
+      margin-bottom: 32px;
     }
-    
-    .lux-slider-container {
-      overflow: hidden;
-      padding-bottom: 20px;
+    .lux-collection-container {
+      padding: 0 24px;
     }
-    
-    /* Navigation Arrows styling */
-    .lux-slider-controls {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
+  }
+
+  @media (max-width: 767px) {
+    .lux-collection-heading {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: 24px;
+    }
+    .col-card {
+      aspect-ratio: 0.9;
+    }
+    .col-card__bottom-info {
+      padding: 20px;
+    }
+    .col-card__title {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .col-card__desc {
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+    .col-card__btn {
+      height: 40px;
+      padding: 0 18px;
+      font-size: 12px;
+    }
+    .lux-nav-row {
       margin-bottom: 20px;
     }
-    
-    .lux-slider-arrow {
-      background-color: var(--color-bg-light);
-      border: 1px solid var(--color-border);
-      color: var(--color-primary);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow-subtle);
-      transition: var(--transition-smooth);
+    .lux-nav-arrows {
+      gap: 10px;
     }
-    
-    .lux-slider-arrow:hover {
-      background-color: var(--color-primary);
-      color: var(--color-white);
-      border-color: var(--color-primary);
+    .lux-nav-arrow {
+      width: 40px;
+      height: 40px;
     }
-    
-    .lux-slider-arrow svg {
-      width: 18px;
-      height: 18px;
+    .lux-nav-arrow svg {
+      width: 16px;
+      height: 16px;
     }
-  {% endstyle %}
+  }
 
-  <section class="luxury-section">
-    <div class="luxury-container">
-      
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
-        <div style="text-align: left;">
-          {%- if section.settings.subheading != blank -%}
-            <span class="section-subtitle" style="text-align: left;">{{ section.settings.subheading }}</span>
-          {%- endif -%}
-          
-          {%- if section.settings.heading != blank -%}
-            <h2 class="luxury-h2" style="text-align: left; margin-bottom: 0;">{{ section.settings.heading }}</h2>
-          {%- endif -%}
-        </div>
-        
-        <!-- Slider Navigation Arrows -->
-        <div class="lux-slider-controls">
-          <button class="lux-slider-arrow swiper-button-prev-{{ section.id }}" aria-label="Previous products">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-          </button>
-          <button class="lux-slider-arrow swiper-button-next-{{ section.id }}" aria-label="Next products">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </button>
-        </div>
+  @media (max-width: 480px) {
+    .col-card__bottom-info {
+      padding: 16px;
+    }
+    .col-card__title {
+      font-size: 18px;
+    }
+    .col-card__badge {
+      top: 16px;
+      left: 16px;
+      font-size: 11px;
+      padding: 6px 12px;
+    }
+  }
+{% endstyle %}
+
+<section class="lux-collection-slider-section">
+  <div class="lux-collection-container">
+    
+    <!-- Top badge -->
+    {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+      <div class="lux-category-badge">
+        {{ section.settings.badge_text }}
+      </div>
+    {%- endif -%}
+
+    <!-- Main heading -->
+    {%- if section.settings.heading != blank -%}
+      <h2 class="lux-collection-heading">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+
+    <!-- Navigation controls & view all -->
+    <div class="lux-nav-row">
+      <div class="lux-nav-arrows">
+        <button class="lux-nav-arrow lux-nav-arrow--prev swiper-button-prev-{{ section.id }}" aria-label="Previous collections">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <button class="lux-nav-arrow lux-nav-arrow--next swiper-button-next-{{ section.id }}" aria-label="Next collections">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
       </div>
 
-      <div class="lux-slider-wrapper">
-        <div class="swiper lux-slider-container lux-slider-{{ section.id }}">
-          <div class="swiper-wrapper">
-            {%- for product in section.settings.collection.products limit: section.settings.products_limit -%}
-              <div class="swiper-slide">
-                {%- render 'luxury-product-card', product: product -%}
-              </div>
-            {%- endfor -%}
-          </div>
-        </div>
-      </div>
-
+      {%- if section.settings.show_view_all and section.settings.view_all_link != blank -%}
+        <a href="{{ section.settings.view_all_link }}" class="lux-view-all-link">
+          {{ section.settings.view_all_text }}
+        </a>
+      {%- endif -%}
     </div>
-  </section>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      function initSlider() {
-        if (typeof Swiper !== 'undefined') {
-          new Swiper('.lux-slider-{{ section.id }}', {
-            slidesPerView: 1,
-            spaceBetween: 15,
-            loop: false,
-            navigation: {
-              nextEl: '.swiper-button-next-{{ section.id }}',
-              prevEl: '.swiper-button-prev-{{ section.id }}',
+    <!-- Collection Slider -->
+    <div class="lux-collection-slider">
+      <div class="swiper lux-slider-inner-container lux-slider-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'collection_slide' -%}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                {%- liquid
+                  assign col = collections[block.settings.collection]
+                  assign col_image = block.settings.custom_image | default: col.featured_image | default: col.products.first.featured_image
+                  assign col_title = block.settings.custom_title | default: col.title
+                  assign col_desc = block.settings.custom_description | default: col.description
+                  assign col_url = col.url | default: '#'
+                  assign col_count = col.all_products_count | default: 0
+                -%}
+
+                {%- if forloop.first -%}
+                  <!-- Overlay Card Style (First Card) -->
+                  <div class="col-card col-card--overlay" style="border-radius: {{ section.settings.card_border_radius }}px;">
+                    <a href="{{ col_url }}" class="col-card__link-wrapper">
+                      {%- if col_image != blank -%}
+                        {{ col_image | image_url: width: 800 | image_tag: class: 'col-card__img col-card__img--cover', loading: 'lazy', alt: col_title }}
+                      {%- else -%}
+                        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg col-card__img col-card__img--cover' }}
+                      {%- endif -%}
+                      <div class="col-card__overlay-gradient" style="background: {{ section.settings.card_overlay_gradient }};"></div>
+                      
+                      <!-- Top Left count badge -->
+                      <div class="col-card__badge">
+                        {{ col_count }}+ Perfumes
+                      </div>
+
+                      <!-- Bottom content -->
+                      <div class="col-card__bottom-info">
+                        <h3 class="col-card__title">{{ col_title }}</h3>
+                        <p class="col-card__desc">{{ col_desc }}</p>
+                        <span class="col-card__btn">
+                          <span>Explore More</span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                          </svg>
+                        </span>
+                      </div>
+                    </a>
+                  </div>
+                {%- else -%}
+                  <!-- Centered Product Image Card Style (Other Cards) -->
+                  <div class="col-card col-card--centered" style="border-radius: {{ section.settings.card_border_radius }}px; background-color: {{ section.settings.card_bg }};">
+                    <a href="{{ col_url }}" class="col-card__link-wrapper">
+                      <div class="col-card__img-container">
+                        {%- if col_image != blank -%}
+                          {{ col_image | image_url: width: 600 | image_tag: class: 'col-card__img col-card__img--contain', loading: 'lazy', alt: col_title }}
+                        {%- else -%}
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg col-card__img col-card__img--contain' }}
+                        {%- endif -%}
+                      </div>
+                    </a>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function initSlider() {
+      if (typeof Swiper !== 'undefined') {
+        new Swiper('.lux-slider-{{ section.id }}', {
+          slidesPerView: 1,
+          spaceBetween: {{ section.settings.card_spacing }},
+          loop: {{ section.settings.enable_loop }},
+          autoplay: {% if section.settings.autoplay %} { delay: {{ section.settings.autoplay_speed }} * 1000 } {% else %} false {% endif %},
+          navigation: {
+            nextEl: '.swiper-button-next-{{ section.id }}',
+            prevEl: '.swiper-button-prev-{{ section.id }}',
+          },
+          simulateTouch: {{ section.settings.enable_drag }},
+          grabCursor: {{ section.settings.enable_drag }},
+          breakpoints: {
+            768: {
+              slidesPerView: 2,
+              spaceBetween: {{ section.settings.card_spacing }}
             },
-            breakpoints: {
-              480: {
-                slidesPerView: 1,
-                spaceBetween: 15
-              },
-              768: {
-                slidesPerView: 2,
-                spaceBetween: 20
-              },
-              992: {
-                slidesPerView: 3,
-                spaceBetween: 25
-              },
-              1200: {
-                slidesPerView: 4,
-                spaceBetween: 30
-              }
+            1200: {
+              slidesPerView: 3,
+              spaceBetween: {{ section.settings.card_spacing }}
             }
-          });
-        } else {
-          // Retry if script tag is still loading
-          setTimeout(initSlider, 50);
-        }
+          }
+        });
+      } else {
+        setTimeout(initSlider, 50);
       }
-      initSlider();
-    });
-  </script>
-{%- endif -%}
+    }
+    initSlider();
+  });
+</script>
 
 {% schema %}
 {
   "name": "Collection Slider",
   "settings": [
     {
+      "type": "header",
+      "content": "Section Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1200,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Width",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Category Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Enable Badge",
+      "default": true
+    },
+    {
       "type": "text",
-      "id": "subheading",
-      "label": "Subtitle",
-      "default": "Shop Best Sellers"
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Perfume Collections"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Font Size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "badge_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge Border Radius",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "default": "A World of Scents, Curated for You"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
+      "label": "Heading Text",
+      "default": "A Curated Collection of Timeless Fragrances"
     },
     {
       "type": "range",
-      "id": "products_limit",
-      "min": 4,
-      "max": 16,
+      "id": "heading_size_desktop",
+      "min": 24,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "heading_size_tablet",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Tablet)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#111111"
+    },
+    {
+      "type": "text",
+      "id": "heading_letter_spacing",
+      "label": "Letter Spacing (em)",
+      "default": "-0.01"
+    },
+    {
+      "type": "select",
+      "id": "heading_line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "1.0", "label": "1.0" },
+        { "value": "1.1", "label": "1.1" },
+        { "value": "1.15", "label": "1.15" },
+        { "value": "1.25", "label": "1.25" },
+        { "value": "1.4", "label": "1.4" }
+      ],
+      "default": "1.15"
+    },
+    {
+      "type": "range",
+      "id": "heading_max_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Heading Max Width",
+      "default": 900
+    },
+    {
+      "type": "header",
+      "content": "Navigation Arrows"
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_prev",
+      "label": "Prev Arrow Background",
+      "default": "#1c1b1b"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color_prev",
+      "label": "Prev Arrow Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_next",
+      "label": "Next Arrow Background",
+      "default": "#ececec"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color_next",
+      "label": "Next Arrow Color",
+      "default": "#1c1b1b"
+    },
+    {
+      "type": "header",
+      "content": "View All Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Enable View All Link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "Link Text",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "view_all_font_size",
+      "min": 12,
+      "max": 24,
       "step": 1,
-      "label": "Products limit",
-      "default": 8
+      "unit": "px",
+      "label": "Link Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "view_all_color",
+      "label": "Link Color",
+      "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "Cards Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "card_spacing",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Spacing",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Standard Card Background",
+      "default": "#ececec"
+    },
+    {
+      "type": "color_background",
+      "id": "card_overlay_gradient",
+      "label": "First Card Overlay Gradient",
+      "default": "linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Slider Physics"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay Duration (seconds)",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable Slide Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_drag",
+      "label": "Enable Mouse Drag/Swipe",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_slide",
+      "name": "Collection Slide",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Image (Fallback/Override)"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Title Override"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_description",
+          "label": "Custom Description Override"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Collection Slider"
+      "name": "Collection Slider",
+      "blocks": [
+        {
+          "type": "collection_slide"
+        },
+        {
+          "type": "collection_slide"
+        },
+        {
+          "type": "collection_slide"
+        }
+      ]
     }
   ]
 }
